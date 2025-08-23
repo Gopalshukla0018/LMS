@@ -1,5 +1,3 @@
-//  Password 9As0oO39UVO6A9BS
-// mongodb+srv://gopalshukla0018:9As0oO39UVO6A9BS@cluster0.rfexmpb.mongodb.net/
 
 import { AppWindowIcon, CodeIcon } from "lucide-react";
 import { useState } from "react";
