@@ -18,7 +18,7 @@ Thumbs.db
 *.sln
 *.sw?
 
-# Environment files
+Environment files
 .env
 *.env
 
