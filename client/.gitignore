@@ -1,0 +1,51 @@
+
+
+# =============================
+# Files/Folders NOT to push to GitHub
+# =============================
+
+# Node modules (dependencies, auto-generated)
+node_modules/
+
+# Build output (auto-generated)
+dist/
+build/
+
+# OS generated files (system junk)
+.DS_Store
+Thumbs.db
+
+# Editor directories and files (local IDE settings)
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment files (local secrets/config)
+.env
+*.env
+
+# Log files (auto-generated)
+npm-debug.log*
+*.tsbuildinfo
+.eslintcache
+*.log
+
+# Misc (cache, temp, backup, etc)
+coverage/
+*.local
+*.tgz
+*.zip
+*.bak
+*.tmp
+*.tsbuildinfo
+.eslintcache
+.parcel-cache/
+
+# Public and asset files (optional, if not needed in repo)
+public/vite.svg
+src/assets/react.svg
+.parcel-cache/
