@@ -1,26 +1,28 @@
+import mongoose from "mongoose";
 const userSchema = new mongoose.Schema(
   {
     name: {
-      type: "string",
-      required: "true",
+      type: String,
+      required: true,
     },
     email: {
-      type: "string",
+      type: String,
+      required: true,
     },
-    password: { type: "string", required: "true" },
+    password: { type: String, required: true },
     role: {
-      type: "string",
+      type: String,
       enum: ["student", "instructor"],
       default: "student",
     },
     enrolledCourses: [
       {
-        type: mongoose.Schema.Tpes.objectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Course",
       },
     ],
     photoUrl: {
-      type: "string",
+      type: String,
       default: "",
     },
   },
