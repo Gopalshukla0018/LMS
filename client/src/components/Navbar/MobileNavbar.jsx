@@ -42,10 +42,7 @@ const MobileNavbar = () => {
         </nav>
         {role === "instructor" && (
           <SheetFooter>
-            <Button type="submit">Save changes</Button>
-            <SheetClose asChild>
-              <Button variant="outline">Close</Button>
-            </SheetClose>
+            <Button type="submit">Dashboard</Button>
           </SheetFooter>
         )}
       </SheetContent>
