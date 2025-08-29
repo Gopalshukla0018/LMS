@@ -1,4 +1,4 @@
-import { AppWindowIcon, CodeIcon, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ import {
   useLoginUserMutation,
   useRegisterUserMutation,
 } from "@/features/api/authApi";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [signupInput, setSignupInput] = useState({
@@ -39,6 +40,7 @@ const Login = () => {
       isSuccess: registerIsSuccess,
     },
   ] = useRegisterUserMutation();
+  const navigate = useNavigate();
   const [
     loginUser,
     {
@@ -63,6 +65,7 @@ const Login = () => {
     const action = type === "signup" ? registerUser : loginUser;
     await action(inputData);
   };
+
   useEffect(() => {
     if (registerIsSuccess && RegisterData) {
       toast.success(RegisterData.message || "signUp successful");
@@ -75,6 +78,7 @@ const Login = () => {
     }
     if (loginIsSuccess && loginData) {
       toast.success(loginData.message || "login successful");
+      navigate("/");
     }
   }, [
     loginIsLoading,

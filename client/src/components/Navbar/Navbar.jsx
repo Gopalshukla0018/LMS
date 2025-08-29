@@ -14,19 +14,18 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const user = true;
   return (
-    
-    
     <div className="h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-b-gray-800 boorder-b-gray-200 top-0 fixed right-0 left-0 duration-300  z-10 ">
       {/* Desktop */}
       <div className="justify-between hidden max-auto max-w-7xl md:flex ">
         <div className="flex gap-4 mt-3">
           <School size={"30"} />
           <h1 className="hidden text-2xl font-extrabold md:block">
-            E-Learning
+            StudyGuider
           </h1>
         </div>
         {/* user icons and dark mode icons */}
@@ -45,7 +44,10 @@ const Navbar = () => {
               <DropdownMenuContent className="w-56" align="start">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuGroup>
-                  <DropdownMenuItem>My Learning</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    {" "}
+                    <Link to="my-learning">My Learning</Link>{" "}
+                  </DropdownMenuItem>
                   <DropdownMenuItem>Edit Profile</DropdownMenuItem>
                   <DropdownMenuItem>Log out</DropdownMenuItem>
                 </DropdownMenuGroup>
@@ -64,10 +66,9 @@ const Navbar = () => {
       </div>
       {/* Mobile device */}
       <div className="flex items-center justify-between px-4 md:hidden ">
-         <h1 className="text-2xl font-extrabold">E Learning</h1>
-         <MobileNavbar />
+        <h1 className="text-2xl font-extrabold">Career Setu</h1>
+        <MobileNavbar />
       </div>
-     
     </div>
   );
 };

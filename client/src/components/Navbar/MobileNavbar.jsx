@@ -31,7 +31,7 @@ const MobileNavbar = () => {
       </SheetTrigger>
       <SheetContent className="flex flex-col">
         <SheetHeader className="flex flex-row justify-between mt-2">
-          <SheetTitle>E Learning</SheetTitle>
+          <SheetTitle>Career Setu</SheetTitle>
           <DarkMode />
         </SheetHeader>
         <Separator className="mr-2" />

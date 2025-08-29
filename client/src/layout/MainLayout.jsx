@@ -1,5 +1,5 @@
 import Navbar from "@/components/Navbar/Navbar";
-import HeroSection from "@/pages/student/HeroSection";
+
 
 import React from "react";
 import { Outlet } from "react-router-dom";

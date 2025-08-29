@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 
 const HeroSection = () => {
   return (
-    <section className="relative px-6 py-20 text-center bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <section className=  "relative px-10 py-20 pb-8 text-center bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/30 dark:bg-black/40"></div>
 
