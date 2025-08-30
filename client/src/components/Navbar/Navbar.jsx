@@ -17,13 +17,18 @@ import {
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
-  const user = true;
+  const user = 
+  // false;
+  true
   return (
     <div className="h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-b-gray-800 boorder-b-gray-200 top-0 fixed right-0 left-0 duration-300  z-10 ">
       {/* Desktop */}
       <div className="justify-between hidden max-auto max-w-7xl md:flex ">
         <div className="flex gap-4 mt-3">
-          <School size={"30"} />
+          <Link to="/">
+            <School size={"30"} />
+          </Link>
+
           <h1 className="hidden text-2xl font-extrabold md:block">
             StudyGuider
           </h1>
@@ -48,7 +53,10 @@ const Navbar = () => {
                     {" "}
                     <Link to="my-learning">My Learning</Link>{" "}
                   </DropdownMenuItem>
-                  <DropdownMenuItem>Edit Profile</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    {" "}
+                    <Link to="edit-profile"> Edit Profile</Link>{" "}
+                  </DropdownMenuItem>
                   <DropdownMenuItem>Log out</DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
@@ -57,7 +65,10 @@ const Navbar = () => {
             </DropdownMenu>
           ) : (
             <div className="flex gap-2 item-center">
-              <Button variant="outline">login</Button>
+            <Link to="login" >
+                          <Button variant="outline">login</Button>
+            </Link>
+
               <Button>signup</Button>
             </div>
           )}
