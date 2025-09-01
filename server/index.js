@@ -3,12 +3,14 @@ import dotenv from "dotenv";
 import connectDB from "./database/db.js";
 import userRoute from "./routes/user.route.js";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 dotenv.config({ path: "./.env" });
 // call deatebase connection here
 connectDB();
 
 const app = express();
+app.use(cookieParser());   
 
 const port = process.env.PORT || 3000;
 
