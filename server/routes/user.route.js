@@ -5,6 +5,7 @@ import {
   getUserProfile,
   logout,
   updateProfile,
+  
 } from "../controllers/user.controller.js";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import upload from "../utils/multer.js";
