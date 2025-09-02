@@ -79,7 +79,7 @@ const EditProfile = () => {
         >
           <Avatar className="w-24 h-24 mb-4 transition-all duration-300 shadow-lg md:h-32 md:w-32">
             <AvatarImage
-              src={user.photoUrl || "https://github.com/shadcn.png"}
+              src={user?.photoUrl || "https://github.com/shadcn.png"}
               alt="Instructor avatar"
               className="object-cover w-full h-full rounded-full"
             />

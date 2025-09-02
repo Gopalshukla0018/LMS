@@ -1,20 +1,13 @@
 import React from "react";
-import { Skeleton } from "@/components/ui/skeleton";
+
 const CoursesSkeleton = () => {
   return (
-    <div className="overflow-hidden transition-shadow bg-white rounded-lg shadow-md  hover:shadow-lg">
-      <Skeleton className="w-full h-36" />
-      <div className="px-5 py-4 space-y-3">
-        <Skeleton className="w-3/4 h-6" />
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Skeleton className="w-6 h-6 rounded-full" />
-            <Skeleton className="w-20 h-4" />
-          </div>
-          <Skeleton className="w-16 h-4" />
-        </div>
-        <Skeleton className="w-1/4 h-4" />
-      </div>
+    <div className="flex flex-col gap-4 p-4 bg-white shadow-md dark:bg-gray-800 rounded-xl animate-pulse">
+      <div className="w-full h-40 bg-gray-300 rounded-lg dark:bg-gray-700" />
+      <div className="w-3/4 h-6 bg-gray-300 rounded dark:bg-gray-700" />
+      <div className="w-full h-4 bg-gray-200 rounded dark:bg-gray-600" />
+      <div className="w-5/6 h-4 bg-gray-200 rounded dark:bg-gray-600" />
+      <div className="w-24 h-10 mt-2 bg-gray-300 rounded-full dark:bg-gray-700" />
     </div>
   );
 };
