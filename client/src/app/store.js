@@ -8,3 +8,9 @@ export const store = configureStore({
   middleware: (defaultMiddleware) =>
     defaultMiddleware().concat(authApi.middleware),
 });
+
+const initializeApp=async()=>{
+  await appStore.dispatch(authApi.endpoints.loardUser.initiate({},{forceRefetch:true}))
+}
+
+initializeApp();

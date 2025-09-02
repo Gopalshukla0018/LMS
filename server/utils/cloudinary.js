@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
-import dotenv, { configDotenv } from "dotenv";
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -14,6 +14,7 @@ export const uploadMedia = async (file) => {
     const uploadResponse = await cloudinary.uploader.upload(file, {
       resource_type: "auto",
     });
+    return uploadResponse;
   } catch (error) {
     console.log(error);
   }
