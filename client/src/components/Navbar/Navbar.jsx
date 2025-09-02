@@ -1,4 +1,4 @@
-import React ,{useEffect} from "react";
+import React, { useEffect } from "react";
 import { Button } from "../ui/button";
 import { School } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -11,33 +11,33 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuSubTrigger,
+  // DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogoutUserMutation } from "@/features/api/authApi";
 import { toast } from "sonner";
-
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
-  const user = 
-  // false;
-  true;
-    const [logoutUser,{data,isSuccess}]= useLogoutUserMutation();
-    const navigate=useNavigate();
-    const logoutHandler = async()=>{
-      await logoutUser();
+  const { user } = useSelector((store) => store.auth);
+  const [logoutUser, { data, isSuccess }] = useLogoutUserMutation();
+  const navigate = useNavigate();
+  const logoutHandler = async () => {
+    await logoutUser();
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(data.message || "User logout Successully");
+      navigate("login");
     }
-    
-    useEffect(() => {
-    if(isSuccess){
-      toast.success(data.message || "User logout Successully")
-      navigate("login");;
-    }
-    }, [isSuccess])
+  }, [isSuccess]);
+
   return (
     <div className="h-16 dark:bg-[#3a1515] bg-white border-b dark:border-b-gray-800 boorder-b-gray-200 top-0 fixed right-0 left-0 duration-300  z-10 ">
       {/* Desktop */}
+
       <div className="justify-between hidden max-auto max-w-7xl md:flex ">
         <div className="flex gap-4 mt-3">
           <Link to="/">
@@ -55,7 +55,7 @@ const Navbar = () => {
               <DropdownMenuTrigger asChild>
                 <Avatar>
                   <AvatarImage
-                    src="https://github.com/shadcn.png"
+                    src={user?.photoUrl || "https://github.com/shadcn.png"}
                     alt="@shadcn"
                   />
                   <AvatarFallback>CN</AvatarFallback>
@@ -70,19 +70,26 @@ const Navbar = () => {
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     {" "}
-                    <Link to="edit-profile"> Edit Profile</Link>{" "}
+                    <Link to="/edit-profile"> Edit Profile</Link>{" "}
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={logoutHandler}>Log out</DropdownMenuItem>
+                  <DropdownMenuItem onClick={logoutHandler}>
+                    Log out
+                  </DropdownMenuItem>
                 </DropdownMenuGroup>
-                <DropdownMenuSeparator />
+
+                { user.role === "instructor" && (<>
+                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Dashboard</DropdownMenuItem>
-              </DropdownMenuContent>
+          
+                </>)}
+                    </DropdownMenuContent>
             </DropdownMenu>
+               
           ) : (
             <div className="flex gap-2 item-center">
-            <Link to="login" >
-                          <Button variant="outline">login</Button>
-            </Link>
+              <Link to="login">
+                <Button variant="outline">login</Button>
+              </Link>
 
               <Button>signup</Button>
             </div>
