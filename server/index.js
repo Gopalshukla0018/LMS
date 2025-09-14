@@ -4,6 +4,7 @@ import connectDB from "./database/db.js";
 import userRoute from "./routes/user.route.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import courseRoutes from "./routes/course.route.js"
 
 dotenv.config({ path: "./.env" });
 // call deatebase connection here
@@ -26,6 +27,7 @@ app.use(
 
 ///apis
 app.use("/api/v1/user", userRoute);
+app.use("/api/v1/course", courseRoutes);
 app.get("/home", (req, res) => {
   res.status(200).json({
     success: true,
