@@ -11,85 +11,89 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useNavigate } from "react-router-dom";
+import { useGetCreatorCoursesQuery } from "@/features/api/courseApi";
+import { Edit2Icon, PlusCircle } from "lucide-react";
 
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
 const CourseTable = () => {
-    const navigate = useNavigate();
+  const { data, isLoading } = useGetCreatorCoursesQuery();
+  const navigate = useNavigate();
+
+  if (isLoading) return <h1 className="text-lg text-center">Loading..</h1>;
+  console.log("data is :", data);
+
   return (
-    <div className="mt-12 ">
-      <Button   className="mb-4" onClick={()=>  navigate('create')} >Create a new Course</Button>
-      <div> 
+    <div className="max-w-5xl px-4 mx-auto mt-12">
+      {/* Header Section */}
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-semibold tracking-tight text-gray-800">
+          My Courses
+        </h2>
+        <Button
+          className="flex items-center gap-2 px-4 py-2 text-white bg-indigo-600 rounded-lg shadow-md hover:bg-indigo-700"
+          onClick={() => navigate("create")}
+        >
+          <PlusCircle size={18} />
+          Create Course
+        </Button>
+      </div>
+
+      {/* Table Section */}
+      <div className="overflow-hidden border border-gray-200 shadow-sm rounded-xl">
         <Table>
-          <TableCaption>A list of your recent invoices.</TableCaption>
-          <TableHeader>
+          <TableCaption className="text-gray-500">
+            A list of your created courses.
+          </TableCaption>
+
+          <TableHeader className="bg-gray-50">
             <TableRow>
-              <TableHead className="w-[100px]">Invoice</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Method</TableHead>
-              <TableHead className="text-right">Amount</TableHead>
+              <TableHead className="w-[120px] text-gray-700 font-medium">
+                Price
+              </TableHead>
+              <TableHead className="font-medium text-gray-700">
+                Status
+              </TableHead>
+              <TableHead className="font-medium text-gray-700">Title</TableHead>
+              <TableHead className="font-medium text-right text-gray-700">
+                Action
+              </TableHead>
             </TableRow>
           </TableHeader>
+
           <TableBody>
-            {invoices.map((invoice) => (
-              <TableRow key={invoice.invoice}>
-                <TableCell className="font-medium">{invoice.invoice}</TableCell>
-                <TableCell>{invoice.paymentStatus}</TableCell>
-                <TableCell>{invoice.paymentMethod}</TableCell>
+            {data?.courses?.map((course) => (
+              <TableRow
+                key={course.id}
+                className="transition-colors duration-200 hover:bg-gray-50"
+              >
+                <TableCell className="font-medium text-gray-800">
+                  {course?.coursePrice || "NA"}
+                </TableCell>
+                <TableCell>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      course?.isPublished
+                        ? "bg-green-100 text-green-700"
+                        : "bg-yellow-100 text-yellow-700"
+                    }`}
+                  >
+                    {course?.isPublished ? "Published" : "Draft"}
+                  </span>
+                </TableCell>
+                <TableCell className="text-gray-700">
+                  {course?.courseTitle}
+                </TableCell>
                 <TableCell className="text-right">
-                  {invoice.totalAmount}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-gray-300 rounded-lg hover:bg-indigo-50 hover:text-indigo-600"
+                  >
+                    <Edit2Icon size={16} />
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TableCell colSpan={3}>Total</TableCell>
-              <TableCell className="text-right">$2,500.00</TableCell>
-            </TableRow>
-          </TableFooter>
         </Table>
       </div>
     </div>
