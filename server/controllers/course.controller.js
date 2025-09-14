@@ -12,7 +12,7 @@ export const createCourse = async (req, res) => {
       courseTitle,
       category,
       creator: req.id,
-    });
+    });       
     return res.status(201).json({
       course,
       messeg: "course created.",
@@ -25,3 +25,30 @@ export const createCourse = async (req, res) => {
     });
   }
 };
+
+export const getCreatorCourses = async (req, res) => {
+  try {
+    const userId = req.id;
+    const courses = await Course.find({ creator: userId });
+    if(!courses){
+      return res.status(404).json({
+        courses:[],
+        message: "No courses found",
+        success: false
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      courses,
+    });
+    
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch courses",
+    });
+    
+  }
+}
