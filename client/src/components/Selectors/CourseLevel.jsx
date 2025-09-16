@@ -9,9 +9,9 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-export function CourseLevel({getCourseLevel}) {
+export function CourseLevel({getcourseLevel}) {
   return (
-    <Select onValueChange={getCourseLevel}>
+    <Select onValueChange={getcourseLevel}>
       <SelectTrigger className="w-[220px]">
         <SelectValue placeholder="Select a Category" />
       </SelectTrigger>
@@ -21,7 +21,7 @@ export function CourseLevel({getCourseLevel}) {
           <SelectItem value="Beginner">Beginner</SelectItem>
             <SelectItem value="Intermediate">Intermediate</SelectItem>
             <SelectItem value="Advanced">Advanced</SelectItem>
-            
+
          
         </SelectGroup>
       </SelectContent>
