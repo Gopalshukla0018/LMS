@@ -144,4 +144,3 @@ const photoUrl= cloudResponse.secure_url;
     });
   }
 };
-

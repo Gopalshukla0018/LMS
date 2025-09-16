@@ -39,7 +39,7 @@ const CourseTab = () => {
   }
     
   const getcourseLevel=(value)=>{
-     console.log("Course category:", value)
+     console.log("Course Level:", value)
     setInput({...input, courseLevel:value})
   }
     
