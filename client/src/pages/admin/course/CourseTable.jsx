@@ -87,7 +87,8 @@ const CourseTable = () => {
                     variant="outline"
                     size="sm"
                     className="border-gray-300 rounded-lg hover:bg-indigo-50 hover:text-indigo-600"
-                  >
+                    onClick={()=> navigate(`${course._id}`)}
+                 >
                     <Edit2Icon size={16} />
                   </Button>
                 </TableCell>
