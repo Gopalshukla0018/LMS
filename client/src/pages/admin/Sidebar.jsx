@@ -39,7 +39,7 @@ const Sidebar = () => {
          </div>
   </div>
 
-      <div className="flex-1 p-2 bg-white md:p-10">
+      <div className="flex-1 mt-12 b-white dark:bg-gray-900">
        
         <Outlet />
       </div>
