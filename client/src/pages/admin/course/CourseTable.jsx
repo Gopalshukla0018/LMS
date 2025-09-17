@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -15,8 +15,14 @@ import { useGetCreatorCoursesQuery } from "@/features/api/courseApi";
 import { Edit2Icon, PlusCircle } from "lucide-react";
 
 const CourseTable = () => {
-  const { data, isLoading } = useGetCreatorCoursesQuery();
+  const { data, isLoading, refetch } = useGetCreatorCoursesQuery();
   const navigate = useNavigate();
+
+
+  useEffect(() => {
+    // Refetch data when component mounts
+    refetch();
+  }, [refetch]);
 
   if (isLoading) return <h1 className="text-lg text-center">Loading..</h1>;
   console.log("data is :", data);
@@ -87,8 +93,8 @@ const CourseTable = () => {
                     variant="outline"
                     size="sm"
                     className="border-gray-300 rounded-lg hover:bg-indigo-50 hover:text-indigo-600"
-                    onClick={()=> navigate(`${course._id}`)}
-                 >
+                    onClick={() => navigate(`${course._id}`)}
+                  >
                     <Edit2Icon size={16} />
                   </Button>
                 </TableCell>

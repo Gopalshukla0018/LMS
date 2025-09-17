@@ -6,7 +6,7 @@ const courseSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    subTitle: { type: String },
+    courseSubTitle: { type: String }, // <-- changed from subTitle to courseSubTitle
     description: { type: String },
     category: {
       type: String,

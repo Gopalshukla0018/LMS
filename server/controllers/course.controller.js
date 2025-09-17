@@ -1,4 +1,5 @@
 import { Course } from "../model/course.model.js";
+import { deleteMediafromCloudinary, uploadMedia } from "../utils/cloudinary.js";
 
 export const createCourse = async (req, res) => {
   try {
@@ -12,7 +13,7 @@ export const createCourse = async (req, res) => {
       courseTitle,
       category,
       creator: req.id,
-    });       
+    });
     return res.status(201).json({
       course,
       messeg: "course created.",
@@ -30,11 +31,11 @@ export const getCreatorCourses = async (req, res) => {
   try {
     const userId = req.id;
     const courses = await Course.find({ creator: userId });
-    if(!courses){
+    if (!courses) {
       return res.status(404).json({
-        courses:[],
+        courses: [],
         message: "No courses found",
-        success: false
+        success: false,
       });
     }
 
@@ -42,13 +43,66 @@ export const getCreatorCourses = async (req, res) => {
       success: true,
       courses,
     });
-    
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       success: false,
       message: "Failed to fetch courses",
     });
-    
   }
-}
+};
+
+export const editCourse = async (req, res) => {
+  try {
+    const courseId = req.params.id;
+
+    const {
+      courseTitle,
+      courseSubTitle,
+      Coursecategory,
+      courseLevel,
+      coursePrice,
+    } = req.body;
+    const { courseThumbnail } = req.file;
+
+    let course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({
+        message: "Course not found",
+        success: false,
+      });
+    }
+    let Thumbnail;
+    if (courseThumbnail) {
+      if (course.courseThumbnail) {
+        const publicID = course.courseThumbnail.split("/").pop().split(".")[0];
+        await deleteMediafromCloudinary(publicID); // delete old thumbnail
+      }
+      Thumbnail = await uploadMedia(courseThumbnail.path);  // upload thumbnail on cloudinary
+    }
+
+   
+
+    const updateData = {
+      courseTitle,
+      courseSubTitle,
+      Coursecategory,
+      courseLevel,
+      coursePrice,
+      courseThumbnail: courseThumbnail?.secure_url,
+    };
+    course = await Course.findByIdAndUpdate(courseId, updateData);
+    
+    return res.status(200).json({
+      success: true,
+      message: "Course updated successfully",
+      course,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch courses",
+    });
+  }
+};
