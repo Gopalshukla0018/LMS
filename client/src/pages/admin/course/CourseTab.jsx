@@ -11,13 +11,15 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEditCourseMutation } from "@/features/api/courseApi";
+import { toast } from "sonner";
 
 const CourseTab = () => {
   const isPublished = true;
-  const isLoading = false;
+
   const [input, setInput] = useState({
     courseTitle: "",
     courseSubTitle: "",
@@ -29,7 +31,17 @@ const CourseTab = () => {
   const [previewThumbnail, setPreviewThumbnail] = useState("");
   const navigate = useNavigate();
 
+  const [editCourse, { data, isLoading, isSuccess, error }] =
+    useEditCourseMutation();
+  const params = useParams();
+  const courseID = params.courseId;
+
   const handleChange = (e) => {
+    console.log("title", input);
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
+  const handleChangeSubtitle = (e) => {
+    console.log("subtitle", input);
     setInput({ ...input, [e.target.name]: e.target.value });
   };
   const getSelectedCategory = (value) => {
@@ -43,9 +55,25 @@ const CourseTab = () => {
   };
 
   // update handler
-  const updateCourseHandler = () => {
-    console.log(input);
+  const updateCourseHandler = async () => {
+    const formData = new FormData();
+    formData.append("courseTitle", input.courseTitle);
+    formData.append("courseSubTitle", input.courseSubTitle);
+    formData.append("Coursecategory", input.Coursecategory);
+    formData.append("courseLevel", input.courseLevel);
+    formData.append("coursePrice", input.coursePrice);
+    formData.append("courseThumbnail", input.courseThumbnail);
+    await editCourse({ formData, courseId: courseID });
+    navigate("/admin/courses")
   };
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(data.message || "Course Updated Successfully");
+    }
+    if (error) {
+      toast.error(error.data.message || "Failed to update course");
+    }
+  }, [isSuccess, error]);
 
   // get file
   const getThumbnail = (e) => {
@@ -99,7 +127,7 @@ const CourseTab = () => {
               name="courseSubTitle"
               className="mt-1"
               value={input.courseSubTitle}
-              onChange={handleChange}
+              onChange={handleChangeSubtitle}
             />
           </div>
           <div>
