@@ -15,11 +15,9 @@ import React, { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-
 const CourseTab = () => {
-  const isPublished = 
-  true;
-  const isLoading=true;
+  const isPublished = true;
+  const isLoading = false;
   const [input, setInput] = useState({
     courseTitle: "",
     courseSubTitle: "",
@@ -28,21 +26,39 @@ const CourseTab = () => {
     coursePrice: "",
     courseThumbnail: "",
   });
-  const navigate=useNavigate();
+  const [previewThumbnail, setPreviewThumbnail] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
-  const getSelectedCategory=(value)=>{
-     console.log("Selected category:", value)
-    setInput({...input, Coursecategory:value})
-  }
-    
-  const getcourseLevel=(value)=>{
-     console.log("Course Level:", value)
-    setInput({...input, courseLevel:value})
-  }
-    
+  const getSelectedCategory = (value) => {
+    console.log("Selected category:", value);
+    setInput({ ...input, Coursecategory: value });
+  };
+
+  const getcourseLevel = (value) => {
+    console.log("Course Level:", value);
+    setInput({ ...input, courseLevel: value });
+  };
+
+  // update handler
+  const updateCourseHandler = () => {
+    console.log(input);
+  };
+
+  // get file
+  const getThumbnail = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setInput({ ...input, courseThumbnail: file });
+      const fileReader = new FileReader();
+      fileReader.onloadend = () => {
+        setPreviewThumbnail(fileReader.result);
+      };
+      fileReader.readAsDataURL(file);
+    }
+  };
 
   return (
     <Card>
@@ -69,8 +85,10 @@ const CourseTab = () => {
             <Input
               type="text"
               placeholder="Ex. FullStack Developer Complete Course"
-              name="Course Title"
+              name="courseTitle"
               className="mt-1"
+              value={input.courseTitle}
+              onChange={handleChange}
             />
           </div>
           <div>
@@ -78,8 +96,10 @@ const CourseTab = () => {
             <Input
               type="text"
               placeholder="Become FullStack Developer From Zero To Hero"
-              name="Course SubTitle"
+              name="courseSubTitle"
               className="mt-1"
+              value={input.courseSubTitle}
+              onChange={handleChange}
             />
           </div>
           <div>
@@ -89,11 +109,11 @@ const CourseTab = () => {
           <div className="flex items-center gap-5">
             <div>
               <Label className="mb-3">Category</Label>
-              <Selector getSelectedCategory={getSelectedCategory}  />
+              <Selector getSelectedCategory={getSelectedCategory} />
             </div>
             <div>
               <Label className="mb-3">Course Level</Label>
-              <CourseLevel  getcourseLevel={getcourseLevel} />
+              <CourseLevel getcourseLevel={getcourseLevel} />
             </div>
             <div>
               <Label className="mb-3">Price in INR</Label>
@@ -113,19 +133,36 @@ const CourseTab = () => {
               className="px-4 py-2 border rounded-md outline-none w-fit "
               accept="image/*"
               type="file"
+              onChange={getThumbnail}
             />
+            {previewThumbnail && (
+              <img
+                src={previewThumbnail}
+                alt="Course Thumbnail"
+                className="object-cover h-48 mt-3 rounded-md w-96"
+              />
+            )}
           </div>
           <div>
-            <Button variant='outline' onClick={ ()=> navigate("/admin/courses")}>Cencle</Button>
-            <Button disabled={isLoading} className="ml-3">
-              {
-                isLoading ? <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Please wait 
-                </> : "Save "
-            
-                
-              }
+            <Button
+              variant="outline"
+              onClick={() => navigate("/admin/courses")}
+            >
+              Cencle
+            </Button>
+            <Button
+              disabled={isLoading}
+              className="ml-3"
+              onClick={updateCourseHandler}
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Please wait
+                </>
+              ) : (
+                "Save "
+              )}
             </Button>
           </div>
         </div>
@@ -135,4 +172,3 @@ const CourseTab = () => {
 };
 
 export default CourseTab;
-
