@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+
 import Login from "./pages/Login";
 import HeroSection from "./pages/student/HeroSection";
 import { createBrowserRouter } from "react-router-dom";
@@ -12,6 +12,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import CourseTable from "./pages/admin/course/CourseTable";
 import AddCours from "./pages/admin/course/AddCours";
 import EditCourse from "./pages/admin/course/EditCourse";
+import CreateLecture from "./pages/admin/lecture/CreateLecture";
 
 const appRouter = createBrowserRouter([
   {
@@ -61,6 +62,11 @@ const appRouter = createBrowserRouter([
           {
             path: "courses/:courseId",
             element: <EditCourse />,
+          },
+          {
+            path: "courses/:courseId/lecture",
+            element: <CreateLecture />,
+        
           },
         ],
       },
