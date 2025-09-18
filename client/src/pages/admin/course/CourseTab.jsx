@@ -14,7 +14,10 @@ import { Label } from "@/components/ui/label";
 import React, { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEditCourseMutation } from "@/features/api/courseApi";
+import {
+  useEditCourseMutation,
+  useGetCourseByIdQuery,
+} from "@/features/api/courseApi";
 import { toast } from "sonner";
 
 const CourseTab = () => {
@@ -28,13 +31,31 @@ const CourseTab = () => {
     coursePrice: "",
     courseThumbnail: "",
   });
+  const params = useParams();
+  const courseID = params.courseId;
+  const { data: courseById, isLoading: courseByIdLoading } =
+    useGetCourseByIdQuery(courseID);
+
+  const course = courseById?.course; // <-- define course here
+
+  useEffect(() => {
+    if (course) {
+      setInput({
+        courseTitle: course.courseTitle || "",
+        courseSubTitle: course.courseSubTitle || "",
+        Coursecategory: course.category || "",
+        courseLevel: course.courseLevel || "",
+        coursePrice: course.coursePrice || "",
+        courseThumbnail: course.courseThumbnail || "",
+      });
+    }
+  }, [course]);
+
   const [previewThumbnail, setPreviewThumbnail] = useState("");
   const navigate = useNavigate();
 
   const [editCourse, { data, isLoading, isSuccess, error }] =
     useEditCourseMutation();
-  const params = useParams();
-  const courseID = params.courseId;
 
   const handleChange = (e) => {
     console.log("title", input);
@@ -64,14 +85,15 @@ const CourseTab = () => {
     formData.append("coursePrice", input.coursePrice);
     formData.append("courseThumbnail", input.courseThumbnail);
     await editCourse({ formData, courseId: courseID });
-    navigate("/admin/courses")
+    
   };
   useEffect(() => {
     if (isSuccess) {
       toast.success(data.message || "Course Updated Successfully");
+       navigate("/admin/courses"); 
     }
     if (error) {
-      toast.error(error.data.message || "Failed to update course");
+      toast.error(error?.data?.message || "Failed to update course");
     }
   }, [isSuccess, error]);
 
@@ -156,7 +178,7 @@ const CourseTab = () => {
             </div>
           </div>
           <div>
-            <Label className="mb-3 ">Course Tumbnail</Label>
+            <Label className="mb-3 ">Course Thumbnail</Label>
             <input
               className="px-4 py-2 border rounded-md outline-none w-fit "
               accept="image/*"
@@ -176,7 +198,7 @@ const CourseTab = () => {
               variant="outline"
               onClick={() => navigate("/admin/courses")}
             >
-              Cencle
+              Cancel
             </Button>
             <Button
               disabled={isLoading}

@@ -37,6 +37,12 @@ export const courseApi = createApi({
         formData: true,
       }),
     }),
+    getCourseById:builder.query({
+      query:(courseId)=>({
+        url:`/${courseId}`,
+        method:"GET",
+      }),
+    })
   }),
 });
 
@@ -44,4 +50,5 @@ export const {
   useCreateCourseMutation,
   useGetCreatorCoursesQuery,
   useEditCourseMutation,
+  useGetCourseByIdQuery,
 } = courseApi;
