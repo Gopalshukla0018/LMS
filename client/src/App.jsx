@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import Login from "./pages/Login";
-import Navbar from "./components/Navbar/Navbar";
 import HeroSection from "./pages/student/HeroSection";
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "./layout/MainLayout";
