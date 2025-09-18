@@ -85,12 +85,12 @@ const CourseTab = () => {
     formData.append("coursePrice", input.coursePrice);
     formData.append("courseThumbnail", input.courseThumbnail);
     await editCourse({ formData, courseId: courseID });
-    
+    // await editCourse({ courseId: courseID, body: formData });
   };
   useEffect(() => {
     if (isSuccess) {
       toast.success(data.message || "Course Updated Successfully");
-       navigate("/admin/courses"); 
+      navigate("/admin/courses");
     }
     if (error) {
       toast.error(error?.data?.message || "Failed to update course");
