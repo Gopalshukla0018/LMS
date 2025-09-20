@@ -1,4 +1,3 @@
-
 import Login from "./pages/Login";
 import HeroSection from "./pages/student/HeroSection";
 import { createBrowserRouter } from "react-router-dom";
@@ -13,6 +12,7 @@ import CourseTable from "./pages/admin/course/CourseTable";
 import AddCours from "./pages/admin/course/AddCours";
 import EditCourse from "./pages/admin/course/EditCourse";
 import CreateLecture from "./pages/admin/lecture/CreateLecture";
+import EditLecture from "./pages/admin/lecture/EditLecture";
 
 const appRouter = createBrowserRouter([
   {
@@ -66,7 +66,10 @@ const appRouter = createBrowserRouter([
           {
             path: "courses/:courseId/lecture",
             element: <CreateLecture />,
-        
+          },
+          {
+            path: "courses/:courseId/lecture/:lectureId.",
+            element: <EditLecture />,
           },
         ],
       },

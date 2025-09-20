@@ -1,11 +1,15 @@
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { useCreateLectureMutation } from "@/features/api/courseApi";
+import {
+  useCreateLectureMutation,
+  useGetCourseLecturesQuery,
+} from "@/features/api/courseApi";
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import Lecture from "./Lecture";
 
 const CreateLecture = () => {
   const [lectureTitle, setLectureTitle] = useState("");
@@ -15,9 +19,17 @@ const CreateLecture = () => {
   const navigate = useNavigate();
   const params = useParams();
   const courseID = params.courseId;
+  console.log("course id for debug is ", courseID);
 
+  // fetch from api
   const [createLecture, { data, isLoading, isSuccess, error }] =
     useCreateLectureMutation();
+  const {
+    data: lectureData,
+    isLoading: lectureLoading,
+    isError: lectureError,
+  } = useGetCourseLecturesQuery(courseID);
+  console.log("for debug data is :-", lectureData);
 
   const createLectureHandler = async () => {
     const courseId = params.courseId;
@@ -28,7 +40,8 @@ const CreateLecture = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success(data?.message || "Lecture Created");
-      // navigate(`/admin/courses/${courseID}`);
+
+      // navigate(`/admin/courses/${courseID}/lecture`);
     }
 
     if (error) {
@@ -87,9 +100,27 @@ const CreateLecture = () => {
             )}
           </Button>
         </div>
+
+        <div className="mt-10">
+          {lectureLoading ? (
+            <p>Loading lectures...</p>
+          ) : lectureError ? (
+            <p>Failed to load lectures.</p>
+          ) : !lectureData?.lectures || lectureData?.lectures.length === 0 ? (
+            <p>No lectures available.</p>
+          ) : (
+            lectureData.lectures.map((lecture, index) => (
+              <div className="mt-4" key={lecture._id}>
+                <Lecture lecture={lecture} index={index} courseID={courseID} />
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
 };
 
 export default CreateLecture;
+
+

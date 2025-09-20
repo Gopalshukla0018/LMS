@@ -4,26 +4,21 @@ import connectDB from "./database/db.js";
 import userRoute from "./routes/user.route.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import courseRoutes from "./routes/course.route.js"
+import courseRoutes from "./routes/course.route.js";
 
 dotenv.config({ path: "./.env" });
 // call deatebase connection here
 connectDB();
 
 const app = express();
-app.use(cookieParser());   
+app.use(cookieParser());
 
 const port = process.env.PORT || 3000;
 
 // default middleware
 
 app.use(express.json());
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 ///apis
 app.use("/api/v1/user", userRoute);

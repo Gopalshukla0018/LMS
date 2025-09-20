@@ -29,8 +29,10 @@ const CourseTab = () => {
     Coursecategory: "",
     courseLevel: "",
     coursePrice: "",
+    courseDescription: "",
     courseThumbnail: "",
   });
+
   const params = useParams();
   const courseID = params.courseId;
   const { data: courseById, isLoading: courseByIdLoading } =
@@ -43,6 +45,7 @@ const CourseTab = () => {
       setInput({
         courseTitle: course.courseTitle || "",
         courseSubTitle: course.courseSubTitle || "",
+         courseDescription: course.courseDescription ,
         Coursecategory: course.category || "",
         courseLevel: course.courseLevel || "",
         coursePrice: course.coursePrice || "",
@@ -85,8 +88,8 @@ const CourseTab = () => {
     formData.append("coursePrice", input.coursePrice);
     formData.append("courseThumbnail", input.courseThumbnail);
     await editCourse({ formData, courseId: courseID });
-    // await editCourse({ courseId: courseID, body: formData });
   };
+
   useEffect(() => {
     if (isSuccess) {
       toast.success(data.message || "Course Updated Successfully");
