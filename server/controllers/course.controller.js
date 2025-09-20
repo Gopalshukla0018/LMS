@@ -194,3 +194,23 @@ export const getLectures = async (req, res) => {
     });
   }
 };
+
+export const editLecture=async (req,res)=>{
+
+    try {
+
+      const {LectureTitle,videoInfo ,isPreviewFree} = req.body;
+
+      if(!title || video ){
+        return res.status(404).json({
+          message: "Both Fields arer required"
+        })
+      }
+
+      
+    } catch (error) {
+      console.log(error)
+      
+    }
+
+}
