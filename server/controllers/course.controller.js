@@ -1,7 +1,6 @@
 import { Course } from "../model/course.model.js";
 import { deleteMediafromCloudinary, uploadMedia } from "../utils/cloudinary.js";
-import   { lecture } from "../model/lecture.model.js";
-
+import { lecture as LectureModel } from "../model/lecture.model.js";
 
 export const createCourse = async (req, res) => {
   try {
@@ -65,7 +64,7 @@ export const editCourse = async (req, res) => {
       courseLevel,
       coursePrice,
     } = req.body;
-    const { courseThumbnail } = req.file;
+    const  courseThumbnail  = req.file;
 
     let course = await Course.findById(courseId);
     if (!course) {
@@ -90,7 +89,6 @@ export const editCourse = async (req, res) => {
       courseLevel,
       coursePrice,
       courseThumbnail: courseThumbnail?.secure_url,
-      
     };
     course = await Course.findByIdAndUpdate(courseId, updateData);
 
@@ -107,9 +105,6 @@ export const editCourse = async (req, res) => {
     });
   }
 };
-
-
-
 
 export const getCourseById = async (req, res) => {
   try {
@@ -134,43 +129,68 @@ export const getCourseById = async (req, res) => {
   }
 };
 
-
 export const createLecture = async (req, res) => {
   try {
-
-const courseId = req.params.courseId;
-
+    const courseId = req.params.courseId;
     const { lectureTitle } = req.body;
+
     if (!lectureTitle) {
       return res.status(400).json({
         message: "Lecture title is required",
         success: false,
       });
     }
+
     const course = await Course.findById(courseId);
     if (!course) {
-      return res.status(404).json({ 
+      return res.status(404).json({
         message: "Course not found",
         success: false,
       });
     }
-    const lecture = await lecture.create({
+
+    const newLecture = await LectureModel.create({
+      // 'LectureModel' का उपयोग करें
       lectureTitle,
       course: courseId,
-     
     });
-    course.lectures.push(lecture._id);
+
+    course.lectures.push(newLecture._id);
     await course.save();
+
     return res.status(201).json({
       success: true,
       message: "Lecture created successfully",
-      lecture,
+      lecture: newLecture,
     });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       success: false,
       message: "Failed to create lecture",
+    });
+  }
+};
+
+export const getLectures = async (req, res) => {
+  try {
+    const courseId = req.params.courseId;
+    const course = await Course.findById(courseId).populate("lectures");
+    if (!course) {
+      return res.status(404).json({
+        success: false,
+        message: "Course not found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      lectures:course.lectures,
+    })
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to get lectures",
     });
   }
 };

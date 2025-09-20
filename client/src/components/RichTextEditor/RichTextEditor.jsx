@@ -3,7 +3,8 @@ import Editor from "react-simple-wysiwyg";
 
 export default function RichTextEditor({ input, setInput }) {
   const handleChange = (e) => {
-    setInput({ ...input, description: e.target.value });
+
+    setInput({ ...input, courseDescription: e.target.value });
   };
 
   return (
@@ -11,7 +12,8 @@ export default function RichTextEditor({ input, setInput }) {
       
       <div className="mt-4 transition-all duration-200 border border-gray-300 ove4rflow-hidden rounded-xl dark:border-gray-700 focus-within:ring-2 focus-within:ring-blue-500 dark:focus-within:ring-blue-400">
         <Editor
-          value={input.description}
+          // defaultValue={input.courseDescription}
+          value={input.courseDescription}
           onChange={handleChange}
           containerProps={{
             className:

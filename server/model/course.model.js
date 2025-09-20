@@ -7,14 +7,14 @@ const courseSchema = new mongoose.Schema(
       required: true,
     },
     courseSubTitle: { type: String }, // <-- changed from subTitle to courseSubTitle
-    description: { type: String },
+    courseDescription: { type: String },
     category: {
       type: String,
       required: true,
     },
     courseLevel: {
       type: String,
-      enum: ["Beginner", "Medium", "Advance"],
+      enum: ["Beginner", "Intermediate", "Advance"],
     },
     coursePrice: {
       type: Number,
