@@ -18,8 +18,8 @@ const CreateLecture = () => {
 
   const navigate = useNavigate();
   const params = useParams();
-  const courseID = params.courseId;
-  console.log("course id for debug is ", courseID);
+  const courseId = params.courseId;
+  console.log("course id for debug is ", courseId);
 
   // fetch from api
   const [createLecture, { data, isLoading, isSuccess, error }] =
@@ -28,7 +28,7 @@ const CreateLecture = () => {
     data: lectureData,
     isLoading: lectureLoading,
     isError: lectureError,
-  } = useGetCourseLecturesQuery(courseID);
+  } = useGetCourseLecturesQuery(courseId);
   console.log("for debug data is :-", lectureData);
 
   const createLectureHandler = async () => {
@@ -41,7 +41,7 @@ const CreateLecture = () => {
     if (isSuccess) {
       toast.success(data?.message || "Lecture Created");
 
-      // navigate(`/admin/courses/${courseID}/lecture`);
+      // navigate(`/admin/courses/${courseId}/lecture`);
     }
 
     if (error) {
@@ -80,7 +80,7 @@ const CreateLecture = () => {
         <div className="flex justify-end gap-4">
           <Button
             variant="outline"
-            onClick={() => navigate(`/admin/courses/${courseID}`)}
+            onClick={() => navigate(`/admin/courses/${courseId}`)}
             className="px-6 py-3 text-base font-medium transition-all bg-white border border-gray-200 shadow-md rounded-xl hover:shadow-lg dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
           >
             Back to course
@@ -111,7 +111,7 @@ const CreateLecture = () => {
           ) : (
             lectureData.lectures.map((lecture, index) => (
               <div className="mt-4" key={lecture._id}>
-                <Lecture lecture={lecture} index={index} courseID={courseID} />
+                <Lecture lecture={lecture} index={index} courseId={courseId} />
               </div>
             ))
           )}
@@ -122,5 +122,3 @@ const CreateLecture = () => {
 };
 
 export default CreateLecture;
-
-

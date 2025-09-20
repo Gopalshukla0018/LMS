@@ -4,7 +4,7 @@ import CourseTab from "./CourseTab";
 
 const EditCourse = () => {
   const params = useParams();
-  const courseID = params.courseId;
+  const courseId = params.courseId;
   return (
     <div className="flex-1 px-6 py-8">
       {/* Header Section */}
@@ -13,7 +13,7 @@ const EditCourse = () => {
           Add details and information about your course
         </h1>
         <Link
-          to={`/admin/courses/${courseID}/lecture`}
+          to={`/admin/courses/${courseId}/lecture`}
           className="px-4 py-2 text-white bg-indigo-600 rounded-lg shadow-md hover:bg-indigo-700"
         >
           Go to Lecture Page

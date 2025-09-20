@@ -64,7 +64,7 @@ export const editCourse = async (req, res) => {
       courseLevel,
       coursePrice,
     } = req.body;
-    const  courseThumbnail  = req.file;
+    const courseThumbnail = req.file;
 
     let course = await Course.findById(courseId);
     if (!course) {
@@ -184,8 +184,8 @@ export const getLectures = async (req, res) => {
     }
     return res.status(200).json({
       success: true,
-      lectures:course.lectures,
-    })
+      lectures: course.lectures,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
