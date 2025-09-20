@@ -34,9 +34,9 @@ const CourseTab = () => {
   });
 
   const params = useParams();
-  const courseID = params.courseId;
+  const courseId = params.courseId;
   const { data: courseById, isLoading: courseByIdLoading } =
-    useGetCourseByIdQuery(courseID);
+    useGetCourseByIdQuery(courseId);
 
   const course = courseById?.course; // <-- define course here
 
@@ -45,7 +45,7 @@ const CourseTab = () => {
       setInput({
         courseTitle: course.courseTitle || "",
         courseSubTitle: course.courseSubTitle || "",
-         courseDescription: course.courseDescription ,
+        courseDescription: course.courseDescription,
         Coursecategory: course.category || "",
         courseLevel: course.courseLevel || "",
         coursePrice: course.coursePrice || "",
@@ -87,7 +87,7 @@ const CourseTab = () => {
     formData.append("courseLevel", input.courseLevel);
     formData.append("coursePrice", input.coursePrice);
     formData.append("courseThumbnail", input.courseThumbnail);
-    await editCourse({ formData, courseId: courseID });
+    await editCourse({ formData, courseId: courseId });
   };
 
   useEffect(() => {
