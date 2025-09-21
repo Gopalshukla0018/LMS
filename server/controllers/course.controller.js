@@ -200,21 +200,19 @@ export const editLecture = async (req, res) => {
   try {
     const { lectureTitle, videoInfo, isPreviewFree } = req.body;
     const { courseId, lectureId } = req.params;
-  const lecture = await LectureModel.findById(lectureId);
+    const lecture = await LectureModel.findById(lectureId);
     if (!lecture) {
       return res.status(404).json({
         message: "Lecture not found ",
       });
     }
-     if (videoInfo){
-       if (lectureTitle) lecture.lectureTitle = lectureTitle;
-    if (videoInfo.videoUrl) lecture.videoUrl = videoInfo.videoUrl;
-    if (videoInfo.publicId) lecture.publicId = videoInfo.publicId;
-    if (isPreviewFree) lecture.isPreview = isPreviewFree;
+    if (videoInfo) {
+      if (lectureTitle) lecture.lectureTitle = lectureTitle;
+      if (videoInfo.videoUrl) lecture.videoUrl = videoInfo.videoUrl;
+      if (videoInfo.publicId) lecture.publicId = videoInfo.publicId;
+      if (isPreviewFree) lecture.isPreview = isPreviewFree;
+    }
 
-
-     }
-   
     await lecture.save();
 
     // check the course still has the lecture id if it was not already added
@@ -235,6 +233,9 @@ export const editLecture = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    return res.status(500).json({
+      message:"lecture edit failed",
+    })
   }
 };
 
