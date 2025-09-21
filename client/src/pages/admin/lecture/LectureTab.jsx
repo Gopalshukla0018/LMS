@@ -69,7 +69,8 @@ const LectureTab = () => {
   const editLectureHandler = async () => {
     await editLecture({
       lectureTitle,
-         videoInfo: uploadVideoInfo,
+        
+            videoInfo: uploadVideoInfo,
       isPreviewFree: isFree,
       courseId,
       lectureId,
