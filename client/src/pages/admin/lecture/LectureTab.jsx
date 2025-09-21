@@ -14,8 +14,12 @@ import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input"; // Input component ko import karein (shadcn)
-import { useEditLectureMutation } from "@/features/api/courseApi";
-import { useParams } from "react-router-dom";
+import {
+  useEditLectureMutation,
+  useRemoveLectureMutation,
+} from "@/features/api/courseApi";
+import { useNavigate, useParams } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 
 const MEDIA_API = "http://localhost:8081/api/v1/media";
 
@@ -29,9 +33,21 @@ const LectureTab = () => {
 
   const params = useParams();
   const { courseId, lectureId } = params;
+  // use navigate--
+  const navigate = useNavigate();
 
+  // RTK Query Hooks ----
   const [editLecture, { data, isLoading, error, isSuccess }] =
     useEditLectureMutation();
+  const [
+    removeLecture,
+    {
+      data: removeLectureData,
+      isLoading: removeLectureIsLoading,
+      isSuccess: removeLectureIsSuccess,
+      error: removeLectureError,
+    },
+  ] = useRemoveLectureMutation();
 
   const fileChangeHandler = async (e) => {
     const file = e.target.files[0];
@@ -66,11 +82,13 @@ const LectureTab = () => {
     }
   };
 
+  //  Handler function to edit the lecture
+
   const editLectureHandler = async () => {
     await editLecture({
       lectureTitle,
-        
-            videoInfo: uploadVideoInfo,
+
+      videoInfo: uploadVideoInfo,
       isPreviewFree: isFree,
       courseId,
       lectureId,
@@ -78,10 +96,30 @@ const LectureTab = () => {
     console.log("success");
   };
 
+  // Handler function for remove lecture
+  const removeLectureHandler = async () => {
+    removeLecture(lectureId);
+  };
+
+  // useeffect for edit lecture---
   useEffect(() => {
-    if (isSuccess) toast.success(data.message);
+    if (isSuccess) {
+      toast.success(data.message);
+    }
     if (error) toast.error(error.data.message);
   }, [isSuccess, error]);
+
+  // useEffect for remove lecture---
+
+  useEffect(() => {
+    if (removeLectureIsSuccess && removeLectureData) {
+      toast.success(removeLectureData.message);
+      navigate(`/admin/courses/${courseId}/lecture`);
+    }
+    if (removeLectureError && removeLectureData)
+      toast.error(error.removeLectureError.message);
+  }, [removeLectureError, removeLectureIsSuccess, removeLectureData]);
+
   return (
     <Card>
       <CardHeader className="flex-row items-start justify-between">
@@ -91,7 +129,19 @@ const LectureTab = () => {
             Make changes and click save when done
           </CardDescription>
         </div>
-        <Button variant="destructive">Remove Lecture</Button>
+        <Button
+          variant="destructive"
+          disabled={removeLectureIsLoading}
+          onClick={removeLectureHandler}
+        >
+          {removeLectureIsLoading ? (
+            <>
+              <Loader2 className="h-4 mr-2 animate-spin" /> Please Wait
+            </>
+          ) : (
+            " Remove Lecture"
+          )}
+        </Button>
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
@@ -135,7 +185,14 @@ const LectureTab = () => {
 
         <div className="mt-6">
           <Button disabled={btnDisable} onClick={editLectureHandler}>
-            Update Lecture
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2,h-4 animate-spin" />
+                Please wait
+              </>
+            ) : (
+              "Update Lecture"
+            )}
           </Button>
         </div>
       </CardContent>

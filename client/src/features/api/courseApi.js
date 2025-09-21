@@ -73,6 +73,15 @@ export const courseApi = createApi({
       }),
       invalidatesTags: ["Lectures"],
     }),
+
+    // remove lecture mutation--
+    removeLecture: builder.mutation({
+      query: (lectureId) => ({
+        url: `/lecture/${lectureId}`,
+        method: "DELETE",
+      }),
+       invalidatesTags: ["Lectures"],
+    }),
   }),
 });
 
@@ -84,4 +93,5 @@ export const {
   useCreateLectureMutation,
   useGetCourseLecturesQuery,
   useEditLectureMutation,
+  useRemoveLectureMutation,
 } = courseApi;
