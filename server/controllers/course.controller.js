@@ -206,11 +206,15 @@ export const editLecture = async (req, res) => {
         message: "Lecture not found ",
       });
     }
-    if (LectureTitle) lecture.lectureTitle = LectureTitle;
+     if (videoInfo){
+       if (LectureTitle) lecture.lectureTitle = LectureTitle;
     if (videoInfo.videoUrl) lecture.videoUrl = videoInfo.videoUrl;
     if (videoInfo.publicId) lecture.publicId = videoInfo.publicId;
     if (isPreviewFree) lecture.isPreview = isPreviewFree;
 
+
+     }
+   
     await lecture.save();
 
     // check the course still has the lecture id if it was not already added
