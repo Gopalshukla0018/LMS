@@ -5,7 +5,7 @@ import userRoute from "./routes/user.route.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import courseRoutes from "./routes/course.route.js";
-import mediaRoute from "./routes/media.routes.js"
+import mediaRoute from "./routes/media.routes.js";
 
 dotenv.config({ path: "./.env" });
 // call deatebase connection here

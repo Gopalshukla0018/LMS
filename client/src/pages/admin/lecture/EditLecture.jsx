@@ -4,6 +4,7 @@ import React from "react";
 import { Link, useParams } from "react-router-dom";
 import LectureTab from "./LectureTab";
 
+
 const EditLecture = () => {
   const { courseId } = useParams();
 
@@ -18,7 +19,7 @@ const EditLecture = () => {
         <h1 className="text-2xl font-semibold">Update Your Lecture</h1>
       </div>
 
-      <LectureTab />
+   <LectureTab/>
     </div>
   );
 };
