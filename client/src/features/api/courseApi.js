@@ -4,7 +4,8 @@ const COURSE_API = "http://localhost:8081/api/v1/course";
 
 export const courseApi = createApi({
   reducerPath: "courseApi",
-  tagTypes: ["Refetch_Creator_Course"],
+  tagTypes: ["Refetch_Creator_Course", "Lectures", "Lecture"],
+  // tagTypes: ["Refetch_Creator_Course"],
   baseQuery: fetchBaseQuery({
     baseUrl: COURSE_API,
     credentials: "include",
@@ -71,7 +72,7 @@ export const courseApi = createApi({
         method: "PUT",
         body: { lectureTitle, videoInfo, isPreviewFree },
       }),
-      invalidatesTags: ["Lectures"],
+      invalidatesTags: ["Lectures", "Lecture"],
     }),
 
     // remove lecture mutation--
@@ -88,10 +89,19 @@ export const courseApi = createApi({
       query: (lectureId) => ({
         url: `/lecture/${lectureId}`,
         method: "GET",
-        // body:lecture
+     
       }),
-
+      providesTags: ["Lecture"],
     }),
+
+    // Mutation for publishing or unpublishing a course--
+    toggelPublishUnpublish: builder.mutation({
+      query:({courseID,query})=>({
+        url:`/${courseID}?publish=${query}`,
+        method:"PUT",
+      })
+    })
+
   }),
 });
 
@@ -104,5 +114,6 @@ export const {
   useGetCourseLecturesQuery,
   useEditLectureMutation,
   useRemoveLectureMutation,
-  useGetLectureByIdQuery
+  useGetLectureByIdQuery,
+  useToggelPublishUnpublishMutation,
 } = courseApi;
