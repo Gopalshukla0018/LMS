@@ -73,7 +73,7 @@ const AddCourse = () => {
           >
             Back
           </Button>
-          <Button
+         <Button
             disabled={isLoading}
             onClick={createCourseHandler}
             className="px-6 py-3 text-base font-semibold text-white transition-all shadow-lg rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"

@@ -89,19 +89,17 @@ export const courseApi = createApi({
       query: (lectureId) => ({
         url: `/lecture/${lectureId}`,
         method: "GET",
-     
       }),
       providesTags: ["Lecture"],
     }),
 
     // Mutation for publishing or unpublishing a course--
     toggelPublishUnpublish: builder.mutation({
-      query:({courseID,query})=>({
-        url:`/${courseID}?publish=${query}`,
-        method:"PUT",
-      })
-    })
-
+      query: ({ courseId, query }) => ({
+        url: `/${courseId}?publish=${query}`,
+        method: "PUT",
+      }),
+    }),
   }),
 });
 

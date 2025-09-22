@@ -18,9 +18,13 @@ const router = express.Router();
 
 router.route("/").post(isAuthenticated, createCourse);
 router.route("/").get(isAuthenticated, getCreatorCourses);
-router
+// router
+//   .route("/:id")
+//   .put(isAuthenticated, upload.single("courseThumbnail"), editCourse);
+  router
   .route("/:id")
-  .put(isAuthenticated, upload.single("courseThumbnail"), editCourse);
+  .put(isAuthenticated, upload.any(), editCourse) // 'upload.single' ko 'upload.any()' se badlein
+  .get(isAuthenticated, getCourseById);
 router.route("/:id").get(isAuthenticated, getCourseById);
 router.route("/:courseId/lecture").post(isAuthenticated, createLecture);
 router.route("/:courseId/lecture").get(isAuthenticated, getLectures);
@@ -29,7 +33,7 @@ router.route("/lecture/:lectureId").delete(isAuthenticated, removeLecture);
 router.route("/lecture/:lectureId").get(isAuthenticated, getLectureById);
 
 
-router.route("/:id").put(isAuthenticated, toggelPublishUnpublish);
+router.route("/:courseId").put(isAuthenticated, toggelPublishUnpublish);
 
 
 
