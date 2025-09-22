@@ -206,12 +206,12 @@ export const editLecture = async (req, res) => {
         message: "Lecture not found ",
       });
     }
-    if (videoInfo) {
+   
       if (lectureTitle) lecture.lectureTitle = lectureTitle;
-      if (videoInfo.videoUrl) lecture.videoUrl = videoInfo.videoUrl;
-      if (videoInfo.publicId) lecture.publicId = videoInfo.publicId;
-      if (isPreviewFree) lecture.isPreview = isPreviewFree;
-    }
+      if (videoInfo?.videoUrl) lecture.videoUrl = videoInfo.videoUrl;
+      if (videoInfo?.publicId) lecture.publicId = videoInfo.publicId;
+      lecture.isPreviewFree = lecture.isPreviewFree = isPreviewFree;
+    
 
     await lecture.save();
 
@@ -234,8 +234,8 @@ export const editLecture = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message:"lecture edit failed",
-    })
+      message: "lecture edit failed",
+    });
   }
 };
 
@@ -271,8 +271,8 @@ export const removeLecture = async (req, res) => {
 export const getLectureById = async (req, res) => {
   try {
     const { lectureId } = req.params;
-    const lecture = await LectureModel.findByIdAndDelete(lectureId);
 
+    const lecture = await LectureModel.findById(lectureId);
     if (!lectureId) {
       return res.status(404).json({
         message: "Lecture not found",

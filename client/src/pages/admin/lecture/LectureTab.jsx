@@ -16,6 +16,7 @@ import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input"; // Input component ko import karein (shadcn)
 import {
   useEditLectureMutation,
+  useGetLectureByIdQuery,
   useRemoveLectureMutation,
 } from "@/features/api/courseApi";
 import { useNavigate, useParams } from "react-router-dom";
@@ -39,6 +40,7 @@ const LectureTab = () => {
   // RTK Query Hooks ----
   const [editLecture, { data, isLoading, error, isSuccess }] =
     useEditLectureMutation();
+  
   const [
     removeLecture,
     {
@@ -48,6 +50,19 @@ const LectureTab = () => {
       error: removeLectureError,
     },
   ] = useRemoveLectureMutation();
+
+  const { data: getLectureByIdData } = useGetLectureByIdQuery(lectureId);
+  const lecture = getLectureByIdData?.lecture;
+
+  // useEffect for getLectureByIdData
+  useEffect(() => {
+    if (lecture) {
+      console.log(lecture);
+      setLectureTitle(lecture?.lectureTitle);
+      setIsFree(lecture?.isFree ?? false);
+      setUploadVideoInfo(lecture.videoInfo);
+    }
+  }, [lecture]);
 
   const fileChangeHandler = async (e) => {
     const file = e.target.files[0];
@@ -87,13 +102,16 @@ const LectureTab = () => {
   const editLectureHandler = async () => {
     await editLecture({
       lectureTitle,
-
       videoInfo: uploadVideoInfo,
       isPreviewFree: isFree,
       courseId,
       lectureId,
     });
-    console.log("success");
+    console.log("success",lectureTitle,
+     uploadVideoInfo,
+       isFree,
+      courseId,
+      lectureId,);
   };
 
   // Handler function for remove lecture
@@ -184,7 +202,7 @@ const LectureTab = () => {
         </div>
 
         <div className="mt-6">
-          <Button disabled={btnDisable} onClick={editLectureHandler}>
+          <Button onClick={editLectureHandler} disabled={isLoading}>
             {isLoading ? (
               <>
                 <Loader2 className="mr-2,h-4 animate-spin" />
