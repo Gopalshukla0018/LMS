@@ -17,12 +17,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   useEditCourseMutation,
   useGetCourseByIdQuery,
+  useToggelPublishUnpublishMutation,
 } from "@/features/api/courseApi";
 import { toast } from "sonner";
 
 const CourseTab = () => {
-  const isPublished = true;
-
   const [input, setInput] = useState({
     courseTitle: "",
     courseSubTitle: "",
@@ -33,12 +32,20 @@ const CourseTab = () => {
     courseThumbnail: "",
   });
 
+  // RTK Query Hooks ----
+
+  const [editCourse, { data, isLoading, isSuccess, error }] =
+    useEditCourseMutation();
+
   const params = useParams();
   const courseId = params.courseId;
-  const { data: courseById, isLoading: courseByIdLoading } =
+  const { data: courseByIdData, isLoading: courseByIdLoading } =
     useGetCourseByIdQuery(courseId);
 
-  const course = courseById?.course; // <-- define course here
+  const [toggelPublishUnpublish] = useToggelPublishUnpublishMutation();
+  console.log("toggle data is", toggelPublishUnpublish.data);
+
+  const course = courseByIdData?.course; // <-- define course here
 
   useEffect(() => {
     if (course) {
@@ -56,9 +63,6 @@ const CourseTab = () => {
 
   const [previewThumbnail, setPreviewThumbnail] = useState("");
   const navigate = useNavigate();
-
-  const [editCourse, { data, isLoading, isSuccess, error }] =
-    useEditCourseMutation();
 
   const handleChange = (e) => {
     console.log("title", input);
@@ -90,6 +94,21 @@ const CourseTab = () => {
     await editCourse({ formData, courseId: courseId });
   };
 
+  // togggel handler--
+  const publishUnpublishHandler = async (action) => {
+    try {
+      const response = await toggelPublishUnpublish({
+        courseId,
+        query: action,
+      });
+      if (response.data) {
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      toast.error("failled to publish or unpublish course try again  ");
+    }
+  };
+
   useEffect(() => {
     if (isSuccess) {
       toast.success(data.message || "Course Updated Successfully");
@@ -113,6 +132,27 @@ const CourseTab = () => {
     }
   };
 
+
+
+
+// ADD THIS LOADING CHECK
+if (courseByIdLoading) {
+    return (
+        <div className="flex items-center justify-center h-screen">
+            <Loader2 className="w-16 h-16 animate-spin" />
+        </div>
+    );
+}
+
+// Optional but recommended: Check if course exists after loading
+if (!course) {
+    return (
+        <div className="flex items-center justify-center h-screen">
+            <p>Course not found.</p>
+        </div>
+    );
+}
+
   return (
     <Card>
       <CardHeader className="flex items-center justify-between">
@@ -125,8 +165,12 @@ const CourseTab = () => {
         </div>
 
         <div className="flex gap-2">
-          <Button variant="outline">
-            {isPublished ? "Unpublished" : "Published"}
+          <Button variant="outline"
+           onClick={() =>publishUnpublishHandler(course.isPublished ? "false" : "true")  }
+          >
+            
+           
+            {course.isPublished ? "Unpublished" : "Published"}
           </Button>
           <Button>Remove Course</Button>
         </div>

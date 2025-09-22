@@ -151,7 +151,6 @@ export const createLecture = async (req, res) => {
     }
 
     const newLecture = await LectureModel.create({
-      // 'LectureModel' का उपयोग करें
       lectureTitle,
       course: courseId,
     });
@@ -201,17 +200,25 @@ export const editLecture = async (req, res) => {
     const { lectureTitle, videoInfo, isPreviewFree } = req.body;
     const { courseId, lectureId } = req.params;
     const lecture = await LectureModel.findById(lectureId);
+
     if (!lecture) {
-      return res.status(404).json({
-        message: "Lecture not found ",
-      });
+      return res.status(404).json({ message: "Lecture not found" });
     }
-   
-      if (lectureTitle) lecture.lectureTitle = lectureTitle;
-      if (videoInfo?.videoUrl) lecture.videoUrl = videoInfo.videoUrl;
-      if (videoInfo?.publicId) lecture.publicId = videoInfo.publicId;
-      lecture.isPreviewFree = lecture.isPreviewFree = isPreviewFree;
-    
+
+    // Title update logic
+    if (lectureTitle) {
+      lecture.lectureTitle = lectureTitle;
+    }
+
+    // Video update logic
+    if (videoInfo) {
+      lecture.videoUrl = videoInfo.videoUrl;
+      lecture.publicId = videoInfo.publicId;
+    }
+
+    if (typeof isPreviewFree === "boolean") {
+      lecture.isPreview = isPreviewFree;
+    }
 
     await lecture.save();
 
@@ -285,6 +292,31 @@ export const getLectureById = async (req, res) => {
     console.log(error);
     return res.status(500).json({
       message: "Failled to get lecture by id",
+    });
+  }
+};
+
+export const toggelPublishUnpublish = async (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const { publish } = req.query;
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.staus(404).json({
+        message: "course not found ",
+      });
+    }
+    course.isPublished = publish === "true";
+    await course.save();
+
+    const statusMessage = course.isPublished ? "Published" : "Unpublished";
+    return res.status(200).json({
+      message: `course is: ${statusMessage}`,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Failled to update Course status",
     });
   }
 };

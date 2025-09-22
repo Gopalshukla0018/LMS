@@ -40,7 +40,7 @@ const LectureTab = () => {
   // RTK Query Hooks ----
   const [editLecture, { data, isLoading, error, isSuccess }] =
     useEditLectureMutation();
-  
+   
   const [
     removeLecture,
     {
@@ -58,8 +58,8 @@ const LectureTab = () => {
   useEffect(() => {
     if (lecture) {
       console.log(lecture);
-      setLectureTitle(lecture?.lectureTitle);
-      setIsFree(lecture?.isFree ?? false);
+      setLectureTitle(lecture.lectureTitle);
+      setIsFree(lecture.isPreview);
       setUploadVideoInfo(lecture.videoInfo);
     }
   }, [lecture]);
@@ -107,11 +107,14 @@ const LectureTab = () => {
       courseId,
       lectureId,
     });
-    console.log("success",lectureTitle,
-     uploadVideoInfo,
-       isFree,
+    console.log(
+      "success",
+      lectureTitle,
+      uploadVideoInfo,
+      isFree,
       courseId,
-      lectureId,);
+      lectureId
+    );
   };
 
   // Handler function for remove lecture
