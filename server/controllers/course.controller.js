@@ -54,18 +54,73 @@ export const getCreatorCourses = async (req, res) => {
   }
 };
 
+// export const editCourse = async (req, res) => {
+//   try {
+//     const courseId = req.params.id;
+
+//     const {
+//       courseTitle,
+//       courseSubTitle,
+//       Coursecategory,
+//       courseLevel,
+//       coursePrice,
+//     } = req.body;
+//     const courseThumbnail = req.file;
+
+//     let course = await Course.findById(courseId);
+//     if (!course) {
+//       return res.status(404).json({
+//         message: "Course not found",
+//         success: false,
+//       });
+//     }
+//     let Thumbnail;
+//     if (courseThumbnail) {
+//       if (course.courseThumbnail) {
+//         const publicID = course.courseThumbnail.split("/").pop().split(".")[0];
+//         await deleteMediafromCloudinary(publicID); // delete old thumbnail
+//       }
+//       Thumbnail = await uploadMedia(courseThumbnail.path); // upload thumbnail on cloudinary
+//     }
+
+//     const updateData = {
+//       courseTitle,
+//       courseSubTitle,
+//       Coursecategory,
+//       courseLevel,
+//       coursePrice,
+//       courseThumbnail: courseThumbnail?.secure_url,
+//     };
+//     course = await Course.findByIdAndUpdate(courseId, updateData);
+
+//     return res.status(200).json({
+//       success: true,
+//       message: "Course updated successfully",
+//       course,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Failed to fetch courses",
+//     });
+//   }
+// };
 export const editCourse = async (req, res) => {
   try {
     const courseId = req.params.id;
 
+    // FIX: courseThumbnail ko req.body se hi destructure karein
     const {
       courseTitle,
       courseSubTitle,
       Coursecategory,
       courseLevel,
       coursePrice,
+      courseThumbnail, // <-- Yahan add karein
     } = req.body;
-    const courseThumbnail = req.file;
+
+    // 'req.file' wali line hata dein
 
     let course = await Course.findById(courseId);
     if (!course) {
@@ -74,39 +129,37 @@ export const editCourse = async (req, res) => {
         success: false,
       });
     }
-    let Thumbnail;
-    if (courseThumbnail) {
-      if (course.courseThumbnail) {
-        const publicID = course.courseThumbnail.split("/").pop().split(".")[0];
-        await deleteMediafromCloudinary(publicID); // delete old thumbnail
-      }
-      Thumbnail = await uploadMedia(courseThumbnail.path); // upload thumbnail on cloudinary
-    }
+    
+    // Yahan Cloudinary wala logic nahi hai, so hum usse skip karenge jaisa aapke original code mein tha
+    // Agar aapko Cloudinary add karna hai, to aapke teacher ka logic follow karein
 
     const updateData = {
       courseTitle,
       courseSubTitle,
-      Coursecategory,
+      category: Coursecategory, // Model ke hisaab se 'category'
       courseLevel,
       coursePrice,
-      courseThumbnail: courseThumbnail?.secure_url,
+      // Thumbnail ko direct body se lein
+      courseThumbnail: courseThumbnail || course.courseThumbnail,
     };
-    course = await Course.findByIdAndUpdate(courseId, updateData);
+
+    const updatedCourse = await Course.findByIdAndUpdate(courseId, updateData, {
+      new: true,
+    });
 
     return res.status(200).json({
       success: true,
       message: "Course updated successfully",
-      course,
+      course: updatedCourse,
     });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       success: false,
-      message: "Failed to fetch courses",
+      message: "Failed to update course", // "fetch" ki jagah "update"
     });
   }
 };
-
 export const getCourseById = async (req, res) => {
   try {
     const courseId = req.params.id;
@@ -302,7 +355,7 @@ export const toggelPublishUnpublish = async (req, res) => {
     const { publish } = req.query;
     const course = await Course.findById(courseId);
     if (!course) {
-      return res.staus(404).json({
+      return res.status(404).json({
         message: "course not found ",
       });
     }

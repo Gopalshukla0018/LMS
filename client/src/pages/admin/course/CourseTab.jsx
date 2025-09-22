@@ -39,6 +39,7 @@ const CourseTab = () => {
 
   const params = useParams();
   const courseId = params.courseId;
+  console.log("course id is:-", courseId);
   const { data: courseByIdData, isLoading: courseByIdLoading } =
     useGetCourseByIdQuery(courseId);
 
@@ -112,7 +113,7 @@ const CourseTab = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success(data.message || "Course Updated Successfully");
-      navigate("/admin/courses");
+      // navigate("/admin/courses");
     }
     if (error) {
       toast.error(error?.data?.message || "Failed to update course");
@@ -132,26 +133,23 @@ const CourseTab = () => {
     }
   };
 
-
-
-
-// ADD THIS LOADING CHECK
-if (courseByIdLoading) {
+  // ADD THIS LOADING CHECK
+  if (courseByIdLoading) {
     return (
-        <div className="flex items-center justify-center h-screen">
-            <Loader2 className="w-16 h-16 animate-spin" />
-        </div>
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 className="w-16 h-16 animate-spin" />
+      </div>
     );
-}
+  }
 
-// Optional but recommended: Check if course exists after loading
-if (!course) {
+  // Optional but recommended: Check if course exists after loading
+  if (!course) {
     return (
-        <div className="flex items-center justify-center h-screen">
-            <p>Course not found.</p>
-        </div>
+      <div className="flex items-center justify-center h-screen">
+        <p>Course not found.</p>
+      </div>
     );
-}
+  }
 
   return (
     <Card>
@@ -165,11 +163,12 @@ if (!course) {
         </div>
 
         <div className="flex gap-2">
-          <Button variant="outline"
-           onClick={() =>publishUnpublishHandler(course.isPublished ? "false" : "true")  }
+          <Button
+            variant="outline"
+            onClick={() =>
+              publishUnpublishHandler(course.isPublished ? "false" : "true")
+            }
           >
-            
-           
             {course.isPublished ? "Unpublished" : "Published"}
           </Button>
           <Button>Remove Course</Button>
