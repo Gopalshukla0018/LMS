@@ -54,63 +54,11 @@ export const getCreatorCourses = async (req, res) => {
   }
 };
 
-// export const editCourse = async (req, res) => {
-//   try {
-//     const courseId = req.params.id;
 
-//     const {
-//       courseTitle,
-//       courseSubTitle,
-//       Coursecategory,
-//       courseLevel,
-//       coursePrice,
-//     } = req.body;
-//     const courseThumbnail = req.file;
-
-//     let course = await Course.findById(courseId);
-//     if (!course) {
-//       return res.status(404).json({
-//         message: "Course not found",
-//         success: false,
-//       });
-//     }
-//     let Thumbnail;
-//     if (courseThumbnail) {
-//       if (course.courseThumbnail) {
-//         const publicID = course.courseThumbnail.split("/").pop().split(".")[0];
-//         await deleteMediafromCloudinary(publicID); // delete old thumbnail
-//       }
-//       Thumbnail = await uploadMedia(courseThumbnail.path); // upload thumbnail on cloudinary
-//     }
-
-//     const updateData = {
-//       courseTitle,
-//       courseSubTitle,
-//       Coursecategory,
-//       courseLevel,
-//       coursePrice,
-//       courseThumbnail: courseThumbnail?.secure_url,
-//     };
-//     course = await Course.findByIdAndUpdate(courseId, updateData);
-
-//     return res.status(200).json({
-//       success: true,
-//       message: "Course updated successfully",
-//       course,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).json({
-//       success: false,
-//       message: "Failed to fetch courses",
-//     });
-//   }
-// };
 export const editCourse = async (req, res) => {
   try {
     const courseId = req.params.id;
 
-    // Data ab req.body se sahi se milega
     const {
       courseTitle,
       courseSubTitle,
@@ -118,10 +66,8 @@ export const editCourse = async (req, res) => {
       courseLevel,
       coursePrice,
     } = req.body;
-
-    // FIX 1: Jab aap route mein 'upload.any()' use karte hain, to file 'req.files' mein aati hai
-    const courseThumbnail =
-      req.file || null;
+    
+    const courseThumbnail = req.file;
 
     let course = await Course.findById(courseId);
     if (!course) {
@@ -131,45 +77,43 @@ export const editCourse = async (req, res) => {
       });
     }
 
-    let thumbnailUploadResult; // FIX 2: Upload ka result is naye variable mein store karenge
+    let Thumbnail; // Is variable mein Cloudinary ka result aayega
     if (courseThumbnail) {
       if (course.courseThumbnail) {
         const publicID = course.courseThumbnail.split("/").pop().split(".")[0];
-        await deleteMediafromCloudinary(publicID); // Puraana thumbnail delete karein
+        await deleteMediafromCloudinary(publicID); // Puraana thumbnail delete
       }
-      // Naya thumbnail upload karein aur result ko store karein
-      thumbnailUploadResult = await uploadMedia(courseThumbnail.path);
+      Thumbnail = await uploadMedia(courseThumbnail.path); // Naya thumbnail upload
     }
 
-    // FIX 3: Database mein bhejne ke liye data ko sahi se banayein
+    // Database mein save karne ke liye data
     const updateData = {
       courseTitle,
       courseSubTitle,
-      category: Coursecategory, // Aapke model mein 'category' naam hai, 'Coursecategory' nahi
+      category: Coursecategory, // Model ke hisaab se 'category'
       courseLevel,
       coursePrice,
     };
 
-    // Agar nayi image upload hui hai, to uska URL data mein add karein
-    if (thumbnailUploadResult) {
-      updateData.courseThumbnail = thumbnailUploadResult.secure_url;
+    // FIX: Agar nayi image upload hui hai, to uska URL 'Thumbnail' se uthayein
+    if (Thumbnail) {
+      updateData.courseThumbnail = Thumbnail.secure_url;
     }
 
-    // FIX 4: Database se naya (updated) data vaapas paane ke liye '{ new: true }' add karein
     const updatedCourse = await Course.findByIdAndUpdate(courseId, updateData, {
-      new: true,
+      new: true, // Taki response mein updated data aaye
     });
 
     return res.status(200).json({
       success: true,
       message: "Course updated successfully",
-      course: updatedCourse, // Response mein updated course bhejein
+      course: updatedCourse,
     });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       success: false,
-      message: "Failed to update course", // Error message theek kiya
+      message: "Failed to update course",
     });
   }
 };
