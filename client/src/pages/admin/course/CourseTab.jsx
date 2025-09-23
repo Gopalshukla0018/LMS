@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React, { useState, useEffect } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   useEditCourseMutation,
@@ -20,6 +20,7 @@ import {
   useToggelPublishUnpublishMutation,
 } from "@/features/api/courseApi";
 import { toast } from "sonner";
+import { Switch } from "@/components/ui/switch";
 
 const CourseTab = () => {
   const [input, setInput] = useState({
@@ -162,16 +163,29 @@ const CourseTab = () => {
           </CardDescription>
         </div>
 
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            onClick={() =>
-              publishUnpublishHandler(course.isPublished ? "false" : "true")
-            }
+        <div className="flex items-center gap-4">
+          {/* Publish/Unpublish Switch with label */}
+          <div className="flex items-center gap-2">
+            <Switch
+              checked={!!course.isPublished && course.lectures.length > 0}
+              disabled={course.lectures.length === 0}
+              onCheckedChange={(checked) =>
+                publishUnpublishHandler(checked ? "true" : "false")
+              }
+              className={`data-[state=unchecked]:bg-red-500 data-[state=checked]:bg-green-500`}
+            />
+            <span className="text-sm font-medium">
+              {course.isPublished ? "Published" : "Unpublished"}
+            </span>
+          </div>
+
+          {/* Remove Icon Button with circle background */}
+          <button
+            // onClick={removeCourseHandler}
+            className="flex items-center justify-center w-10 h-10 text-red-600 bg-red-100 rounded-full hover:bg-red-200"
           >
-            {course.isPublished ? "Unpublished" : "Published"}
-          </Button>
-          <Button>Remove Course</Button>
+            <Trash2 className="w-5 h-5" />
+          </button>
         </div>
       </CardHeader>
       <CardContent>

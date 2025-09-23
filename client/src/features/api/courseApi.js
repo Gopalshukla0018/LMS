@@ -22,6 +22,14 @@ export const courseApi = createApi({
       }),
       invalidatesTags: ["Refetch_Creator_Course"],
     }),
+
+    // get all published courses
+    getAllPublishedCourse:builder.query({
+      query:(Course)=>({
+        url:"/published-course",
+        methon:"GET"
+      })
+    }),
     getCreatorCourses: builder.query({
       query: () => ({
         url: "",
@@ -43,7 +51,7 @@ export const courseApi = createApi({
         url: `/${courseId}`,
         method: "GET",
       }),
-      providesTags: ["Refetch_Creator_Course"],
+      providesTags: ["Refetch_Creator_Course", "Course"],
     }),
     createLecture: builder.mutation({
       query: ({ lectureTitle, courseId }) => ({
@@ -96,9 +104,10 @@ export const courseApi = createApi({
     // Mutation for publishing or unpublishing a course--
     toggelPublishUnpublish: builder.mutation({
       query: ({ courseId, query }) => ({
-        url: `/${courseId}?publish=${query}`,
+        url: `/${courseId}/publish?publish=${query}`,
         method: "PUT",
       }),
+      invalidatesTags: ["Course"],
     }),
   }),
 });
@@ -114,4 +123,5 @@ export const {
   useRemoveLectureMutation,
   useGetLectureByIdQuery,
   useToggelPublishUnpublishMutation,
+  useGetAllPublishedCourseQuery,
 } = courseApi;

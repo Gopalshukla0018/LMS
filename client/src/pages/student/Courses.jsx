@@ -1,31 +1,8 @@
-// // import React from "react";
-// // import CoursesSkeleton from "./Courses/CoursesSkeleton";
-// // import Course from "./Courses/Course";
-// // const courses = [1, 2, 3, 4, 5, 6, , 7];
-// // const Courses = () => {
-// //   const isLoading = false;
-// //   return (
-// //     <div className="bg-gray-50">
-// //       <div className="p-6 mx-auto max-w-7xl">
-// //         <h2 className="mb-10 text-3xl font-bold text-center "> Our Courses</h2>
-// //         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-// //           {isLoading
-// //             ? Array.from({ length: 8 }).map((_, index) => (
-// //                 <CoursesSkeleton key={index} />
-// //               ))
-// //             : (courses.map((course, index) =>  <Course key={index}/>))}
-// //         </div>
-// //       </div>
-// //     </div>
-// //   );
-// // };
-
-// // export default Courses;
-
 import React from "react";
 import CoursesSkeleton from "./Courses/CoursesSkeleton";
 import Course from "./Courses/Course";
 import { motion } from "framer-motion";
+import { useGetAllPublishedCourseQuery } from "@/features/api/courseApi";
 
 const courses = [1, 2, 3, 4, 5, 6, 7];
 
@@ -49,8 +26,16 @@ const cardVariants = {
   },
 };
 
-const Courses = () => {
-  const isLoading = false;
+const Courses =  () => {
+  // rtk query Hooks--
+const { data, isSuccess, isLoading,error } =  useGetAllPublishedCourseQuery();
+
+   console.log("published data is:-", data);
+
+    
+   
+   
+ 
 
   return (
     <section className="relative py-16 bg-gray-50 dark:bg-gray-900">
@@ -81,7 +66,7 @@ const Courses = () => {
             ? Array.from({ length: 8 }).map((_, index) => (
                 <CoursesSkeleton key={index} />
               ))
-            : courses.map((course, index) => (
+            : data?.course?.map((course, index) => (
                 <motion.div
                   key={index}
                   variants={cardVariants}
@@ -89,7 +74,8 @@ const Courses = () => {
                   whileTap={{ scale: 0.97 }}
                   transition={{ type: "spring", stiffness: 220, damping: 18 }}
                 >
-                  <Course />
+                  <Course  course={course
+                  }/>
                 </motion.div>
               ))}
         </motion.div>
@@ -99,5 +85,3 @@ const Courses = () => {
 };
 
 export default Courses;
-
-

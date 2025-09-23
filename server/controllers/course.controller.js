@@ -110,17 +110,18 @@ export const editCourse = async (req, res) => {
   try {
     const courseId = req.params.id;
 
-    // FIX: courseThumbnail ko req.body se hi destructure karein
+    // Data ab req.body se sahi se milega
     const {
       courseTitle,
       courseSubTitle,
       Coursecategory,
       courseLevel,
       coursePrice,
-      courseThumbnail, // <-- Yahan add karein
     } = req.body;
 
-    // 'req.file' wali line hata dein
+    // FIX 1: Jab aap route mein 'upload.any()' use karte hain, to file 'req.files' mein aati hai
+    const courseThumbnail =
+      req.file || null;
 
     let course = await Course.findById(courseId);
     if (!course) {
@@ -129,20 +130,32 @@ export const editCourse = async (req, res) => {
         success: false,
       });
     }
-    
-    // Yahan Cloudinary wala logic nahi hai, so hum usse skip karenge jaisa aapke original code mein tha
-    // Agar aapko Cloudinary add karna hai, to aapke teacher ka logic follow karein
 
+    let thumbnailUploadResult; // FIX 2: Upload ka result is naye variable mein store karenge
+    if (courseThumbnail) {
+      if (course.courseThumbnail) {
+        const publicID = course.courseThumbnail.split("/").pop().split(".")[0];
+        await deleteMediafromCloudinary(publicID); // Puraana thumbnail delete karein
+      }
+      // Naya thumbnail upload karein aur result ko store karein
+      thumbnailUploadResult = await uploadMedia(courseThumbnail.path);
+    }
+
+    // FIX 3: Database mein bhejne ke liye data ko sahi se banayein
     const updateData = {
       courseTitle,
       courseSubTitle,
-      category: Coursecategory, // Model ke hisaab se 'category'
+      category: Coursecategory, // Aapke model mein 'category' naam hai, 'Coursecategory' nahi
       courseLevel,
       coursePrice,
-      // Thumbnail ko direct body se lein
-      courseThumbnail: courseThumbnail || course.courseThumbnail,
     };
 
+    // Agar nayi image upload hui hai, to uska URL data mein add karein
+    if (thumbnailUploadResult) {
+      updateData.courseThumbnail = thumbnailUploadResult.secure_url;
+    }
+
+    // FIX 4: Database se naya (updated) data vaapas paane ke liye '{ new: true }' add karein
     const updatedCourse = await Course.findByIdAndUpdate(courseId, updateData, {
       new: true,
     });
@@ -150,13 +163,13 @@ export const editCourse = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Course updated successfully",
-      course: updatedCourse,
+      course: updatedCourse, // Response mein updated course bhejein
     });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       success: false,
-      message: "Failed to update course", // "fetch" ki jagah "update"
+      message: "Failed to update course", // Error message theek kiya
     });
   }
 };
@@ -298,7 +311,29 @@ export const editLecture = async (req, res) => {
     });
   }
 };
+// get al lecture --
+export const getAllPublishedCourse = async (re_, res) => {
+  try {
+    const course = await Course.find({ isPublished: true }).populate({
+      path: "creator",
+      select: "name photoUrl ",
+    });
 
+    if (!course) {
+      return res.status(404).json({
+        message: "course not found",
+      });
+    }
+    return res.status(200).json({
+      course,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "failed to get published courses",
+    });
+  }
+};
 export const removeLecture = async (req, res) => {
   try {
     const { lectureId } = req.params;
