@@ -27,6 +27,7 @@ const paymentApi = createApi({
         url: `/payment/verify-payment`,
         method: "POST",
         body: data, // { orderId, courseId }
+         
       }),
     }),
   }),

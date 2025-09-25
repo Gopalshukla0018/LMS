@@ -3,16 +3,12 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// Initialize Cashfree with your credentials from .env
+
 Cashfree.XClientId = process.env.CASHFREE_CLIENT_ID;
 Cashfree.XClientSecret = process.env.CASHFREE_CLIENT_SECRET;
 Cashfree.XEnvironment = "sandbox";// Use SANDBOX for testing
 
-/**
- * @description Creates a payment order with Cashfree
- * @param {object} orderDetails - Details of the order (amount, currency, user, etc.)
- * @returns {Promise<object>} - The payment session data from Cashfree
- */
+
 const createCashfreeOrder = async (orderDetails) => {
   const { amount, currency, user, orderId } = orderDetails;
 
