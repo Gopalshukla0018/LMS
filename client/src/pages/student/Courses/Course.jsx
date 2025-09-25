@@ -2,14 +2,18 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import React from "react";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 
 const Course = ({ course }) => {
   return (
+    <Link to={`course-detail/${course._id}`}>
     <Card className="relative p-0 overflow-hidden transition-all duration-300 transform border border-gray-200 shadow-md group rounded-xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-md hover:shadow-xl hover:-translate-y-1">
-      {/* Image */}
       <div className="relative">
         <img
-          src={course?.creator?.photoUrl || "https://img-c.udemycdn.com/course/750x422/3873464_403c_3.jpg"}
+          src={
+            course?.courseThumbnail ||
+            "https://img-c.udemycdn.com/course/750x422/3873464_403c_3.jpg"
+          }
           alt="Next.js course thumbnail"
           className="object-cover w-full h-40 transition-transform duration-300 rounded-t-xl group-hover:scale-105"
         />
@@ -25,7 +29,7 @@ const Course = ({ course }) => {
       <CardContent className="px-5 py-4">
         {/* Title */}
         <h1 className="mb-3 text-base font-bold leading-snug text-gray-900 transition-colors duration-300 dark:text-gray-100 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400">
-         {course?.courseTitle}
+          {course?.courseTitle}
         </h1>
 
         {/* Creator + Price */}
@@ -34,23 +38,28 @@ const Course = ({ course }) => {
           <div className="flex items-center gap-2">
             <Avatar className="w-8 h-8 border border-gray-200 dark:border-gray-700">
               <AvatarImage
-                src={course?.creator?.photoUrl || "https://img-c.udemycdn.com/course/750x422/3873464_403c_3.jpg"}
+                src={
+                  course?.creator?.photoUrl ||
+                  "https://img-c.udemycdn.com/course/750x422/3873464_403c_3.jpg"
+                }
                 alt="Instructor avatar"
               />
               <AvatarFallback>GS</AvatarFallback>
             </Avatar>
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Gopal Shukla
+              {course?.creator?.name}
             </span>
           </div>
 
           {/* Price */}
           <span className="text-lg font-semibold text-blue-600 dark:text-blue-400">
-            ₹499
+            {course?.coursePrice}
           </span>
         </div>
       </CardContent>
     </Card>
+    
+    </Link>
   );
 };
 
