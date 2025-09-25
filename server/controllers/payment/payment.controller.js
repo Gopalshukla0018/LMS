@@ -1,7 +1,6 @@
 import { Course } from "../../model/course.model.js";
-import  {User } from "../../model/user.model.js";
-import  {PurchasedCourse}  from "../../model/purchaseCourse.model.js";
-
+import { User } from "../../model/user.model.js";
+import { PurchasedCourse } from "../../model/purchaseCourse.model.js";
 import {
   createCashfreeOrder,
   verifyCashfreePayment,
@@ -24,7 +23,8 @@ export const createOrder = async (req, res) => {
       return res.status(404).json({ message: "Course not found" });
     }
 
-    const isEnrolled = await Purchase.findOne({ user: userId, course: courseId });
+
+    const isEnrolled = await PurchasedCourse.findOne({ userId, courseId });
     if (isEnrolled) {
       return res
         .status(400)
@@ -33,19 +33,19 @@ export const createOrder = async (req, res) => {
 
     const orderId = `order_${Date.now()}`;
 
-    // Prepare generic order details
     const orderDetails = {
-      amount: course.price,
+      
+      amount: course.coursePrice,
       currency: "INR",
       user,
       orderId,
     };
 
-    // Call the specific payment provider's create order function
     const paymentResponse = await createCashfreeOrder(orderDetails);
 
     res.status(200).json(paymentResponse);
   } catch (error) {
+    console.error("Error creating order:", error); 
     res.status(500).json({
       message: "Internal Server Error",
       error: error.message,
@@ -53,11 +53,6 @@ export const createOrder = async (req, res) => {
   }
 };
 
-/**
- * @description Verify payment and enroll user
- * @route POST /api/v1/payment/verify-payment
- * @access Private
- */
 export const verifyPayment = async (req, res) => {
   try {
     const { orderId, courseId } = req.body;
@@ -69,18 +64,29 @@ export const verifyPayment = async (req, res) => {
         .json({ message: "Order ID and Course ID are required" });
     }
 
-    // Call the specific payment provider's verification function
     const isPaymentVerified = await verifyCashfreePayment(orderId);
 
     if (isPaymentVerified) {
-      const isEnrolled = await Purchase.findOne({ user: userId, course: courseId });
+    
+      const isEnrolled = await PurchasedCourse.findOne({ userId, courseId });
       if (isEnrolled) {
         return res
           .status(200)
           .json({ success: true, message: "Already enrolled." });
       }
 
-      await Purchase.create({ user: userId, course: courseId });
+      const course = await Course.findById(courseId);
+
+     
+      await PurchasedCourse.create({
+        userId,
+        courseId,
+        amount: course.coursePrice,
+        order_id: orderId,
+        payment_status: "success",
+      });
+
+      // Update the user's enrolled courses list
       await User.findByIdAndUpdate(userId, {
         $push: { enrolledCourses: courseId },
       });
@@ -95,6 +101,7 @@ export const verifyPayment = async (req, res) => {
         .json({ success: false, message: "Payment verification failed." });
     }
   } catch (error) {
+    console.error("Error verifying payment:", error); 
     res.status(500).json({
       message: "Internal Server Error",
       error: error.message,

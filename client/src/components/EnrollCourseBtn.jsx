@@ -1,14 +1,13 @@
 import React from "react";
 import { Button } from "./ui/button";
-// 🔽 Change the import source for the mutation hooks
+
 import {
   useCreatePaymentOrderMutation,
   useVerifyPaymentMutation,
-} from "@/features/api/paymentApi"; // Changed from courseApi
+} from "@/features/api/paymentApi";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
-// ... (The rest of the component code remains exactly the same!)
 const EnrollCourseBtn = ({ courseId }) => {
   const [createPaymentOrder, { isLoading: isCreatingOrder }] =
     useCreatePaymentOrderMutation();
@@ -16,7 +15,7 @@ const EnrollCourseBtn = ({ courseId }) => {
   const navigate = useNavigate();
 
   const handleEnroll = async () => {
-    // No changes here!
+   
     if (!courseId) {
       toast.error("Course ID not found.");
       return;
