@@ -6,6 +6,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import courseRoutes from "./routes/course.route.js";
 import mediaRoute from "./routes/media.routes.js";
+import paymentRouter from "./routes/payment/payment.route.js";
 
 dotenv.config({ path: "./.env" });
 // call deatebase connection here
@@ -28,6 +29,8 @@ app.use(cookieParser());
 app.use("/api/v1/media", mediaRoute);
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/course", courseRoutes);
+
+app.use("/api/v1/payment", paymentRouter);
 app.get("/home", (req, res) => {
   res.status(200).json({
     success: true,
