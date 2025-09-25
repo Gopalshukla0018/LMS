@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
 const purchasedCourseSchema = new mongoose.Schema(
   {
@@ -12,7 +12,8 @@ const purchasedCourseSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    ammount: {
+
+    amount: {
       type: Number,
       required: true,
     },
@@ -25,11 +26,15 @@ const purchasedCourseSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
+    payment_id: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
 
-export const purchasedCourse = mongoose.model(
+export const PurchasedCourse = mongoose.model(
   "PurchasedCourse",
   purchasedCourseSchema
 );
