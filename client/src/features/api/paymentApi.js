@@ -15,8 +15,7 @@ const paymentApi = createApi({
   }),
   endpoints: (builder) => ({
     createPaymentOrder: builder.mutation({
-      query: (courseId) => ({
-        // Use the new payment route
+      query: ({ courseId }) => ({  // Destructure here to handle { courseId } call
         url: `/payment/create-order`,
         method: "POST",
         body: { courseId },
@@ -29,10 +28,17 @@ const paymentApi = createApi({
         body: data, // { orderId, courseId }
       }),
     }),
+    getCourseDetailWithPurchaseStatus: builder.query({
+      query: (courseId) => ({
+       url: `/payment/course/${courseId}`,
+        method: "GET",
+      
+      }),
+    }),
   }),
 });
 
-export const { useCreatePaymentOrderMutation, useVerifyPaymentMutation } =
+export const { useCreatePaymentOrderMutation, useVerifyPaymentMutation ,useGetCourseDetailWithPurchaseStatusQuery} =
   paymentApi;
 
 export default paymentApi;
