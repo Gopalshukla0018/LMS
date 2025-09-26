@@ -1,6 +1,5 @@
 import React from "react";
 import { Button } from "./ui/button";
-
 import {
   useCreatePaymentOrderMutation,
   useVerifyPaymentMutation,
@@ -15,7 +14,6 @@ const EnrollCourseBtn = ({ courseId }) => {
   const navigate = useNavigate();
 
   const handleEnroll = async () => {
-   
     if (!courseId) {
       toast.error("Course ID not found.");
       return;
@@ -30,35 +28,28 @@ const EnrollCourseBtn = ({ courseId }) => {
         return;
       }
 
-      const cashfree = new window.cashfree.Cashfree(payment_session_id);
+      // Current v3+ init (assumes script loaded globally)
+      const cashfree = Cashfree({ mode: "sandbox" });  // Swap to "production" later
 
-      cashfree.checkout({
-        paymentMethod: "card",
-        onSuccess: async (data) => {
-          if (data.order && data.order.status === "PAID") {
-            toast.info("Payment received. Verifying your enrollment...");
-            
-            try {
-              await verifyPayment({
-                orderId: data.order.orderId,
-                courseId,
-              }).unwrap();
-              toast.success("Enrollment successful! Redirecting...");
-              navigate("/my-learning");
-            } catch (verificationError) {
-              toast.error(
-                verificationError.data?.message ||
-                  "Enrollment verification failed."
-              );
-            }
-          }
-        },
-        onFailure: (data) => {
-          toast.error(
-            data.order.errorText || "Payment failed. Please try again."
-          );
-        },
+      // Trigger popup checkout
+      await cashfree.checkout({
+        paymentSessionId: payment_session_id,  // Note: key is paymentSessionId (camelCase)
+        redirectTarget: "_modal"  // Opens as popup; use "_self" for redirect
       });
+
+      // After modal closes, verify (user may have paid or cancelled)
+      toast.info("Verifying your enrollment...");
+      const verificationData = await verifyPayment({
+        orderId: order_id,  // Use order_id from response
+        courseId,
+      }).unwrap();
+
+      if (verificationData.success) {
+        toast.success("Enrollment successful! Redirecting...");
+        navigate("/my-learning");
+      } else {
+        toast.error("Payment not confirmed. Please try again.");
+      }
     } catch (error) {
       toast.error(error.data?.message || "An error occurred during enrollment.");
       console.error("Enrollment error:", error);

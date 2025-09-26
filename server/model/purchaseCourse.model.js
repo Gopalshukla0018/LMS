@@ -26,5 +26,5 @@ const purchaseSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-
+// FIX: Standardize to a named export
 export const Purchase = mongoose.model("Purchase", purchaseSchema);
