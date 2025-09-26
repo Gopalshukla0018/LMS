@@ -1,31 +1,38 @@
 import { Course } from "../../model/course.model.js";
 import { User } from "../../model/user.model.js";
-// 👇 FIX: Import the correct model name with a named import
-import { Purchase } from "../../model/purchaseCourse.model.js"; 
+import { Purchase } from "../../model/purchaseCourse.model.js";
 import {
   createCashfreeOrder,
   verifyCashfreePayment,
 } from "../../services/payment/cashfree.js";
 
-/**
- * @description Create a payment order
- */
 export const createOrder = async (req, res) => {
   try {
     const { courseId } = req.body;
-    const userId = req.user._id;
+
+    const userId = req.id;
 
     if (!courseId) {
       return res.status(400).json({ message: "Course ID is required" });
     }
+
     const course = await Course.findById(courseId);
-    const user = await User.findById(userId);
     if (!course) {
       return res.status(404).json({ message: "Course not found" });
     }
 
-    // 👇 FIX: Use `user` and `course` fields to match the schema
-    const isEnrolled = await Purchase.findOne({ user: userId, course: courseId });
+    if (!course.coursePrice || course.coursePrice <= 0) {
+      return res
+        .status(400)
+        .json({ message: "This course cannot be purchased." });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isEnrolled = await Purchase.findOne({ userId, courseId });
     if (isEnrolled) {
       return res
         .status(400)
@@ -39,49 +46,48 @@ export const createOrder = async (req, res) => {
       user,
       orderId,
     };
+
     const paymentResponse = await createCashfreeOrder(orderDetails);
-    res.status(200).json(paymentResponse);
+    return res.status(200).json(paymentResponse);
   } catch (error) {
     console.error("Error in createOrder:", error);
-    res.status(500).json({
-      message: "Internal Server Error",
-      error: error.message,
+    return res.status(500).json({
+      message: "An unexpected error occurred while creating the order.",
     });
   }
 };
 
-/**
- * @description Verify payment and enroll user
- */
 export const verifyPayment = async (req, res) => {
   try {
     const { orderId, courseId } = req.body;
-    const userId = req.user._id;
+    const userId = req.id;
 
     if (!orderId || !courseId) {
       return res
         .status(400)
         .json({ message: "Order ID and Course ID are required" });
     }
+
     const isPaymentVerified = await verifyCashfreePayment(orderId);
 
     if (isPaymentVerified) {
-      // 👇 FIX: Use `user` and `course` fields here as well
-      const isEnrolled = await Purchase.findOne({ user: userId, course: courseId });
+      const isEnrolled = await PurchasedCourse.findOne({ userId, courseId });
       if (isEnrolled) {
         return res
           .status(200)
           .json({ success: true, message: "Already enrolled." });
       }
+
       const course = await Course.findById(courseId);
       if (!course) {
-        return res.status(404).json({ success: false, message: "Course not found after payment." });
+        return res
+          .status(404)
+          .json({ success: false, message: "Course not found after payment." });
       }
-      
-      // 👇 FIX: Use `user` and `course` when creating the record
-      await Purchase.create({
-        user: userId,
-        course: courseId,
+
+      await PurchasedCourse.create({
+        userId,
+        courseId,
         amount: course.coursePrice,
         order_id: orderId,
         payment_status: "success",
@@ -91,20 +97,19 @@ export const verifyPayment = async (req, res) => {
         $push: { enrolledCourses: courseId },
       });
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: "Payment successful and you are enrolled!",
       });
     } else {
-      res
+      return res
         .status(400)
         .json({ success: false, message: "Payment verification failed." });
     }
   } catch (error) {
     console.error("Error in verifyPayment:", error);
-    res.status(500).json({
-      message: "Internal Server Error",
-      error: error.message,
+    return res.status(500).json({
+      message: "An unexpected error occurred during verification.",
     });
   }
 };
