@@ -2,25 +2,32 @@ import React from "react";
 import { Button } from "./ui/button";
 import {
   useCreatePaymentOrderMutation,
+  useGetCourseDetailWithPurchaseStatusQuery,
   useVerifyPaymentMutation,
 } from "@/features/api/paymentApi";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 
 const EnrollCourseBtn = ({ courseId }) => {
-  const [createPaymentOrder, { isLoading: isCreatingOrder }] =
-    useCreatePaymentOrderMutation();
+  const { data: courseData, isLoading: isFetchingStatus } = useGetCourseDetailWithPurchaseStatusQuery(courseId, { skip: !courseId });
+  const [createPaymentOrder, { isLoading: isCreatingOrder }] = useCreatePaymentOrderMutation();
   const [verifyPayment, { isLoading: isVerifying }] = useVerifyPaymentMutation();
   const navigate = useNavigate();
+  const isPurchased = courseData?.purchased;
 
   const handleEnroll = async () => {
+    if (isPurchased) {
+      navigate(`/my-learning/${courseId}`); // Fixed navigation path
+      return;
+    }
     if (!courseId) {
       toast.error("Course ID not found.");
       return;
     }
 
     try {
-      const orderData = await createPaymentOrder(courseId).unwrap();
+      const orderData = await createPaymentOrder({ courseId }).unwrap();
       const { payment_session_id, order_id } = orderData;
 
       if (!payment_session_id) {
@@ -28,25 +35,30 @@ const EnrollCourseBtn = ({ courseId }) => {
         return;
       }
 
-      // Current v3+ init (assumes script loaded globally)
-      const cashfree = Cashfree({ mode: "sandbox" });  // Swap to "production" later
+      // Ensure Cashfree SDK is loaded
+      if (!window.Cashfree) {
+        toast.error("Cashfree SDK not loaded. Please try again.");
+        console.error("Cashfree SDK not available");
+        return;
+      }
+
+      const cashfree = new window.Cashfree({ mode: "sandbox" }); // Use window.Cashfree
 
       // Trigger popup checkout
       await cashfree.checkout({
-        paymentSessionId: payment_session_id,  // Note: key is paymentSessionId (camelCase)
-        redirectTarget: "_modal"  // Opens as popup; use "_self" for redirect
+        paymentSessionId: payment_session_id,
+        redirectTarget: "_modal",
       });
 
-      // After modal closes, verify (user may have paid or cancelled)
       toast.info("Verifying your enrollment...");
       const verificationData = await verifyPayment({
-        orderId: order_id,  // Use order_id from response
+        orderId: order_id,
         courseId,
       }).unwrap();
 
       if (verificationData.success) {
         toast.success("Enrollment successful! Redirecting...");
-        navigate("/my-learning");
+        navigate(`/my-learning/${courseId}`);
       } else {
         toast.error("Payment not confirmed. Please try again.");
       }
@@ -56,13 +68,34 @@ const EnrollCourseBtn = ({ courseId }) => {
     }
   };
 
+  if (isFetchingStatus) {
+    return (
+      <Button disabled className="bg-gray-500 hover:bg-gray-600">
+        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+        Loading...
+      </Button>
+    );
+  }
+
   return (
-    <Button onClick={handleEnroll} disabled={isCreatingOrder || isVerifying}>
-      {isCreatingOrder
-        ? "Initiating..."
-        : isVerifying
-        ? "Verifying..."
-        : "Enroll Now"}
+    <Button
+      onClick={handleEnroll}
+      disabled={isCreatingOrder || isVerifying}
+      variant={isPurchased ? "secondary" : "default"}
+      className={isPurchased ? "bg-green-600 hover:bg-green-700" : "bg-blue-600 hover:bg-blue-700"}
+    >
+      {isCreatingOrder ? (
+        <>
+          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+          Initiating...
+        </>
+      ) : isVerifying ? (
+        "Verifying..."
+      ) : isPurchased ? (
+        "Continue Course"
+      ) : (
+        "Enroll Now"
+      )}
     </Button>
   );
 };

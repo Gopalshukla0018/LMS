@@ -17,13 +17,13 @@ import { getCourseById } from "../controllers/course.controller.js";
 
 const router = express.Router();
 
-router.route("/published-course").get(isAuthenticated,getAllPublishedCourse);
+router.route("/published-course").get(isAuthenticated, getAllPublishedCourse);
 router.route("/").post(isAuthenticated, createCourse);
 router.route("/").get(isAuthenticated, getCreatorCourses);
 
-  router
+router
   .route("/:id")
-  .put(isAuthenticated, upload.single("courseThumbnail"), editCourse) 
+  .put(isAuthenticated, upload.single("courseThumbnail"), editCourse)
   .get(isAuthenticated, getCourseById);
 router.route("/:id").get(isAuthenticated, getCourseById);
 router.route("/:courseId/lecture").post(isAuthenticated, createLecture);
@@ -32,10 +32,5 @@ router.route("/:courseId/lecture/:lectureId").put(isAuthenticated, editLecture);
 router.route("/lecture/:lectureId").delete(isAuthenticated, removeLecture);
 router.route("/lecture/:lectureId").get(isAuthenticated, getLectureById);
 router.route("/:courseId/publish").put(isAuthenticated, toggelPublishUnpublish);
-
-
-
-
-
 
 export default router;
