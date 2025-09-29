@@ -8,23 +8,26 @@ import {
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
-import { useSelector } from "react-redux"; 
+import { useSelector } from "react-redux";
 
 const EnrollCourseBtn = ({ courseId }) => {
-  const { data: courseData, isLoading: isFetchingStatus } = useGetCourseDetailWithPurchaseStatusQuery(courseId, { skip: !courseId });
-  const [createPaymentOrder, { isLoading: isCreatingOrder }] = useCreatePaymentOrderMutation();
-  const [verifyPayment, { isLoading: isVerifying }] = useVerifyPaymentMutation();
+  const { data: courseData, isLoading: isFetchingStatus } =
+    useGetCourseDetailWithPurchaseStatusQuery(courseId, { skip: !courseId });
+  const [createPaymentOrder, { isLoading: isCreatingOrder }] =
+    useCreatePaymentOrderMutation();
+  const [verifyPayment, { isLoading: isVerifying }] =
+    useVerifyPaymentMutation();
   const navigate = useNavigate();
-    const { isLoggedIn } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const isPurchased = courseData?.purchased;
 
   const handleEnroll = async () => {
-    if (!isLoggedIn) {
-      toast("Please login to enroll in this course.");
-      navigate("/login");
-      return;
-    }
-
+    // if (!user) {
+    //   toast("Please login to enroll in this course.");
+    //   navigate("/login");
+    //   return;
+    // }
+  
     if (isPurchased) {
       navigate(`/my-learning/${courseId}`); // Fixed navigation path
       return;
@@ -49,7 +52,6 @@ const EnrollCourseBtn = ({ courseId }) => {
         console.error("Cashfree SDK not available");
         return;
       }
-
       const cashfree = new window.Cashfree({ mode: "sandbox" }); // Use window.Cashfree
 
       // Trigger popup checkout
@@ -71,7 +73,9 @@ const EnrollCourseBtn = ({ courseId }) => {
         toast.error("Payment not confirmed. Please try again.");
       }
     } catch (error) {
-      toast.error(error.data?.message || "An error occurred during enrollment.");
+      toast.error(
+        error.data?.message || "An error occurred during enrollment."
+      );
       console.error("Enrollment error:", error);
     }
   };
@@ -90,7 +94,11 @@ const EnrollCourseBtn = ({ courseId }) => {
       onClick={handleEnroll}
       disabled={isCreatingOrder || isVerifying}
       variant={isPurchased ? "secondary" : "default"}
-      className={isPurchased ? "bg-green-600 hover:bg-green-700" : "bg-blue-600 hover:bg-blue-700"}
+      className={
+        isPurchased
+          ? "bg-green-600 hover:bg-green-700"
+          : "bg-blue-600 hover:bg-blue-700"
+      }
     >
       {isCreatingOrder ? (
         <>
