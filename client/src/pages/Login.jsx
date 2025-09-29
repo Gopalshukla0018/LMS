@@ -19,6 +19,13 @@ import {
   useRegisterUserMutation,
 } from "@/features/api/authApi";
 import { useNavigate } from "react-router-dom";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const Login = () => {
   const [signupInput, setSignupInput] = useState({
@@ -137,6 +144,22 @@ const Login = () => {
                     required="true"
                     onChange={(e) => changeInputHandler(e, "signup")}
                   />
+                </div>
+                <div>
+                  <Select
+                    value={signupInput.role} // bind selected value
+                    onValueChange={(value) =>
+                      setSignupInput({ ...signupInput, role: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="student">Student</SelectItem>
+                      <SelectItem value="admin">Instructor</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </CardContent>
               <CardFooter>
