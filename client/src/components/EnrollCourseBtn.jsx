@@ -22,11 +22,11 @@ const EnrollCourseBtn = ({ courseId }) => {
   const isPurchased = courseData?.purchased;
 
   const handleEnroll = async () => {
-    // if (!user) {
-    //   toast("Please login to enroll in this course.");
-    //   navigate("/login");
-    //   return;
-    // }
+    if (!user) {
+      toast("Please login to enroll in this course.");
+      navigate("/login");
+      return;
+    }
   
     if (isPurchased) {
       navigate(`/my-learning/${courseId}`); // Fixed navigation path
@@ -96,8 +96,8 @@ const EnrollCourseBtn = ({ courseId }) => {
       variant={isPurchased ? "secondary" : "default"}
       className={
         isPurchased
-          ? "bg-green-600 hover:bg-green-700"
-          : "bg-blue-600 hover:bg-blue-700"
+          ? "bg-green-600 hover:bg-green-700 w-full"
+          : "bg-blue-600 hover:bg-blue-700 w-full"
       }
     >
       {isCreatingOrder ? (

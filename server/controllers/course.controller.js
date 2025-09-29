@@ -28,7 +28,7 @@ export const createCourse = async (req, res) => {
   }
 };
 
-export const searchCourse = async (req,res) => {
+export const searchCourse = async (req, res) => {
   try {
     const { query = "", categories = [], sortByPrice = "" } = req.query;
     // create search query
@@ -40,11 +40,11 @@ export const searchCourse = async (req,res) => {
         { category: { $regex: query, $options: "i" } },
       ],
     };
- 
-  // if categories selected
-if (categories.length > 0) {
-  searchCriteria.category = { $in: categories };
-}
+
+    // if categories selected
+    if (categories.length > 0) {
+      searchCriteria.category = { $in: categories };
+    }
     // define sorting order
     const sortOptions = {};
     if (sortByPrice === "low") {
@@ -155,7 +155,9 @@ export const editCourse = async (req, res) => {
 export const getCourseById = async (req, res) => {
   try {
     const courseId = req.params.id;
-    const course = await Course.findById(courseId).populate("lectures");
+    const course = await Course.findById(courseId)
+      .populate("lectures")
+      .populate("creator", "name ");
     if (!course) {
       return res.status(404).json({
         message: "Course not found",

@@ -48,9 +48,9 @@ const Navbar = () => {
           </Link>
 
           <h1 className="hidden text-2xl font-extrabold md:block">
-            StudyGuider
+           SkillsMittra
           </h1>
-    <SearchBar/>
+          <SearchBar />
         </div>
         {/* user icons and dark mode icons */}
         <div className="flex gap-6 mt-4 tems-center ">
@@ -70,7 +70,7 @@ const Navbar = () => {
                 <DropdownMenuGroup>
                   <DropdownMenuItem>
                     {" "}
-                    <Link to="my-learning">My Learning</Link>{" "}
+                    <Link to="./my-learning">My Learning</Link>{" "}
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     {" "}
@@ -81,18 +81,16 @@ const Navbar = () => {
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
 
-                { user.role === "instructor" && (<>
-                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Link to="/admin/Dashboard" >
-                  Dashboard
-                  </Link>
-                  </DropdownMenuItem>
-          
-                </>)}
-                    </DropdownMenuContent>
+                {user.role === "instructor" && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <Link to="/admin/Dashboard">Dashboard</Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
             </DropdownMenu>
-               
           ) : (
             <div className="flex gap-2 item-center">
               <Link to="login">
@@ -106,8 +104,9 @@ const Navbar = () => {
         </div>
       </div>
       {/* Mobile device */}
-      <div className="flex items-center justify-between px-4 md:hidden ">
-        <h1 className="text-2xl font-extrabold">Career Setu</h1>
+      <div className="flex items-center justify-between px-4 mt-2 md:hidden">
+        <Link to={`/`}><h1 className="text-2xl font-extrabold"> SkillsMittra</h1></Link>
+        
         <MobileNavbar />
       </div>
     </div>

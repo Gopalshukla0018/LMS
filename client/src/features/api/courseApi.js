@@ -25,10 +25,11 @@ export const courseApi = createApi({
 
     // get all published courses
     getAllPublishedCourse:builder.query({
-      query:(Course)=>({
+      query:()=>({
         url:"/published-course",
         methon:"GET"
-      })
+      }),
+        providesTags: ["Course"],
     }),
     getCreatorCourses: builder.query({
       query: () => ({

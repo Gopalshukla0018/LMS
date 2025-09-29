@@ -1,7 +1,7 @@
 import React from "react";
 import { useLoardUserQuery } from "@/features/api/authApi";
 import NavbarSkeleton from "../Navbar/NavbarSkeleton ";
-import HeroSkeleton from "@/pages/student/HeroSkeleton ";
+
 import CoursesSkeleton from "@/pages/student/Courses/CoursesSkeleton";
 
 import { motion } from "framer-motion";
@@ -28,9 +28,6 @@ const CustomLoader = ({ children }) => {
         </motion.div>
 
         {/* Hero */}
-        <motion.div variants={fadeVariants}>
-          <HeroSkeleton />
-        </motion.div>
 
         {/* Courses Section */}
         <section className="relative py-16 bg-gray-50 dark:bg-gray-900">

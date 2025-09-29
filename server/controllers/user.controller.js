@@ -3,11 +3,10 @@ import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/generateToken.js";
 import { deleteMediafromCloudinary, uploadMedia } from "../utils/cloudinary.js";
 
-
 export const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    if (!name || !email || !password) {
+    const { name, email, password, role } = req.body;
+    if (!name || !email || !password || !role) {
       return res
         .status(400)
         .json({ sucess: false, message: "All fields are required" });
@@ -20,7 +19,7 @@ export const register = async (req, res) => {
       });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    await User.create({ name, email, password: hashedPassword });
+    await User.create({ name, email, password: hashedPassword , role});
     return res.status(201).json({
       sucess: true,
       message: "Account created successfully.",
@@ -83,7 +82,9 @@ export const logout = async (_, res) => {
 export const getUserProfile = async (req, res) => {
   try {
     const userId = req.id;
-    const user = await User.findById(userId).select("-password").populate("enrolledCourses");
+    const user = await User.findById(userId)
+      .select("-password")
+      .populate("enrolledCourses");
     if (!user) {
       return res.status(400).json({
         message: "Profiile not found",
@@ -113,29 +114,29 @@ export const updateProfile = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         message: "User not found",
-        success: false
+        success: false,
       });
     }
-      
+
     // extract the public id oof the oild image from the url if it is exists
 
-if(user.photoUrl){
-  const puhblicId= user.photoUrl.split("/").pop().split(".")[0]; // extract public id
-   deleteMediafromCloudinary(puhblicId)
-}
-// uploard new photo
-const cloudResponse = await uploadMedia(profilePhoto.path);
-const photoUrl= cloudResponse.secure_url;
+    if (user.photoUrl) {
+      const puhblicId = user.photoUrl.split("/").pop().split(".")[0]; // extract public id
+      deleteMediafromCloudinary(puhblicId);
+    }
+    // uploard new photo
+    const cloudResponse = await uploadMedia(profilePhoto.path);
+    const photoUrl = cloudResponse.secure_url;
 
-  const updatedData={name,photoUrl}
-  const updatedUser = await User.findByIdAndUpdate(userId, updatedData,{new:true}).select("-password");
-  return res.status(200).json({
-    success:true,
-    user:updatedUser,
-    message: "Profile updated successfully"
-  })
-  
-
+    const updatedData = { name, photoUrl };
+    const updatedUser = await User.findByIdAndUpdate(userId, updatedData, {
+      new: true,
+    }).select("-password");
+    return res.status(200).json({
+      success: true,
+      user: updatedUser,
+      message: "Profile updated successfully",
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
