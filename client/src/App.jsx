@@ -46,6 +46,7 @@ import AdminRoutes from "./components/AdminRoutes";
 //         path: "my-learning",
 //         element: <MyLearning />,
 //       },
+       
 
 //       {
 //         path: "course/search",
@@ -60,6 +61,7 @@ import AdminRoutes from "./components/AdminRoutes";
 //         path: "my-learning/:courseId",
 //         element: <CourseProgress />,
 //       },
+    
 //       {
 //         path: "edit-profile",
 //         element: <EditProfile />,
@@ -97,12 +99,13 @@ import AdminRoutes from "./components/AdminRoutes";
 // ]);
 
 
+
 const appRouter = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
     children: [
-
+      // Public routes
       {
         path: "/",
         element: (
@@ -112,46 +115,21 @@ const appRouter = createBrowserRouter([
           </>
         ),
       },
+      { path: "login", element: <Login /> },
+      { path: "course/search", element: <SearchPage /> },
+      { path: "course-detail/:id", element: <CourseDetail /> },
+
+      // User protected routes
       {
-        path: "course/search",
-        element: <SearchPage />,
-      },
-      {
-        path: "course-detail/:id",
-        element: <CourseDetail />,
+        element: <ProtectedRoutes />, // Parent wrapper
+        children: [
+          { path: "my-learning", element: <MyLearning /> },
+          { path: "my-learning/:courseId", element: <CourseProgress /> },
+          { path: "edit-profile", element: <EditProfile /> },
+        ],
       },
 
-      // Routes requiring login (user)
-      {
-        path: "login",
-        element: <Login />,
-      },
-      {
-        path: "my-learning",
-        element: (
-          <ProtectedRoutes>
-            <MyLearning />
-          </ProtectedRoutes>
-        ),
-      },
-      {
-        path: "my-learning/:courseId",
-        element: (
-          <ProtectedRoutes>
-            <CourseProgress />
-          </ProtectedRoutes>
-        ),
-      },
-      {
-        path: "edit-profile",
-        element: (
-          <ProtectedRoutes>
-            <EditProfile />
-          </ProtectedRoutes>
-        ),
-      },
-
-      // Admin Routes
+      // Admin protected routes
       {
         path: "admin",
         element: (
@@ -171,7 +149,6 @@ const appRouter = createBrowserRouter([
     ],
   },
 ]);
-
 
 function App() {
   return (

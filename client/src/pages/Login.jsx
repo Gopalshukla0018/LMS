@@ -32,6 +32,7 @@ const Login = () => {
     name: "",
     email: "",
     password: "",
+  
   });
   const [loginInput, setLoginInput] = useState({
     email: "",
