@@ -16,34 +16,101 @@ import EditLecture from "./pages/admin/lecture/EditLecture";
 import CourseDetail from "./pages/student/Courses/CourseDetail";
 import CourseProgress from "./pages/student/Courses/CourseProgress";
 import SearchPage from "./pages/student/SearchPage";
-  
+
+
 import { ThemeProvider } from "./components/ThemeProvider";
+// protected  components
+import ProtectedRoutes from "./components/ProtectedRoutes";
+import AdminRoutes from "./components/AdminRoutes";
+
+// const appRouter = createBrowserRouter([
+//   {
+//     path: "/",
+//     element: <MainLayout />,
+//     children: [
+//       {
+//         path: "/",
+//         element: (
+//           <>
+//             <HeroSection />
+//             {/* courses */}
+//             <Courses />
+//           </>
+//         ),
+//       },
+//       {
+//         path: "login",
+//         element: <Login />,
+//       },
+//       {
+//         path: "my-learning",
+//         element: <MyLearning />,
+//       },
+
+//       {
+//         path: "course/search",
+//         element: <SearchPage />,
+//       },
+//       {
+//         path: "course-detail/:id",
+//         element: <CourseDetail />,
+//       },
+
+//       {
+//         path: "my-learning/:courseId",
+//         element: <CourseProgress />,
+//       },
+//       {
+//         path: "edit-profile",
+//         element: <EditProfile />,
+//       },
+
+//       {
+//         path: "admin",
+//         element: <Sidebar />,
+//         children: [
+//           { path: "dashboard", element: <Dashboard /> },
+//           {
+//             path: "courses",
+//             element: <CourseTable />,
+//           },
+//           {
+//             path: "courses/create",
+//             element: <AddCours />,
+//           },
+//           {
+//             path: "courses/:courseId",
+//             element: <EditCourse />,
+//           },
+//           {
+//             path: "courses/:courseId/lecture",
+//             element: <CreateLecture />,
+//           },
+//           {
+//             path: "courses/:courseId/lecture/:lectureId",
+//             element: <EditLecture />,
+//           },
+//         ],
+//       },
+//     ],
+//   },
+// ]);
+
+
 const appRouter = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
     children: [
+
       {
         path: "/",
         element: (
           <>
             <HeroSection />
-            {/* courses */}
             <Courses />
           </>
         ),
-      },
-      {
-        path: "login",
-        element: <Login />,
-      },
-      {
-        path: "my-learning",
-        element: <MyLearning />,
-      },
-      {
-        path: "edit-profile",
-        element: <EditProfile />,
       },
       {
         path: "course/search",
@@ -53,53 +120,67 @@ const appRouter = createBrowserRouter([
         path: "course-detail/:id",
         element: <CourseDetail />,
       },
+
+      // Routes requiring login (user)
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "my-learning",
+        element: (
+          <ProtectedRoutes>
+            <MyLearning />
+          </ProtectedRoutes>
+        ),
+      },
       {
         path: "my-learning/:courseId",
-        element: <CourseProgress />,
+        element: (
+          <ProtectedRoutes>
+            <CourseProgress />
+          </ProtectedRoutes>
+        ),
       },
-  
+      {
+        path: "edit-profile",
+        element: (
+          <ProtectedRoutes>
+            <EditProfile />
+          </ProtectedRoutes>
+        ),
+      },
+
+      // Admin Routes
       {
         path: "admin",
-        element: <Sidebar />,
+        element: (
+          <AdminRoutes>
+            <Sidebar />
+          </AdminRoutes>
+        ),
         children: [
           { path: "dashboard", element: <Dashboard /> },
-          {
-            path: "courses",
-            element: <CourseTable />,
-          },
-          {
-            path: "courses/create",
-            element: <AddCours />,
-          },
-          {
-            path: "courses/:courseId",
-            element: <EditCourse />,
-          },
-          {
-            path: "courses/:courseId/lecture",
-            element: <CreateLecture />,
-          },
-          {
-            path: "courses/:courseId/lecture/:lectureId",
-            element: <EditLecture />,
-          },
+          { path: "courses", element: <CourseTable /> },
+          { path: "courses/create", element: <AddCours /> },
+          { path: "courses/:courseId", element: <EditCourse /> },
+          { path: "courses/:courseId/lecture", element: <CreateLecture /> },
+          { path: "courses/:courseId/lecture/:lectureId", element: <EditLecture /> },
         ],
       },
     ],
   },
 ]);
 
+
 function App() {
   return (
-
-    <main>
-        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      {/* <Navbar />
-      <HeroSection />
-      <Login /> */}
-      <RouterProvider router={appRouter} />
-      </ThemeProvider>
-    </main>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <main>
+        <RouterProvider router={appRouter} />
+      </main>
+   
+    </ThemeProvider>
   );
 }
 

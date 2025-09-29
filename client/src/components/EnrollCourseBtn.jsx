@@ -8,15 +8,23 @@ import {
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
+import { useSelector } from "react-redux"; 
 
 const EnrollCourseBtn = ({ courseId }) => {
   const { data: courseData, isLoading: isFetchingStatus } = useGetCourseDetailWithPurchaseStatusQuery(courseId, { skip: !courseId });
   const [createPaymentOrder, { isLoading: isCreatingOrder }] = useCreatePaymentOrderMutation();
   const [verifyPayment, { isLoading: isVerifying }] = useVerifyPaymentMutation();
   const navigate = useNavigate();
+    const { isLoggedIn } = useSelector((state) => state.auth);
   const isPurchased = courseData?.purchased;
 
   const handleEnroll = async () => {
+    if (!isLoggedIn) {
+      toast("Please login to enroll in this course.");
+      navigate("/login");
+      return;
+    }
+
     if (isPurchased) {
       navigate(`/my-learning/${courseId}`); // Fixed navigation path
       return;
