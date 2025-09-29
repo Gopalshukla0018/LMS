@@ -41,10 +41,11 @@ export const searchCourse = async (req,res) => {
         { category: { $regex: query, $options: "i" } },
       ],
     };
-    // if categories selected
-    if (categories.length > 0) {
-      searchCriteria.categories = { $in: category };
-    }
+ 
+  // if categories selected
+if (categories.length > 0) {
+  searchCriteria.category = { $in: categories };
+}
     // define sorting order
     const sortOptions = {};
     if (sortByPrice === "low") {
