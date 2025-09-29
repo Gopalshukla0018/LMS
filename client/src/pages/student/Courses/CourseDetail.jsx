@@ -11,7 +11,7 @@ import {
 
 import { Separator } from "@/components/ui/separator";
 import { useGetCourseByIdQuery } from "@/features/api/courseApi";
-import { BadgeInfo, Lock } from "lucide-react";
+import { BadgeInfo, Lock, PlayCircle } from "lucide-react";
 import React from "react";
 import ReactPlayer from "react-player";
 import { useParams } from "react-router-dom";
@@ -29,14 +29,10 @@ const CourseDetail = () => {
 
   const { course } = courseData;
 
-  
-
   console.log("video url is ", course.lectures[0].videoUrl);
 
- 
   return (
     <div className="mt-16 space-y-10">
-
       <div className="bg-[#2D2F31] text-white">
         <div className="flex flex-col gap-2 px-4 py-8 mx-auto max-w-7xl md:px-8">
           <h1 className="text-2xl font-bold md:text-3xl">
@@ -76,15 +72,18 @@ const CourseDetail = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              {(course.lectures || []).map((lecture, idx) => (
+              {course.lectures.map((lecture) => (
                 <div
-                  key={lecture._id || idx}
-                  className="flex items-center gap-3 text-sm cursor-pointer hover:text-primary"
+                  key={lecture._id}
+                  className="flex items-center gap-3 text-sm"
                 >
                   <span>
-                    <Lock size={14} />
+                    {lecture.isPreview ? (
+                      <PlayCircle size={"14"} />
+                    ) : (
+                      <Lock size={"14"} />
+                    )}
                   </span>
-
                   <p>{lecture.lectureTitle}</p>
                 </div>
               ))}
@@ -105,15 +104,13 @@ const CourseDetail = () => {
                   config={{
                     file: {
                       attributes: {
-                        controlsList: "nodownload", 
+                        controlsList: "nodownload",
                       },
                       forceVideo: true,
                     },
                   }}
-                  onContextMenu={(e) => e.preventDefault()} 
+                  onContextMenu={(e) => e.preventDefault()}
                 />
-                
-
               </div>
               <Separator className="my-2" />
               <h3 className="text-lg font-semibold md:text-xl">
@@ -121,9 +118,7 @@ const CourseDetail = () => {
               </h3>
             </CardContent>
             <CardFooter className="flex justify-center">
-              {
-                <EnrollCourseBtn courseId={id} />
-              }
+              {<EnrollCourseBtn courseId={id} />}
             </CardFooter>
           </Card>
         </div>

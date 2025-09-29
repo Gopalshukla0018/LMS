@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { Button } from "../ui/button";
-import { School } from "lucide-react";
+import { School, Search } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import DarkMode from "@/pages/darkMode";
+
 import MobileNavbar from "./MobileNavbar";
 import {
   DropdownMenu,
@@ -18,6 +19,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLogoutUserMutation } from "@/features/api/authApi";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
+
+import SearchBar from "./SearchBar";
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
@@ -47,6 +50,7 @@ const Navbar = () => {
           <h1 className="hidden text-2xl font-extrabold md:block">
             StudyGuider
           </h1>
+    <SearchBar/>
         </div>
         {/* user icons and dark mode icons */}
         <div className="flex gap-6 mt-4 tems-center ">

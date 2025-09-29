@@ -29,6 +29,42 @@ export const createCourse = async (req, res) => {
   }
 };
 
+export const searchCourse = async (req,res) => {
+  try {
+    const { query = "", categories = [], sortByPrice = "" } = req.query;
+    // create search query
+    const searchCriteria = {
+      isPublished: true,
+      $or: [
+        { courseTitle: { $regex: query, $options: "i" } },
+        { courseSubTitle: { $regex: query, $options: "i" } },
+        { category: { $regex: query, $options: "i" } },
+      ],
+    };
+    // if categories selected
+    if (categories.length > 0) {
+      searchCriteria.categories = { $in: category };
+    }
+    // define sorting order
+    const sortOptions = {};
+    if (sortByPrice === "low") {
+      sortOptions.coursePrice = 1; // sort by price in accending order
+    } else if (sortByPrice === "high") {
+      sortOptions.coursePrice = -1;
+    }
+    let courses = await Course.find(searchCriteria)
+      .populate({ path: "creator", select: "name photoUrl" })
+      .sort(sortOptions);
+
+    return res.status(200).json({
+      success: true,
+      courses: courses || [],
+    });
+  } catch (error) {
+    console.log("error in search course controller", error);
+  }
+};
+
 export const getCreatorCourses = async (req, res) => {
   try {
     const userId = req.id;
@@ -54,7 +90,6 @@ export const getCreatorCourses = async (req, res) => {
   }
 };
 
-
 export const editCourse = async (req, res) => {
   try {
     const courseId = req.params.id;
@@ -66,7 +101,7 @@ export const editCourse = async (req, res) => {
       courseLevel,
       coursePrice,
     } = req.body;
-    
+
     const courseThumbnail = req.file;
 
     let course = await Course.findById(courseId);
@@ -120,7 +155,7 @@ export const editCourse = async (req, res) => {
 export const getCourseById = async (req, res) => {
   try {
     const courseId = req.params.id;
-    const course = await Course.findById(courseId).populate("lectures");;
+    const course = await Course.findById(courseId).populate("lectures");
     if (!course) {
       return res.status(404).json({
         message: "Course not found",
