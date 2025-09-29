@@ -38,7 +38,7 @@ const Navbar = () => {
   }, [isSuccess]);
 
   return (
-    <div className="h-16 dark:bg-[#3a1515] bg-white border-b dark:border-b-gray-800 boorder-b-gray-200 top-0 fixed right-0 left-0 duration-300  z-10 ">
+    <div className="fixed top-0 left-0 right-0 z-10 h-16 duration-300 bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-b-gray-200 ">
       {/* Desktop */}
 
       <div className="justify-between hidden max-auto max-w-7xl md:flex ">

@@ -2,8 +2,8 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux"; // Login status check karne ke liye
-import { ArrowRight } from "lucide-react"; // Icon ke liye
+import { useSelector } from "react-redux";
+import { ArrowRight } from "lucide-react";
 
 const keywords = [
   "Web Development",
@@ -16,10 +16,8 @@ const keywords = [
 
 const HeroSection = () => {
   const navigate = useNavigate();
-  // Redux store se user ka status check karein
   const { user } = useSelector((store) => store.auth);
 
-  // User ke login status ke hisaab se navigation
   const handleGetStartedClick = () => {
     if (user) {
       navigate("/my-learning");
@@ -29,15 +27,16 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative flex flex-col items-center justify-center px-6 py-24 overflow-hidden text-white bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700">
-      {/* Floating Blobs Background */}
+    // === UPDATED: Using CSS variables from your theme file ===
+    <section className="relative flex flex-col items-center justify-center px-6 py-24 overflow-hidden bg-background text-foreground">
+      {/* Floating Blobs Background - Adjusted for better theme blending */}
       <motion.div
-        className="absolute bg-purple-500 rounded-full w-96 h-96 mix-blend-multiply filter blur-3xl opacity-30"
+        className="absolute rounded-full opacity-50 w-96 h-96 bg-purple-500/20 mix-blend-multiply filter blur-3xl"
         animate={{ x: [0, 80, -60, 0], y: [0, -50, 70, 0] }}
         transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="absolute bg-blue-500 rounded-full w-96 h-96 mix-blend-multiply filter blur-3xl opacity-30"
+        className="absolute rounded-full opacity-50 w-96 h-96 bg-blue-500/20 mix-blend-multiply filter blur-3xl"
         animate={{ x: [0, -70, 60, 0], y: [0, 50, -80, 0] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -52,13 +51,15 @@ const HeroSection = () => {
             transition={{ duration: 0.7 }}
           >
             Master Skills, <br />
+            {/* The gradient text remains as it's a key design element */}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-pink-400">
               Build Your Future
             </span>
           </motion.h1>
 
           <motion.p
-            className="mb-8 text-lg text-gray-200"
+            // === UPDATED: Using muted-foreground for secondary text ===
+            className="mb-8 text-lg text-muted-foreground"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.7 }}
@@ -67,18 +68,20 @@ const HeroSection = () => {
             opportunities with our curated courses.
           </motion.p>
           <div className="flex gap-4">
-            {/* === SMART BUTTON LOGIC ADDED HERE === */}
+            {/* This button has its own strong styling */}
             <Button
               onClick={handleGetStartedClick}
-              className="flex items-center gap-2 px-6 py-3 text-white bg-gradient-to-r from-pink-500 to-yellow-500 hover:opacity-90"
+              className="flex items-center gap-2 px-6 py-3 text-white transition-opacity bg-gradient-to-r from-pink-500 to-yellow-500 hover:opacity-90"
             >
               {user ? "Go to My Learning" : "Get Started"}
               <ArrowRight size={18} />
             </Button>
+
+            {/* === UPDATED: Button now uses theme variables for consistency === */}
             <Button
               onClick={() => navigate(`/course/search?query`)}
               variant="outline"
-              className="px-6 py-3 text-white bg-transparent border-white hover:bg-white hover:text-indigo-700"
+              className="px-6 py-3" // Simplified: relies on default button styles which use your theme
             >
               Explore Courses
             </Button>
@@ -87,7 +90,8 @@ const HeroSection = () => {
         {/* Right Side: Rotating Keywords */}
         <div className="flex items-center justify-center">
           <motion.div
-            className="relative flex items-center justify-center border-4 rounded-full w-80 h-80 border-white/20"
+            // === UPDATED: Border uses the theme's border color ===
+            className="relative flex items-center justify-center border-4 rounded-full w-80 h-80 border-border"
             animate={{ rotate: 360 }}
             transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
           >
@@ -96,12 +100,12 @@ const HeroSection = () => {
               return (
                 <motion.div
                   key={word}
-                  className="absolute px-3 py-2 text-sm font-medium rounded-full shadow-lg bg-white/10 backdrop-blur-md"
+                  // === UPDATED: Keyword pills use card background and foreground ===
+                  className="absolute px-3 py-2 text-sm font-medium rounded-full shadow-lg bg-card text-card-foreground backdrop-blur-md"
                   style={{
-                    top: `calc(50% - 1rem + ${40 * Math.sin(angle)}%)`, // Centered calculation
-                    left: `calc(50% - 2.5rem + ${40 * Math.cos(angle)}%)`, // Centered calculation
+                    top: `calc(50% - 1rem + ${40 * Math.sin(angle)}%)`,
+                    left: `calc(50% - 2.5rem + ${40 * Math.cos(angle)}%)`,
                   }}
-                  // Keep text upright
                   animate={{ rotate: -360 }}
                   transition={{
                     duration: 25,
