@@ -7,32 +7,28 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useTheme } from "@/components/ThemeProvider";
+const DarkMode = () => {
+  // `setTheme` ke saath `theme` bhi lein taaki pata chale current theme kaun sa hai
+  const { theme, setTheme } = useTheme();
 
-const DarkMode=()=>{
-    return (
-        <div>
-                <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-        </div>
-    
-    )
-}
+  const toggleTheme = () => {
+    // Agar current theme 'light' hai to 'dark' kar do, warna 'light' kar do
+    setTheme(theme === "light" ? "dark" : "light");
+  };
+
+  return (
+    // Dropdown ki jagah ek simple Button
+    <Button onClick={toggleTheme} variant="outline" size="icon">
+      {/* Conditional rendering: Agar theme dark hai to Suraj, nahi to Chand dikhao */}
+      {theme === "dark" ? (
+        <Sun className="h-[1.2rem] w-[1.2rem]" />
+      ) : (
+        <Moon className="h-[1.2rem] w-[1.2rem]" />
+      )}
+      <span className="sr-only">Toggle theme</span>
+    </Button>
+  );
+};
+
 export default DarkMode;

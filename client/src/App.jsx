@@ -16,7 +16,8 @@ import EditLecture from "./pages/admin/lecture/EditLecture";
 import CourseDetail from "./pages/student/Courses/CourseDetail";
 import CourseProgress from "./pages/student/Courses/CourseProgress";
 import SearchPage from "./pages/student/SearchPage";
-
+  
+import { ThemeProvider } from "./components/ThemeProvider";
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -90,11 +91,14 @@ const appRouter = createBrowserRouter([
 
 function App() {
   return (
+
     <main>
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       {/* <Navbar />
       <HeroSection />
       <Login /> */}
       <RouterProvider router={appRouter} />
+      </ThemeProvider>
     </main>
   );
 }
