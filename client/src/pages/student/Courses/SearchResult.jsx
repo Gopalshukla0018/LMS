@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Badge } from "@/components/ui/badge";  // Assuming ShadCN import; fix if different
+import { Badge } from "@/components/ui/badge";  
 
 const SearchResult = ({ course }) => {
   return (
