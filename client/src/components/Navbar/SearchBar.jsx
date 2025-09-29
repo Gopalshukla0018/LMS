@@ -15,7 +15,7 @@ const SearchBar = () => {
       navigate(`/course/search?query=${searchQuery}`);
     }
 
-    setSearchQuery("");
+    // setSearchQuery("");
   };
 
   return (

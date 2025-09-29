@@ -1,19 +1,22 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar/Navbar";
-
 import React from "react";
 import { Outlet } from "react-router-dom";
 
 const MainLayout = () => {
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <Navbar />
 
-      <div>
+      {/* Main content */}
+      <main className="flex-grow">
         <Outlet />
-      </div>
-         <Footer />
+      </main>
+
+      {/* Footer hamesha bottom pe */}
+      <Footer />
     </div>
   );
 };
+
 export default MainLayout;
