@@ -1,5 +1,4 @@
 import React from "react";
-// Ab hum hook ko 'adminApi.js' se import karenge
 import { useGetDashboardDataQuery } from "@/features/api/adminApi";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -24,14 +23,11 @@ import {
 } from "recharts";
 
 const Dashboard = () => {
-  
   const { data, isLoading, error } = useGetDashboardDataQuery();
 
- 
   if (isLoading) {
     return <DashboardSkeleton />;
   }
-
 
   if (error) {
     return (
@@ -41,22 +37,7 @@ const Dashboard = () => {
     );
   }
 
- 
   const dashboardData = data?.data;
-
-
-  if (!dashboardData || dashboardData.sales.length === 0) {
-    return (
-      <div className="flex-1 p-6 space-y-6">
-        <h1 className="text-3xl font-bold">Instructor Dashboard</h1>
-        <p className="text-muted-foreground">
-          {data?.message || "Aapne abhi tak koi course nahi becha hai."}
-        </p>
-      </div>
-    );
-  }
-
- 
 
   const chartData = dashboardData.sales.map((sale) => ({
     name: sale.course.courseTitle.split(" ")[0],
@@ -64,49 +45,51 @@ const Dashboard = () => {
   }));
 
   return (
-    <div className="flex-1 p-6 space-y-6">
-      <h1 className="text-3xl font-bold">Instructor Dashboard</h1>
+    <div className="flex-1 p-4 space-y-6 sm:p-6">
+      <h1 className="text-2xl font-bold sm:text-3xl">Instructor Dashboard</h1>
 
-  
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-            <DollarSign className="w-4 h-4 text-muted-foreground" />
+            <DollarSign className="w-5 h-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-xl font-bold sm:text-2xl">
               ₹{dashboardData.totalRevenue.toFixed(2)}
             </div>
           </CardContent>
         </Card>
+
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">
-              Total Students
-            </CardTitle>
-            <Users className="w-4 h-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Total Students</CardTitle>
+            <Users className="w-5 h-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-xl font-bold sm:text-2xl">
               +{dashboardData.totalStudents}
             </div>
           </CardContent>
         </Card>
+
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Total Sales</CardTitle>
-            <BookOpen className="w-4 h-4 text-muted-foreground" />
+            <BookOpen className="w-5 h-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-xl font-bold sm:text-2xl">
               +{dashboardData.sales.length}
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      {/* Chart + Table */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        {/* Chart */}
         <Card>
           <CardHeader>
             <CardTitle>Sales Overview</CardTitle>
@@ -124,33 +107,37 @@ const Dashboard = () => {
             </ResponsiveContainer>
           </CardContent>
         </Card>
+
+        {/* Table */}
         <Card>
           <CardHeader>
             <CardTitle>Recent Sales</CardTitle>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Course</TableHead>
-                  <TableHead>Student</TableHead>
-                  <TableHead className="text-right">Amount</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {dashboardData.sales.map((sale) => (
-                  <TableRow key={sale._id}>
-                    <TableCell className="font-medium">
-                      {sale.course.courseTitle}
-                    </TableCell>
-                    <TableCell>{sale.user.name}</TableCell>
-                    <TableCell className="text-right">
-                      ₹{sale.course.coursePrice.toFixed(2)}
-                    </TableCell>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Course</TableHead>
+                    <TableHead>Student</TableHead>
+                    <TableHead className="text-right">Amount</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {dashboardData.sales.map((sale) => (
+                    <TableRow key={sale._id}>
+                      <TableCell className="font-medium">
+                        {sale.course.courseTitle}
+                      </TableCell>
+                      <TableCell>{sale.user.name}</TableCell>
+                      <TableCell className="text-right">
+                        ₹{sale.course.coursePrice.toFixed(2)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -159,18 +146,19 @@ const Dashboard = () => {
 };
 
 const DashboardSkeleton = () => (
-  <div className="flex-1 p-6 space-y-6 animate-pulse">
-    <Skeleton className="w-48 h-8" />
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      <Skeleton className="h-28" />
-      <Skeleton className="h-28" />
-      <Skeleton className="h-28" />
+  <div className="flex-1 p-4 space-y-6 sm:p-6 animate-pulse">
+    <Skeleton className="w-40 h-6 sm:w-48 sm:h-8" />
+    <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <Skeleton className="h-24 sm:h-28" />
+      <Skeleton className="h-24 sm:h-28" />
+      <Skeleton className="h-24 sm:h-28" />
     </div>
-    <div className="grid gap-6 lg:grid-cols-2">
-      <Skeleton className="h-80" />
-      <Skeleton className="h-80" />
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <Skeleton className="h-72 sm:h-80" />
+      <Skeleton className="h-72 sm:h-80" />
     </div>
   </div>
 );
 
 export default Dashboard;
+

@@ -1,100 +1,126 @@
+import React from "react";
+import ReactPlayer from "react-player";
+import { useParams } from "react-router-dom";
+import { useGetCourseByIdQuery } from "@/features/api/courseApi";
 import EnrollCourseBtn from "@/components/EnrollCourseBtn";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
+  CardDescription,
 } from "@/components/ui/card";
-
-import { Separator } from "@/components/ui/separator";
-import { useGetCourseByIdQuery } from "@/features/api/courseApi";
-import { BadgeInfo, Lock, PlayCircle } from "lucide-react";
-import React from "react";
-import ReactPlayer from "react-player";
-import { useParams } from "react-router-dom";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Skeleton } from "@/components/ui/skeleton";
+import { BadgeInfo, Users, Lock, PlayCircle, Video } from "lucide-react";
 
 const CourseDetail = () => {
   const { id } = useParams();
   const { data: courseData, isLoading, isError } = useGetCourseByIdQuery(id);
 
   if (isLoading) {
-    return <div>Loading course details...</div>;
+    return <CourseDetailSkeleton />;
   }
+
   if (isError || !courseData) {
-    return <div>Error loading course or course not found.</div>;
+    return <div className="p-8 text-center">Error: Course not found.</div>;
   }
 
   const { course } = courseData;
 
-  console.log("video url is ", course.lectures[0].videoUrl);
+  const previewLecture =
+    course.lectures?.find((lec) => lec.isPreview) || course.lectures?.[0];
 
   return (
-    <div className="mt-16 space-y-10">
-      <div className="bg-[#2D2F31] text-white">
-        <div className="flex flex-col gap-2 px-4 py-8 mx-auto max-w-7xl md:px-8">
-          <h1 className="text-2xl font-bold md:text-3xl">
-            {course.courseTitle}
-          </h1>
-          <p className="text-base md:text-lg">{course.courseDescription}</p>
-          <p className="text-base md:text-lg">
-            Created By{" "}
-            <span className="text-[#C0C4FC] underline italic">
-              {course.creator.name}
-            </span>
-          </p>
-          <div className="flex items-center gap-2 mt-1 text-sm">
-            <BadgeInfo size={16} />
-            <p>
-              Last updated {new Date(course.updatedAt).toLocaleDateString()}
+    <div className="mt-16 bg-gray-50 dark:bg-black">
+      {/* --- Top Banner Section --- */}
+      <div className="text-white bg-gray-900 dark:bg-gray-950">
+        <div className="container px-4 py-12 mx-auto md:px-6 lg:py-16">
+          <div className="max-w-4xl space-y-3">
+            <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
+              {course.courseTitle}
+            </h1>
+            <p className="text-lg text-gray-300 md:text-xl">
+              {course.courseSubTitle}
             </p>
+            <div className="flex flex-wrap items-center text-sm text-gray-400 gap-x-6 gap-y-2">
+              <span>
+                Created by{" "}
+                <span className="font-semibold text-indigo-300">
+                  {course.creator.name}
+                </span>
+              </span>
+              <span className="flex items-center gap-1.5">
+                <BadgeInfo size={16} />
+                Last updated {new Date(course.updatedAt).toLocaleDateString()}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Users size={16} />
+                {course.enrolledStudents?.length || 0} students enrolled
+              </span>
+            </div>
           </div>
-
-          <p className="mt-1 text-sm">
-            Students enrolled: {course.enrolledStudents?.length || 0}+
-          </p>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="flex flex-col gap-10 px-4 mx-auto my-5 max-w-7xl md:px-8 lg:flex-row">
-        {/* Left Section */}
-        <div className="w-full space-y-6 lg:w-2/3">
-          <h2 className="text-xl font-bold md:text-2xl">Description</h2>
-          <p className="text-sm leading-relaxed">{course.courseDescription}</p>
-          <Card>
+      {/* --- Main Content --- */}
+      <div className="container grid grid-cols-1 gap-8 px-4 py-10 mx-auto md:px-6 lg:grid-cols-3 lg:gap-12">
+        {/* Left Section (Course Content) */}
+        <div className="space-y-8 lg:col-span-2">
+          <Card className="border dark:border-gray-800">
+            <CardHeader>
+              <CardTitle className="text-2xl">Course Description</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="leading-relaxed text-gray-600 dark:text-gray-400">
+                {course.courseDescription}
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="border dark:border-gray-800">
             <CardHeader>
               <CardTitle>Course Content</CardTitle>
               <CardDescription>
                 {course.lectures?.length || 0} lectures
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
-              {course.lectures.map((lecture) => (
-                <div
-                  key={lecture._id}
-                  className="flex items-center gap-3 text-sm"
-                >
-                  <span>
-                    {lecture.isPreview ? (
-                      <PlayCircle size={"14"} />
-                    ) : (
-                      <Lock size={"14"} />
-                    )}
-                  </span>
-                  <p>{lecture.lectureTitle}</p>
-                </div>
-              ))}
+            <CardContent>
+              <Accordion type="single" collapsible className="w-full">
+                {course.lectures.map((lecture) => (
+                  <AccordionItem value={lecture._id} key={lecture._id}>
+                    <AccordionTrigger>
+                      <div className="flex items-center gap-3">
+                        {lecture.isPreview ? (
+                          <PlayCircle className="text-green-500" size={18} />
+                        ) : (
+                          <Lock className="text-gray-500" size={18} />
+                        )}
+                        <span>{lecture.lectureTitle}</span>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      This lecture is{" "}
+                      {lecture.isPreview ? "available for preview." : "locked."}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
             </CardContent>
           </Card>
         </div>
 
-        {/* Right Section */}
-        <div className="w-full space-y-5 lg:w-1/3">
-          <Card>
-            <CardContent className="flex flex-col p-4">
+        {/* Right Section (Purchase Card) - now with sticky positioning on larger screens */}
+        <div className="lg:sticky top-24 h-fit">
+          <Card className="overflow-hidden border shadow-lg dark:border-gray-800">
+            <CardContent className="p-0">
               <div className="flex items-center justify-center w-full mb-4 text-white bg-black aspect-video">
                 <ReactPlayer
                   src={course.lectures[0].videoUrl}
@@ -112,19 +138,33 @@ const CourseDetail = () => {
                   onContextMenu={(e) => e.preventDefault()}
                 />
               </div>
-              <Separator className="my-2" />
-              <h3 className="text-lg font-semibold md:text-xl">
-                Course Price: ₹{course.coursePrice}
-              </h3>
             </CardContent>
-            <CardFooter className="flex justify-center">
-              {<EnrollCourseBtn courseId={id} />}
-            </CardFooter>
+            <div className="p-6">
+              <h3 className="mb-4 text-3xl font-bold text-center">
+                ₹{course.coursePrice}
+              </h3>
+              <EnrollCourseBtn courseId={id} price={course.coursePrice} />
+            </div>
           </Card>
         </div>
       </div>
     </div>
   );
 };
+
+const CourseDetailSkeleton = () => (
+  <div className="mt-16 animate-pulse">
+    <div className="w-full h-48 bg-gray-200 dark:bg-gray-800"></div>
+    <div className="container grid grid-cols-1 gap-8 px-4 py-10 mx-auto md:px-6 lg:grid-cols-3 lg:gap-12">
+      <div className="space-y-8 lg:col-span-2">
+        <Skeleton className="w-full h-40" />
+        <Skeleton className="w-full h-64" />
+      </div>
+      <div className="lg:sticky top-24 h-fit">
+        <Skeleton className="w-full h-96" />
+      </div>
+    </div>
+  </div>
+);
 
 export default CourseDetail;

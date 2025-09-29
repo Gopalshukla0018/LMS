@@ -32,7 +32,6 @@ const Login = () => {
     name: "",
     email: "",
     password: "",
-  
   });
   const [loginInput, setLoginInput] = useState({
     email: "",
@@ -158,7 +157,7 @@ const Login = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="student">Student</SelectItem>
-                      <SelectItem value="admin">Instructor</SelectItem>
+                      <SelectItem value="instructor">Instructor</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

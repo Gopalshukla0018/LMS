@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const Course = ({ course }) => {
   return (
-    <Link to={`course-detail/${course._id}`}>
+    <Link to={`/course-detail/${course._id}`}>
     <Card className="relative p-0 overflow-hidden transition-all duration-300 transform border border-gray-200 shadow-md group rounded-xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-md hover:shadow-xl hover:-translate-y-1">
       <div className="relative">
         <img
@@ -14,7 +14,7 @@ const Course = ({ course }) => {
             course?.courseThumbnail ||
             "https://img-c.udemycdn.com/course/750x422/3873464_403c_3.jpg"
           }
-          alt="Next.js course thumbnail"
+          alt= {course?.courseTitle}
           className="object-cover w-full h-40 transition-transform duration-300 rounded-t-xl group-hover:scale-105"
         />
 
