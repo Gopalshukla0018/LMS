@@ -1,6 +1,9 @@
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux"; // Login status check karne ke liye
+import { ArrowRight } from "lucide-react"; // Icon ke liye
 
 const keywords = [
   "Web Development",
@@ -13,6 +16,18 @@ const keywords = [
 
 const HeroSection = () => {
   const navigate = useNavigate();
+  // Redux store se user ka status check karein
+  const { user } = useSelector((store) => store.auth);
+
+  // User ke login status ke hisaab se navigation
+  const handleGetStartedClick = () => {
+    if (user) {
+      navigate("/my-learning");
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <section className="relative flex flex-col items-center justify-center px-6 py-24 overflow-hidden text-white bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700">
       {/* Floating Blobs Background */}
@@ -52,16 +67,18 @@ const HeroSection = () => {
             opportunities with our curated courses.
           </motion.p>
           <div className="flex gap-4">
+            {/* === SMART BUTTON LOGIC ADDED HERE === */}
             <Button
-              onClick={() => navigate(`/login`)}
-              className="px-6 py-3 text-white bg-gradient-to-r from-pink-500 to-yellow-500 hover:opacity-90"
+              onClick={handleGetStartedClick}
+              className="flex items-center gap-2 px-6 py-3 text-white bg-gradient-to-r from-pink-500 to-yellow-500 hover:opacity-90"
             >
-              Get Started
+              {user ? "Go to My Learning" : "Get Started"}
+              <ArrowRight size={18} />
             </Button>
             <Button
               onClick={() => navigate(`/course/search?query`)}
               variant="outline"
-              className="px-6 py-3 text-indigo-700 border-white hover:bg-white hover:text-indigo-700"
+              className="px-6 py-3 text-white bg-transparent border-white hover:bg-white hover:text-indigo-700"
             >
               Explore Courses
             </Button>
@@ -81,8 +98,8 @@ const HeroSection = () => {
                   key={word}
                   className="absolute px-3 py-2 text-sm font-medium rounded-full shadow-lg bg-white/10 backdrop-blur-md"
                   style={{
-                    top: `${45 + 40 * Math.sin(angle)}%`,
-                    left: `${45 + 40 * Math.cos(angle)}%`,
+                    top: `calc(50% - 1rem + ${40 * Math.sin(angle)}%)`, // Centered calculation
+                    left: `calc(50% - 2.5rem + ${40 * Math.cos(angle)}%)`, // Centered calculation
                   }}
                   // Keep text upright
                   animate={{ rotate: -360 }}
@@ -91,7 +108,7 @@ const HeroSection = () => {
                     repeat: Infinity,
                     ease: "linear",
                   }}
-                  whileHover={{ scale: 1.2 }}
+                  whileHover={{ scale: 1.2, zIndex: 10 }}
                 >
                   {word}
                 </motion.div>

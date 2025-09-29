@@ -38,7 +38,7 @@ const { data, isSuccess, isLoading,error } =  useGetAllPublishedCourseQuery();
  
 
   return (
-    <section className="relative py-16 bg-gray-50 dark:bg-gray-900">
+    <section className="relative py-2 bg-gray-50 dark:bg-gray-900">
       {/* Decorative background glow */}
       <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-indigo-50/40 to-transparent dark:from-indigo-900/15" />
 
