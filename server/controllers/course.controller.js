@@ -1,7 +1,6 @@
 import { Course } from "../model/course.model.js";
 import { deleteMediafromCloudinary, uploadMedia } from "../utils/cloudinary.js";
 import { lecture as LectureModel } from "../model/lecture.model.js";
-import { isValidObjectId } from "mongoose";
 
 export const createCourse = async (req, res) => {
   try {

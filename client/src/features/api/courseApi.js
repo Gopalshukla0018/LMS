@@ -134,6 +134,8 @@ export const courseApi = createApi({
   }),
 });
 
+
+
 export const {
   useCreateCourseMutation,
   useGetCreatorCoursesQuery,
