@@ -22,13 +22,14 @@ const router = express.Router();
 router.route("/published-course").get(getAllPublishedCourse);
 
 router.route("/").post(isAuthenticated, createCourse);
-router.route("/search").get(isAuthenticated, searchCourse);
+router.route("/search").get(searchCourse);
+// router.route("/search").get(isAuthenticated, searchCourse);
 router.route("/").get(isAuthenticated, getCreatorCourses);
 
 router
   .route("/:id")
   .put(isAuthenticated, upload.single("courseThumbnail"), editCourse)
-  .get(getCourseById);
+  .get( getCourseById);
 router.route("/:id").get(isAuthenticated, getCourseById);
 router.route("/:courseId/lecture").post(isAuthenticated, createLecture);
 router.route("/:courseId/lecture").get(isAuthenticated, getLectures);
