@@ -9,10 +9,11 @@ export const generateToken = (res, user, message) => {
     .cookie("token", Token, {
       httpOnly: true,
       sameSite: "strict",
-      maxAge: 24 * 60 * 60 * 1000,//for 1 day
-    }).json({
-        sucess:true,
-        message,
-        user
+      maxAge: 24 * 60 * 60 * 1000, //for 1 day
+    })
+    .json({
+      sucess: true,
+      message,
+      user,
     });
 };
