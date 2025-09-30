@@ -3,7 +3,7 @@ import HeroSection from "./pages/student/HeroSection";
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "./layout/MainLayout";
 import { RouterProvider } from "react-router";
-import Courses from "./pages/student/courses";
+import Courses from "./pages/student/Courses";
 import MyLearning from "./pages/student/MyLearning";
 import EditProfile from "./pages/student/EditProfile";
 import Sidebar from "./pages/admin/Sidebar";
