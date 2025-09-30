@@ -34,11 +34,6 @@ export const register = async (req, res) => {
         `Welcome ${newUser.name}, your account has been created.`
       );
     }
-
-    return res.status(201).json({
-      sucess: true,
-      message: "Account created successfully.",
-    });
   } catch (error) {
     return res.status(500).json({
       success: false,
