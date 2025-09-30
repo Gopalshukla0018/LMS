@@ -57,7 +57,7 @@ const LectureTab = () => {
   // useEffect for getLectureByIdData
   useEffect(() => {
     if (lecture) {
-      console.log(lecture);
+    
       setLectureTitle(lecture.lectureTitle);
       setIsFree(lecture.isPreview);
       setUploadVideoInfo(lecture.videoInfo);

@@ -49,7 +49,7 @@ export const updateLectureProgress = async (req, res) => {
    
  const { id: courseId, lectureId } = req.params; 
     const userId = req.id;
-    console.log(`Updating progress for courseId: ${courseId}, lectureId: ${lectureId}, userId: ${userId}`); 
+    // console.log(`Updating progress for courseId: ${courseId}, lectureId: ${lectureId}, userId: ${userId}`); 
   
 
     // Fetch or create course progress
@@ -63,7 +63,7 @@ export const updateLectureProgress = async (req, res) => {
         completed: false,
         lectureProgress: [],
       });
-      console.log("Created new CourseProgress record"); // Debug
+      // console.log("Created new CourseProgress record"); // Debug
     }
 
     // Find the lecture progress in the course progress

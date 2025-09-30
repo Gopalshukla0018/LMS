@@ -40,12 +40,12 @@ const CourseTab = () => {
 
   const params = useParams();
   const courseId = params.courseId;
-  console.log("course id is:-", courseId);
+ 
   const { data: courseByIdData, isLoading: courseByIdLoading } =
     useGetCourseByIdQuery(courseId);
 
   const [toggelPublishUnpublish] = useToggelPublishUnpublishMutation();
-  console.log("toggle data is", toggelPublishUnpublish.data);
+
 
   const course = courseByIdData?.course; // <-- define course here
 
@@ -67,20 +67,20 @@ const CourseTab = () => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    console.log("title", input);
+   
     setInput({ ...input, [e.target.name]: e.target.value });
   };
   const handleChangeSubtitle = (e) => {
-    console.log("subtitle", input);
+;
     setInput({ ...input, [e.target.name]: e.target.value });
   };
   const getSelectedCategory = (value) => {
-    console.log("Selected category:", value);
+
     setInput({ ...input, Coursecategory: value });
   };
 
   const getcourseLevel = (value) => {
-    console.log("Course Level:", value);
+
     setInput({ ...input, courseLevel: value });
   };
 
@@ -114,7 +114,7 @@ const CourseTab = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success(data.message || "Course Updated Successfully");
-      // navigate("/admin/courses");
+ 
     }
     if (error) {
       toast.error(error?.data?.message || "Failed to update course");

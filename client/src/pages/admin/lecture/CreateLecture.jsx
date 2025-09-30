@@ -14,7 +14,7 @@ import Lecture from "./Lecture";
 const CreateLecture = () => {
   const [lectureTitle, setLectureTitle] = useState("");
 
-  console.log("title is ", lectureTitle);
+
 
   const navigate = useNavigate();
   const params = useParams();
@@ -29,7 +29,7 @@ const CreateLecture = () => {
     isLoading: lectureLoading,
     isError: lectureError,
   } = useGetCourseLecturesQuery(courseId);
-  console.log("for debug data is :-", lectureData);
+  // console.log("for debug data is :-", lectureData);
 
   const createLectureHandler = async () => {
     const courseId = params.courseId;
