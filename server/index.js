@@ -8,7 +8,7 @@ import courseRoutes from "./routes/course.route.js";
 import mediaRoute from "./routes/media.routes.js";
 import paymentRouter from "./routes/payment/payment.route.js";
 import courseProgressRoute from "./routes/courseProgress.route.js";
-import adminRoutes from "./routes/admin/admin.routes.js"
+import adminRoutes from "./routes/admin/admin.routes.js";
 
 dotenv.config({ path: "./.env" });
 // call deatebase connection here
@@ -21,7 +21,7 @@ const port = process.env.PORT || 3000;
 
 // default middleware
 
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
