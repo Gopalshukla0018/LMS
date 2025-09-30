@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Button } from "../ui/button";
-import { School, Search } from "lucide-react";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import DarkMode from "@/pages/darkMode";
 
@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { useSelector } from "react-redux";
 
 import SearchBar from "./SearchBar";
+import {  GraduationCap } from "lucide-react";
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
@@ -44,7 +45,9 @@ const Navbar = () => {
       <div className="justify-between hidden max-auto max-w-7xl md:flex ">
         <div className="flex gap-4 mt-3">
           <Link to="/">
-            <School size={"30"} />
+        
+                {/* <BookOpenTextIcon size={"30"} /> */}
+                    <GraduationCap size={"30"}  />
           </Link>
 
           <h1 className="hidden text-2xl font-extrabold md:block">

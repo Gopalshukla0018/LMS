@@ -26,6 +26,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useDispatch } from "react-redux";
+import { userLoggedIn } from "@/features/authSlice";
+// import { setCredentials } from "@/features/authSlice";
 
 const Login = () => {
   const [signupInput, setSignupInput] = useState({
@@ -48,6 +51,7 @@ const Login = () => {
     },
   ] = useRegisterUserMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [
     loginUser,
     {
@@ -76,6 +80,9 @@ const Login = () => {
   useEffect(() => {
     if (registerIsSuccess && RegisterData) {
       toast.success(RegisterData.message || "signUp successful");
+      dispatch(userLoggedIn(RegisterData));
+
+      navigate("/");
     }
     if (registerError) {
       toast.error(registerError?.data?.message || "signup failed");
@@ -85,6 +92,7 @@ const Login = () => {
     }
     if (loginIsSuccess && loginData) {
       toast.success(loginData.message || "login successful");
+       dispatch(userLoggedIn(loginData)); 
       navigate("/");
     }
   }, [

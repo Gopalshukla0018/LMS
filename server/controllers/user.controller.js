@@ -19,7 +19,22 @@ export const register = async (req, res) => {
       });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    await User.create({ name, email, password: hashedPassword , role});
+
+    const newUser = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      role,
+    });
+
+    if (newUser) {
+      generateToken(
+        res,
+        newUser,
+        `Welcome ${newUser.name}, your account has been created.`
+      );
+    }
+
     return res.status(201).json({
       sucess: true,
       message: "Account created successfully.",
