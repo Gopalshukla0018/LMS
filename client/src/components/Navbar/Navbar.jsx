@@ -99,8 +99,9 @@ const Navbar = () => {
               <Link to="login">
                 <Button variant="outline">login</Button>
               </Link>
-
+<Link to="login">
               <Button>signup</Button>
+                  </Link>
             </div>
           )}
           <DarkMode />
