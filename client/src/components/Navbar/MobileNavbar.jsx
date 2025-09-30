@@ -222,9 +222,15 @@ const MobileNavbar = () => {
           {user?.role === "instructor" && (
             <SheetFooter className="mt-6">
               <SheetClose asChild>
+                <>
+                <Link to="/admin/courses" className="w-full">
+                  <Button className="w-full">Courses Management</Button>
+                </Link>
                 <Link to="/admin/dashboard" className="w-full">
                   <Button className="w-full">Dashboard</Button>
                 </Link>
+                
+                </>
               </SheetClose>
             </SheetFooter>
           )}

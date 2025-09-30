@@ -17,7 +17,6 @@ import CourseDetail from "./pages/student/Courses/CourseDetail";
 import CourseProgress from "./pages/student/Courses/CourseProgress";
 import SearchPage from "./pages/student/SearchPage";
 
-
 import { ThemeProvider } from "./components/ThemeProvider";
 // protected  components
 import ProtectedRoutes from "./components/ProtectedRoutes";
@@ -66,7 +65,10 @@ const appRouter = createBrowserRouter([
           { path: "courses/create", element: <AddCours /> },
           { path: "courses/:courseId", element: <EditCourse /> },
           { path: "courses/:courseId/lecture", element: <CreateLecture /> },
-          { path: "courses/:courseId/lecture/:lectureId", element: <EditLecture /> },
+          {
+            path: "courses/:courseId/lecture/:lectureId",
+            element: <EditLecture />,
+          },
         ],
       },
     ],
@@ -79,7 +81,6 @@ function App() {
       <main>
         <RouterProvider router={appRouter} />
       </main>
-   
     </ThemeProvider>
   );
 }
