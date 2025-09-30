@@ -12,7 +12,7 @@ const cf = new Cashfree(
 
 const createCashfreeOrder = async (orderDetails) => {
   const { amount, currency, user, orderId } = orderDetails;
-
+const returnUrl = `${process.env.FRONTEND_URL}/payment-return?order_id={order_id}`;
   const request = {
     order_id: orderId,
    
@@ -25,7 +25,7 @@ const createCashfreeOrder = async (orderDetails) => {
       customer_name: user.name,
     },
     order_meta: {
-    return_url: `http://localhost:5173/payment-return?order_id={order_id}`,  // Update to production URL
+    return_url:returnUrl,  // Update to production URL
     },
   };
 
