@@ -42,7 +42,7 @@ const EditProfile = () => {
   };
 
   const updateUserHandler = async () => {
-    console.log(name, profilePhoto);
+
 
     const formData = new FormData();
     formData.append("name", name);

@@ -30,7 +30,7 @@ const Courses =  () => {
   // rtk query Hooks--
 const { data, isSuccess, isLoading,error } =  useGetAllPublishedCourseQuery();
 
-   console.log("published data is:-", data);
+  
 
     
    
