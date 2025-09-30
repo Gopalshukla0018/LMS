@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Button } from "../ui/button";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import DarkMode from "@/pages/darkMode";
+import DarkMode from "@/pages/DarkMode";
 
 import MobileNavbar from "./MobileNavbar";
 import {
