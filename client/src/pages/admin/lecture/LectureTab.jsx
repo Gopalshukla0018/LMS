@@ -22,7 +22,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 
-const MEDIA_API = "http://localhost:8081/api/v1/media";
+const MEDIA_API = `${import.meta.env.VITE_BACKEND_URL}/api/v1/media`;
 
 const LectureTab = () => {
   const [lectureTitle, setLectureTitle] = useState(""); // Variable name 'Title' ko 'title' kiya (standard practice)
