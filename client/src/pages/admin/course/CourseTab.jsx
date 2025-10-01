@@ -34,20 +34,15 @@ const CourseTab = () => {
   });
 
   // RTK Query Hooks ----
-
   const [editCourse, { data, isLoading, isSuccess, error }] =
     useEditCourseMutation();
-
   const params = useParams();
   const courseId = params.courseId;
- 
   const { data: courseByIdData, isLoading: courseByIdLoading } =
     useGetCourseByIdQuery(courseId);
-
   const [toggelPublishUnpublish] = useToggelPublishUnpublishMutation();
 
-
-  const course = courseByIdData?.course; // <-- define course here
+  const course = courseByIdData?.course;
 
   useEffect(() => {
     if (course) {
@@ -67,20 +62,18 @@ const CourseTab = () => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-   
     setInput({ ...input, [e.target.name]: e.target.value });
   };
-  const handleChangeSubtitle = (e) => {
-;
-    setInput({ ...input, [e.target.name]: e.target.value });
-  };
-  const getSelectedCategory = (value) => {
 
+  const handleChangeSubtitle = (e) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
+
+  const getSelectedCategory = (value) => {
     setInput({ ...input, Coursecategory: value });
   };
 
   const getcourseLevel = (value) => {
-
     setInput({ ...input, courseLevel: value });
   };
 
@@ -114,7 +107,6 @@ const CourseTab = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success(data.message || "Course Updated Successfully");
- 
     }
     if (error) {
       toast.error(error?.data?.message || "Failed to update course");
@@ -134,7 +126,6 @@ const CourseTab = () => {
     }
   };
 
-  // ADD THIS LOADING CHECK
   if (courseByIdLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -143,7 +134,6 @@ const CourseTab = () => {
     );
   }
 
-  // Optional but recommended: Check if course exists after loading
   if (!course) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -154,16 +144,17 @@ const CourseTab = () => {
 
   return (
     <Card>
-      <CardHeader className="flex items-center justify-between">
+      {/* --- MODIFIED FOR RESPONSIVENESS --- */}
+      <CardHeader className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
         <div>
           <CardTitle> Basic Course Information</CardTitle>
           <CardDescription>
             {" "}
-            Make changes to your courses here. click when your're done{" "}
+            Make changes to your courses here. click when you're done{" "}
           </CardDescription>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center self-end gap-4 md:self-auto">
           {/* Publish/Unpublish Switch with label */}
           <div className="flex items-center gap-2">
             <Switch
@@ -216,16 +207,17 @@ const CourseTab = () => {
             <Label>Description</Label>
             <RichTextEditor input={input} setInput={setInput} />
           </div>
-          <div className="flex items-center gap-5">
-            <div>
+          {/* --- MODIFIED FOR RESPONSIVENESS --- */}
+          <div className="flex flex-col gap-5 md:flex-row md:items-center">
+            <div className="flex-1">
               <Label className="mb-3">Category</Label>
               <Selector getSelectedCategory={getSelectedCategory} />
             </div>
-            <div>
+            <div className="flex-1">
               <Label className="mb-3">Course Level</Label>
               <CourseLevel getcourseLevel={getcourseLevel} />
             </div>
-            <div>
+            <div className="flex-1">
               <Label className="mb-3">Price in INR</Label>
               <input
                 type="number"
@@ -233,14 +225,14 @@ const CourseTab = () => {
                 value={input.coursePrice}
                 onChange={handleChange}
                 placeholder="Ex. 499"
-                className="px-4 py-2 border rounded-md outline-none "
+                className="w-full px-4 py-2 border rounded-md outline-none"
               />
             </div>
           </div>
           <div>
             <Label className="mb-3 ">Course Thumbnail</Label>
             <input
-              className="px-4 py-2 border rounded-md outline-none w-fit "
+              className="w-full px-4 py-2 border rounded-md outline-none md:w-fit"
               accept="image/*"
               type="file"
               onChange={getThumbnail}
@@ -249,7 +241,8 @@ const CourseTab = () => {
               <img
                 src={previewThumbnail}
                 alt="Course Thumbnail"
-                className="object-cover h-48 mt-3 rounded-md w-96"
+                // --- MODIFIED FOR RESPONSIVENESS ---
+                className="object-cover w-full h-48 mt-3 rounded-md md:w-96"
               />
             )}
           </div>
@@ -269,7 +262,7 @@ const CourseTab = () => {
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   Please wait
-                </>
+                </> 
               ) : (
                 "Save "
               )}
@@ -278,6 +271,9 @@ const CourseTab = () => {
         </div>
       </CardContent>
     </Card>
+ 
+
+
   );
 };
 
