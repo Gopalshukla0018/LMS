@@ -9,6 +9,7 @@ import mediaRoute from "./routes/media.routes.js";
 import paymentRouter from "./routes/payment/payment.route.js";
 import courseProgressRoute from "./routes/courseProgress.route.js";
 import adminRoutes from "./routes/admin/admin.routes.js";
+import superAdminRoutes from "./routes/superAdmin.route.js"
 
 dotenv.config({ path: "./.env" });
 // call deatebase connection here
@@ -34,6 +35,10 @@ app.use("/api/v1/progress", courseProgressRoute);
 
 // admin routes
 app.use("/api/v1/admin", adminRoutes);
+
+//suprt admin router
+app.use("./api/v1/superadmin",superAdminRoutes)
+
 
 app.use("/api/v1/payment", paymentRouter);
 app.get("/home", (req, res) => {

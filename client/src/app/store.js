@@ -7,7 +7,7 @@ import { courseApi } from "@/features/api/courseApi";
 import paymentApi from "@/features/api/paymentApi";
 import { courseProgressApi } from "@/features/api/courseProgressApi";
 import { adminApi } from "@/features/api/adminApi";
-
+import { superAdminApi } from "@/features/api/superAdminApi";
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (defaultMiddleware) =>
@@ -16,8 +16,8 @@ export const store = configureStore({
       courseApi.middleware,
       paymentApi.middleware,
       courseProgressApi.middleware,
-         adminApi.middleware 
-
+      adminApi.middleware,
+      superAdminApi.middleware
     ),
 });
 
