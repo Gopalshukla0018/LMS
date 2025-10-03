@@ -11,10 +11,15 @@ export const superAdminApi = createApi({
   endpoints: (builder) => ({
     getSuperAdminDashboardData: builder.query({
       query: () => ({
-        url: "/superadmin-dashboard",
+        url: "/dashboard",
         method: "GET",
       }),
-    }),
-  }),
-});
+    })
+    
+     
+    
+  
+})});
+
+
 export const { useGetSuperAdminDashboardDataQuery } = superAdminApi;
