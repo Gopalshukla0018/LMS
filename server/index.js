@@ -37,7 +37,7 @@ app.use("/api/v1/progress", courseProgressRoute);
 app.use("/api/v1/admin", adminRoutes);
 
 //suprt admin router
-app.use("./api/v1/superadmin",superAdminRoutes)
+app.use("/api/v1/superadmin",superAdminRoutes)
 
 
 app.use("/api/v1/payment", paymentRouter);
