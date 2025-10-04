@@ -13,19 +13,13 @@ import {
   GraduationCap,
   Server,
 } from "lucide-react";
-import CustomLoader from "../../components/ui/CustomLoader";
+
 import { useGetSuperAdminDashboardDataQuery } from "@/features/api/superAdminApi";
 
 const SuperAdminDashboard = () => {
   const { data, isLoading, isError } = useGetSuperAdminDashboardDataQuery();
 
-  if (isLoading) {
-    return (
-      <div className="p-6">
-        <CustomLoader />
-      </div>
-    );
-  }
+ 
 
   if (isError) {
     return (
