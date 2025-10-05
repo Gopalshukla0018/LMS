@@ -17,12 +17,13 @@ import CourseDetail from "./pages/student/Courses/CourseDetail";
 import CourseProgress from "./pages/student/Courses/CourseProgress";
 import SearchPage from "./pages/student/SearchPage";
 
-
 import { ThemeProvider } from "./components/ThemeProvider";
 // protected  components
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import AdminRoutes from "./components/AdminRoutes";
 import SuperAdminDashboard from "./pages/superAdmin/superAdminDashboard";
+import superAdminRoutes from "./components/superAdminRoutes";
+import SuperAdminRoutes from "./components/superAdminRoutes";
 
 const appRouter = createBrowserRouter([
   {
@@ -38,21 +39,9 @@ const appRouter = createBrowserRouter([
             <Courses />
           </>
         ),
-        
       },
-      {
-        path: "/superadmin",
-        element: (
-          <>
-               <SuperAdminDashboard/>
-          </>
-        ),
-        
-      },
-     
-      { path: "login", element: 
-      <Login /> 
-      },
+
+      { path: "login", element: <Login /> },
       { path: "course/search", element: <SearchPage /> },
       { path: "course-detail/:id", element: <CourseDetail /> },
 
@@ -63,8 +52,6 @@ const appRouter = createBrowserRouter([
           { path: "my-learning", element: <MyLearning /> },
           { path: "my-learning/:courseId", element: <CourseProgress /> },
           { path: "edit-profile", element: <EditProfile /> },
-       
- 
         ],
       },
 
@@ -85,6 +72,14 @@ const appRouter = createBrowserRouter([
           {
             path: "courses/:courseId/lecture/:lectureId",
             element: <EditLecture />,
+          },
+          {
+            path: "super-dashboard",
+            element: (
+              <SuperAdminRoutes>
+                <SuperAdminDashboard />
+              </SuperAdminRoutes>
+            ),
           },
         ],
       },

@@ -1,16 +1,17 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import Sidebar from "../pages/admin/Sidebar"; // Sidebar ko yahan import karein
+import Sidebar from "../pages/admin/Sidebar";
 
-const AdminRoutes = () => {
+const AdminRoutes = ({ children }) => {
   const { user } = useSelector((state) => state.auth);
 
-  if (user && user.role === "instructor") {
-    return <Sidebar />;
-  } else {
-    return <Navigate to="/" replace />;
+  if (user?.role === "instructor" || user?.role === "superadmin") {
+    return children || <Sidebar />;
   }
+
+  // Otherwise redirect to home
+  return <Navigate to="/" replace />;
 };
 
 export default AdminRoutes;

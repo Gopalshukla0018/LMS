@@ -21,7 +21,7 @@ import { toast } from "sonner";
 import { useSelector } from "react-redux";
 
 import SearchBar from "./SearchBar";
-import {  GraduationCap } from "lucide-react";
+import { GraduationCap } from "lucide-react";
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
@@ -34,7 +34,7 @@ const Navbar = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success(data.message || "User logout Successully");
-      navigate("login");
+      navigate("/");
     }
   }, [isSuccess]);
 
@@ -45,13 +45,12 @@ const Navbar = () => {
       <div className="justify-between hidden max-auto max-w-7xl md:flex ">
         <div className="flex gap-4 mt-3">
           <Link to="/">
-        
-                {/* <BookOpenTextIcon size={"30"} /> */}
-                    <GraduationCap size={"30"}  />
+            {/* <BookOpenTextIcon size={"30"} /> */}
+            <GraduationCap size={"30"} />
           </Link>
 
           <h1 className="hidden text-2xl font-extrabold md:block">
-           SkillsMittra
+            SkillsMittra
           </h1>
           <SearchBar />
         </div>
@@ -84,11 +83,12 @@ const Navbar = () => {
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
 
-                {user.role === "instructor" && (
+                {(user?.role === "instructor" ||
+                  user?.role === "superadmin") && (
                   <>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
-                      <Link to="/admin/Dashboard">Dashboard</Link>
+                      <Link to="/admin/dashboard">Dashboard</Link>
                     </DropdownMenuItem>
                   </>
                 )}
@@ -99,9 +99,9 @@ const Navbar = () => {
               <Link to="login">
                 <Button variant="outline">login</Button>
               </Link>
-<Link to="login">
-              <Button>signup</Button>
-                  </Link>
+              <Link to="login">
+                <Button>signup</Button>
+              </Link>
             </div>
           )}
           <DarkMode />
@@ -109,8 +109,10 @@ const Navbar = () => {
       </div>
       {/* Mobile device */}
       <div className="flex items-center justify-between px-4 mt-2 md:hidden">
-        <Link to={`/`}><h1 className="text-2xl font-extrabold"> SkillsMittra</h1></Link>
-        
+        <Link to={`/`}>
+          <h1 className="text-2xl font-extrabold"> SkillsMittra</h1>
+        </Link>
+
         <MobileNavbar />
       </div>
     </div>
