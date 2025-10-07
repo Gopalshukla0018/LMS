@@ -1,0 +1,81 @@
+[33m2655c1f[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mbackup-lost-commits[m[33m)[m 5 Oct: Backup commit
+[33md42459f[m 3 Oct: Backup commit
+[33me92499d[m Remove server/uploads folder
+[33m291641f[m fix super adminn panel
+[33m5d8a06a[m feat: final super admin dashboard
+[33me96c17f[m feat: super admin panel
+[33mfb825b9[m feat: super admin dashboard
+[33mbdab45a[m  complete backennd of super admin dashboard
+[33m7b7756f[m[33m ([m[1;32mrecover-superadmin[m[33m, [m[1;32mmain[m[33m, [m[1;32mbackup-recovered[m[33m)[m fix CourseTab for responsiveness
+[33m048d999[m responshivness fiz
+[33m9a993d4[m add
+[33mcaf86c6[m signup button working
+[33m9be74c9[m fic: generate token
+[33m1eb54d0[m add vercel.json
+[33m4dbf4b9[m fix: correct import darkmode
+[33ma374f52[m fix
+[33m3fc1a0d[m remove console logs
+[33m09d3518[m change cashfree return url hardcoded to env
+[33m1fed060[m fix: change frontend url l hardcoded to env
+[33m31e4274[m COMPLETE MAJOR WORKS
+[33meec514b[m fix(auth): integrate login API with Redux and store user state
+[33mb08f2c6[m complete project v-1
+[33ma3748ea[m fix:protected routes
+[33mbc0e389[m ficx:--footer
+[33m0d6c8fd[m fix some bug and add protected route and admin routes
+[33mf51a444[m feat(dashboard): connect instructor dashboard with backend and fix dark mode bugs
+[33m5363920[m feat: Add dashboard and redesign hero section
+[33m2ac9e74[m feat: add dark mode support
+[33mfe536a5[m fix (categories)
+[33mfe66321[m feat: add search page
+[33md717648[m Merge branch 'main' of https://github.com/Gopalshukla0018/LMS
+[33m83e7914[m feat: add Course Progress page
+[33m8425f11[m feat(course-progress): mark lecture as viewed after 40% watch
+[33me31bfcc[m feat: payment setup[ complete and enroll now button render based on condetions
+[33m167fea9[m fix(cashfree) : payment integreation complete with testing
+[33m586f7bd[m sample commit
+[33m1315391[m fic: cashfree errors
+[33ma708454[m feat:implementer oayment integreation with cash free
+[33md5110f5[m feat install cashfree
+[33m3f08ca5[m fix(models): Refine PurchasedCourse schema
+[33m8b8391b[m feat(models): Create purchasedCourse schema for course enrollment
+[33mdda8ed9[m feat: cdreate course detail page
+[33mf00a8c9[m fix- edit course controller
+[33m5d75e61[m feat: Implement fetching and display of published courses
+[33me2d334e[m sample push for check errors on code space
+[33m2ab4aa8[m fix-(toggel for publish unpublish)
+[33mddc5347[m fix-(lecture) remove on refresh
+[33maff99e5[m feat(lecture): Implement add and remove functionality
+[33m9b83a06[m fix- LectureTitle into lectureTitle
+[33mfffe0f2[m check-sample push
+[33m1f44fe4[m fix(lecture): Prevent crash when updating lecture without video
+[33m80de760[m push for check errors
+[33md53be3c[m feat: add edit lecture UI (in progress)
+[33m3b5cec1[m refactor: rename courseID to courseId throughout project for better consistancy
+[33m2c592c1[m feat: add “Create Lecture” feature for courses
+[33mf598fef[m create Lecture  Tab
+[33m6a64067[m feat: add course edit with navigation fix, update HeroSection UI
+[33me4acc07[m feat: add course creation and editing feature in admin pane
+[33m1935d4b[m refactor: clean up CourseTab component and improve state handling
+[33m6f9078e[m fix: correct casing in CourseLevel prop and update console log message
+[33m50820e7[m creating Edit Course page with course level selection feature
+[33m924585e[m course uploading feature done
+[33m4e221e2[m create courses section complete frontend + backend
+[33m8330c19[m controller
+[33m5931c72[m changes in controller
+[33mbcebffd[m coyurse schema and login logout completed
+[33mcd65cfd[m login logout completed and couse schema coompleted
+[33m263dc8c[m Complete logout and cloudinary setup
+[33mcdd132b[m setup cloudinary and complete edit profile component
+[33m8747a92[m adding login logout backend middelware
+[33mb335637[m add profile page
+[33m45f926d[m My-learning page completed with shimmer effect
+[33m34f1619[m setup routers
+[33mde62a2d[m navbar complete
+[33m4980a23[m nav bar completed
+[33m777b2a7[m login form complete
+[33madcee0d[m solevv backend error in env
+[33m7591603[m test api
+[33m354e9b5[m commit check
+[33mb3e9c1f[m REMOVE uri
+[33m6503eda[m Initial commit with proper .gitignore

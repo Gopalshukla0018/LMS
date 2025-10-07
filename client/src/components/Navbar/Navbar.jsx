@@ -62,7 +62,7 @@ const Navbar = () => {
                 <Avatar>
                   <AvatarImage
                     src={user?.photoUrl || "https://github.com/shadcn.png"}
-                    alt="@shadcn"
+                    alt="user avatar"
                   />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
