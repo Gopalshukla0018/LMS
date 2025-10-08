@@ -43,6 +43,10 @@ const CourseTab = () => {
   const [toggelPublishUnpublish] = useToggelPublishUnpublishMutation();
 
   const course = courseByIdData?.course;
+  useEffect(() => {
+  console.log("Current input state:", input);
+}, [input]);
+
 
   useEffect(() => {
     if (course) {
@@ -54,12 +58,15 @@ const CourseTab = () => {
         courseLevel: course.courseLevel || "",
         coursePrice: course.coursePrice || "",
         courseThumbnail: course.courseThumbnail || "",
+        
       });
+    
     }
   }, [course]);
 
   const [previewThumbnail, setPreviewThumbnail] = useState("");
   const navigate = useNavigate();
+ 
 
   const handleChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -82,6 +89,7 @@ const CourseTab = () => {
     const formData = new FormData();
     formData.append("courseTitle", input.courseTitle);
     formData.append("courseSubTitle", input.courseSubTitle);
+    formData.append("courseDescription", input.courseDescription); 
     formData.append("Coursecategory", input.Coursecategory);
     formData.append("courseLevel", input.courseLevel);
     formData.append("coursePrice", input.coursePrice);
@@ -205,7 +213,11 @@ const CourseTab = () => {
           </div>
           <div>
             <Label>Description</Label>
-            <RichTextEditor input={input} setInput={setInput} />
+            <RichTextEditor
+              initialValue={course?.courseDescription} // Add this prop
+              input={input}
+              setInput={setInput}
+            />
           </div>
           {/* --- MODIFIED FOR RESPONSIVENESS --- */}
           <div className="flex flex-col gap-5 md:flex-row md:items-center">
@@ -262,7 +274,7 @@ const CourseTab = () => {
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   Please wait
-                </> 
+                </>
               ) : (
                 "Save "
               )}
@@ -271,9 +283,6 @@ const CourseTab = () => {
         </div>
       </CardContent>
     </Card>
- 
-
-
   );
 };
 

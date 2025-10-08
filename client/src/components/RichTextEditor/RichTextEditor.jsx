@@ -5,6 +5,7 @@ export default function RichTextEditor({ input, setInput }) {
   const handleChange = (e) => {
 
     setInput({ ...input, courseDescription: e.target.value });
+   
   };
 
   return (

@@ -24,6 +24,7 @@ import { BadgeInfo, Users, Lock, PlayCircle, Video } from "lucide-react";
 const CourseDetail = () => {
   const { id } = useParams();
   const { data: courseData, isLoading, isError } = useGetCourseByIdQuery(id);
+  console.log("Course Data:", courseData);
 
   if (isLoading) {
     return <CourseDetailSkeleton />;
