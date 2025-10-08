@@ -28,7 +28,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative flex flex-col items-center justify-center px-6 py-24 overflow-hidden bg-background text-foreground">
+    <section className="relative flex flex-col items-center justify-center py-24 overflow-hidden sm:px-6 bg-background text-foreground">
       <motion.div
         className="absolute rounded-full opacity-50 w-96 h-96 bg-purple-500/20 mix-blend-multiply filter blur-3xl"
         animate={{ x: [0, 80, -60, 0], y: [0, -50, 70, 0] }}
@@ -40,7 +40,7 @@ const HeroSection = () => {
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <div className="relative z-10 grid max-w-6xl gap-12 lg:grid-cols-2">
+      <div className="relative z-10 grid w-full gap-8 mx-auto max-w-7xl lg:grid-cols-2">
         {/* Left Content */}
         <div className="flex flex-col items-start text-left">
           <motion.h1

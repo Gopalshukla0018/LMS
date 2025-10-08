@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 const MyLearning = () => {
   const { data, isLoading } = useLoardUserQuery();
+  console.log("data is-",data);
   const myLearningCourses = data?.user.enrolledCourses || [];
 
   return (
