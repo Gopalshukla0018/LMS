@@ -99,7 +99,7 @@ const Navbar = () => {
               <Link to="login">
                 <Button variant="outline">login</Button>
               </Link>
-              <Link to="login">
+              <Link to={{ pathname: "/login", search: "?tab=signup" }}>
                 <Button>signup</Button>
               </Link>
             </div>

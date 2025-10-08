@@ -98,6 +98,7 @@ export const editCourse = async (req, res) => {
       courseTitle,
       courseSubTitle,
       Coursecategory,
+      courseDescription,
       courseLevel,
       coursePrice,
     } = req.body;
@@ -126,6 +127,7 @@ export const editCourse = async (req, res) => {
       courseTitle,
       courseSubTitle,
       category: Coursecategory, // Model ke hisaab se 'category'
+      courseDescription,
       courseLevel,
       coursePrice,
     };

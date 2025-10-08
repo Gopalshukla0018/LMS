@@ -1,6 +1,7 @@
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -93,7 +94,7 @@ const Login = () => {
     }
     if (loginIsSuccess && loginData) {
       toast.success(loginData.message || "login successful");
-       dispatch(userLoggedIn(loginData)); 
+      dispatch(userLoggedIn(loginData));
       navigate("/");
     }
   }, [
@@ -104,10 +105,18 @@ const Login = () => {
     loginError,
     registerError,
   ]);
+  const location = useLocation();
+
+  // Determine initial tab: prefer location.state.tab, then ?tab= query param, default to 'login'
+  const searchParams = new URLSearchParams(location.search);
+  const tabFromQuery = searchParams.get("tab");
+  const tabFromState = location.state?.tab;
+  const initialTab = tabFromState || tabFromQuery || "login";
+
   return (
     <div className="flex items-center justify-center w-full mt-20">
       <div className="flex flex-col w-full max-w-sm gap-6 ">
-        <Tabs defaultValue="login">
+        <Tabs defaultValue={initialTab}>
           <TabsList className="w-full">
             <TabsTrigger value="signup">Sign up</TabsTrigger>
             <TabsTrigger value="login">Login</TabsTrigger>
@@ -238,7 +247,6 @@ const Login = () => {
           </TabsContent>
         </Tabs>
       </div>
-
     </div>
   );
 };

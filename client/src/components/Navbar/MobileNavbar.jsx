@@ -108,7 +108,6 @@
 
 // export default MobileNavbar;
 
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -209,7 +208,7 @@ const MobileNavbar = () => {
                     </Link>
                   </SheetClose>
                   <SheetClose asChild>
-                    <Link to="/signup">
+                    <Link to={{ pathname: "/login", search: "?tab=signup" }}>
                       <Button className="w-full">Sign Up</Button>
                     </Link>
                   </SheetClose>
@@ -223,13 +222,12 @@ const MobileNavbar = () => {
             <SheetFooter className="mt-6">
               <SheetClose asChild>
                 <>
-                <Link to="/admin/courses" className="w-full">
-                  <Button className="w-full">Courses Management</Button>
-                </Link>
-                <Link to="/admin/dashboard" className="w-full">
-                  <Button className="w-full">Dashboard</Button>
-                </Link>
-                
+                  <Link to="/admin/courses" className="w-full">
+                    <Button className="w-full">Courses Management</Button>
+                  </Link>
+                  <Link to="/admin/dashboard" className="w-full">
+                    <Button className="w-full">Dashboard</Button>
+                  </Link>
                 </>
               </SheetClose>
             </SheetFooter>
