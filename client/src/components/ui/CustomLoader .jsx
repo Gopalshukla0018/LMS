@@ -17,7 +17,7 @@ const CustomLoader = ({ children }) => {
   if (isLoading) {
     return (
       <motion.div
-        className="space-y-8"
+        className="min-h-screen space-y-8 text-gray-900 transition-colors duration-200 bg-white dark:bg-gray-900 dark:text-gray-100"
         initial="hidden"
         animate="visible"
         variants={fadeVariants}
@@ -33,13 +33,13 @@ const CustomLoader = ({ children }) => {
         <section className="relative py-16 bg-gray-50 dark:bg-gray-900">
           <div className="relative p-6 mx-auto max-w-7xl">
             <motion.h2
-              className="mb-12 text-3xl font-extrabold text-center text-gray-900 dark:text-white sm:text-4xl"
+              className="mb-12 text-3xl font-extrabold text-center text-gray-900 dark:text-gray-100 sm:text-4xl"
               variants={fadeVariants}
             >
               Loading Courses...
             </motion.h2>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-              {Array.from({ length: 8 }).map((_, idx) => (
+              {Array.from({ length: 2 }).map((_, idx) => (
                 <motion.div key={idx} variants={fadeVariants}>
                   <CoursesSkeleton />
                 </motion.div>

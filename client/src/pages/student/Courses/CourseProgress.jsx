@@ -40,8 +40,6 @@ const CourseProgress = () => {
   ] = useInCompleteCourseMutation();
 
   useEffect(() => {
-   
-
     if (completedSuccess) {
       refetch();
       toast.success(markCompleteData?.message || "Course marked as completed!");
@@ -132,8 +130,10 @@ const CourseProgress = () => {
                 }
               />
             ) : (
-              <div className="flex items-center justify-center h-64 bg-gray-200 rounded-lg">
-                <p className="text-gray-500">Video not available</p>
+              <div className="flex items-center justify-center h-64 bg-gray-200 rounded-lg dark:bg-gray-800">
+                <p className="text-gray-500 dark:text-gray-300">
+                  Video not available
+                </p>
               </div>
             )}
           </div>

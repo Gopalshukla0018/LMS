@@ -9,6 +9,7 @@ import {
   getLectureById,
   getLectures,
   removeLecture,
+  deleteCourse,
   searchCourse,
   toggelPublishUnpublish,
 } from "../controllers/course.controller.js";
@@ -29,7 +30,8 @@ router.route("/").get(isAuthenticated, getCreatorCourses);
 router
   .route("/:id")
   .put(isAuthenticated, upload.single("courseThumbnail"), editCourse)
-  .get( getCourseById);
+  .get(getCourseById)
+  .delete(isAuthenticated, deleteCourse);
 router.route("/:id").get(isAuthenticated, getCourseById);
 router.route("/:courseId/lecture").post(isAuthenticated, createLecture);
 router.route("/:courseId/lecture").get(isAuthenticated, getLectures);

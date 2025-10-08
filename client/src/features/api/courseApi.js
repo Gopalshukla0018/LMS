@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-
 const COURSE_API = `${import.meta.env.VITE_BACKEND_URL}/api/v1/course`;
 
 export const courseApi = createApi({
@@ -25,12 +24,12 @@ export const courseApi = createApi({
     }),
 
     // get all published courses
-    getAllPublishedCourse:builder.query({
-      query:()=>({
-        url:"/published-course",
-        methon:"GET"
+    getAllPublishedCourse: builder.query({
+      query: () => ({
+        url: "/published-course",
+        methon: "GET",
       }),
-        providesTags: ["Course"],
+      providesTags: ["Course"],
     }),
     getCreatorCourses: builder.query({
       query: () => ({
@@ -39,27 +38,27 @@ export const courseApi = createApi({
       }),
       providesTags: ["Refetch_Creator_Course"],
     }),
-   getSearchCourse:builder.query({
-      query: ({searchQuery, categories, sortByPrice}) => {
+    getSearchCourse: builder.query({
+      query: ({ searchQuery, categories, sortByPrice }) => {
         // Build qiery string
-        let queryString = `/search?query=${encodeURIComponent(searchQuery)}`
+        let queryString = `/search?query=${encodeURIComponent(searchQuery)}`;
 
-        // append cateogry 
-        if(categories && categories.length > 0) {
+        // append cateogry
+        if (categories && categories.length > 0) {
           const categoriesString = categories.map(encodeURIComponent).join(",");
-          queryString += `&categories=${categoriesString}`; 
+          queryString += `&categories=${categoriesString}`;
         }
 
         // Append sortByPrice is available
-        if(sortByPrice){
-          queryString += `&sortByPrice=${encodeURIComponent(sortByPrice)}`; 
+        if (sortByPrice) {
+          queryString += `&sortByPrice=${encodeURIComponent(sortByPrice)}`;
         }
 
         return {
-          url:queryString,
-          method:"GET", 
-        }
-      }
+          url: queryString,
+          method: "GET",
+        };
+      },
     }),
 
     editCourse: builder.mutation({
@@ -133,10 +132,16 @@ export const courseApi = createApi({
       }),
       invalidatesTags: ["Course"],
     }),
+    // delete course
+    deleteCourse: builder.mutation({
+      query: (courseId) => ({
+        url: `/${courseId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Refetch_Creator_Course"],
+    }),
   }),
 });
-
-
 
 export const {
   useCreateCourseMutation,
@@ -149,6 +154,7 @@ export const {
   useRemoveLectureMutation,
   useGetLectureByIdQuery,
   useToggelPublishUnpublishMutation,
+  useDeleteCourseMutation,
   useGetAllPublishedCourseQuery,
-  useGetSearchCourseQuery
+  useGetSearchCourseQuery,
 } = courseApi;

@@ -391,3 +391,50 @@ export const toggelPublishUnpublish = async (req, res) => {
     });
   }
 };
+
+// Delete a course and its lectures (and related media)
+export const deleteCourse = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const course = await Course.findById(id);
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    // Delete course thumbnail from cloudinary if present
+    if (course.courseThumbnail) {
+      try {
+        const publicID = course.courseThumbnail.split("/").pop().split(".")[0];
+        await deleteMediafromCloudinary(publicID);
+      } catch (err) {
+        console.log("Failed to delete course thumbnail:", err);
+      }
+    }
+
+    // Delete all lectures and their media
+    if (course.lectures && course.lectures.length > 0) {
+      for (const lectureId of course.lectures) {
+        try {
+          const lecture = await LectureModel.findByIdAndDelete(lectureId);
+          if (lecture && lecture.publicId) {
+            await deleteMediafromCloudinary(lecture.publicId);
+          }
+        } catch (err) {
+          console.log(`Failed to delete lecture ${lectureId}:`, err);
+        }
+      }
+    }
+
+    // Finally delete the course document
+    await Course.findByIdAndDelete(id);
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Course deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Failed to delete course" });
+  }
+};

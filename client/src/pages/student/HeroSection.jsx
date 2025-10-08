@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ArrowRight } from "lucide-react";
+import HeroAbout from "@/components/HeroAbout";
 
 const keywords = [
   "Web Development",
@@ -14,8 +15,7 @@ const keywords = [
   "Cyber Security",
 ];
 
-const 
-HeroSection = () => {
+const HeroSection = () => {
   const navigate = useNavigate();
   const { user } = useSelector((store) => store.auth);
 
@@ -28,9 +28,7 @@ HeroSection = () => {
   };
 
   return (
-   
     <section className="relative flex flex-col items-center justify-center px-6 py-24 overflow-hidden bg-background text-foreground">
-     
       <motion.div
         className="absolute rounded-full opacity-50 w-96 h-96 bg-purple-500/20 mix-blend-multiply filter blur-3xl"
         animate={{ x: [0, 80, -60, 0], y: [0, -50, 70, 0] }}
@@ -52,14 +50,12 @@ HeroSection = () => {
             transition={{ duration: 0.7 }}
           >
             Master Skills, <br />
-          
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-pink-400">
               Build Your Future
             </span>
           </motion.h1>
 
           <motion.p
-        
             className="mb-8 text-lg text-muted-foreground"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -68,8 +64,8 @@ HeroSection = () => {
             Learn from industry experts, sharpen your skills, and unlock career
             opportunities with our curated courses.
           </motion.p>
+
           <div className="flex gap-4">
-            {/* This button has its own strong styling */}
             <Button
               onClick={handleGetStartedClick}
               className="flex items-center gap-2 px-6 py-3 text-white transition-opacity bg-gradient-to-r from-pink-500 to-yellow-500 hover:opacity-90"
@@ -78,20 +74,19 @@ HeroSection = () => {
               <ArrowRight size={18} />
             </Button>
 
-           
             <Button
               onClick={() => navigate(`/course/search?query`)}
               variant="outline"
-              className="px-6 py-3" // Simplified: relies on default button styles which use your theme
+              className="px-6 py-3"
             >
               Explore Courses
             </Button>
           </div>
         </div>
+
         {/* Right Side: Rotating Keywords */}
         <div className="flex items-center justify-center">
           <motion.div
-         
             className="relative flex items-center justify-center border-4 rounded-full w-80 h-80 border-border"
             animate={{ rotate: 360 }}
             transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
@@ -101,7 +96,6 @@ HeroSection = () => {
               return (
                 <motion.div
                   key={word}
-          
                   className="absolute px-3 py-2 text-sm font-medium rounded-full shadow-lg bg-card text-card-foreground backdrop-blur-md"
                   style={{
                     top: `calc(50% - 1rem + ${40 * Math.sin(angle)}%)`,
@@ -122,6 +116,9 @@ HeroSection = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* separate about component below hero */}
+      <HeroAbout />
     </section>
   );
 };

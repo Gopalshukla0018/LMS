@@ -18,9 +18,20 @@ import {
   useEditCourseMutation,
   useGetCourseByIdQuery,
   useToggelPublishUnpublishMutation,
+  useDeleteCourseMutation,
 } from "@/features/api/courseApi";
 import { toast } from "sonner";
 import { Switch } from "@/components/ui/switch";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 const CourseTab = () => {
   const [input, setInput] = useState({
@@ -41,12 +52,13 @@ const CourseTab = () => {
   const { data: courseByIdData, isLoading: courseByIdLoading } =
     useGetCourseByIdQuery(courseId);
   const [toggelPublishUnpublish] = useToggelPublishUnpublishMutation();
+  const [deleteCourse, { isLoading: isDeleting }] = useDeleteCourseMutation();
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   const course = courseByIdData?.course;
   useEffect(() => {
-  console.log("Current input state:", input);
-}, [input]);
-
+    console.log("Current input state:", input);
+  }, [input]);
 
   useEffect(() => {
     if (course) {
@@ -58,15 +70,12 @@ const CourseTab = () => {
         courseLevel: course.courseLevel || "",
         coursePrice: course.coursePrice || "",
         courseThumbnail: course.courseThumbnail || "",
-        
       });
-    
     }
   }, [course]);
 
   const [previewThumbnail, setPreviewThumbnail] = useState("");
   const navigate = useNavigate();
- 
 
   const handleChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -89,7 +98,7 @@ const CourseTab = () => {
     const formData = new FormData();
     formData.append("courseTitle", input.courseTitle);
     formData.append("courseSubTitle", input.courseSubTitle);
-    formData.append("courseDescription", input.courseDescription); 
+    formData.append("courseDescription", input.courseDescription);
     formData.append("Coursecategory", input.Coursecategory);
     formData.append("courseLevel", input.courseLevel);
     formData.append("coursePrice", input.coursePrice);
@@ -179,12 +188,52 @@ const CourseTab = () => {
           </div>
 
           {/* Remove Icon Button with circle background */}
-          <button
-            // onClick={removeCourseHandler}
-            className="flex items-center justify-center w-10 h-10 text-red-600 bg-red-100 rounded-full hover:bg-red-200"
-          >
-            <Trash2 className="w-5 h-5" />
-          </button>
+          <>
+            <button
+              onClick={() => setOpenDeleteDialog(true)}
+              disabled={isDeleting}
+              className="flex items-center justify-center w-10 h-10 text-red-600 bg-red-100 rounded-full hover:bg-red-200 disabled:opacity-50"
+            >
+              <Trash2 className="w-5 h-5" />
+            </button>
+
+            <Dialog open={openDeleteDialog} onOpenChange={setOpenDeleteDialog}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Delete Course</DialogTitle>
+                  <DialogDescription>
+                    Are you sure you want to delete this course? This action
+                    will remove all lectures and cannot be undone.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button className="px-4 py-2 text-black bg-white border rounded">
+                      Cancel
+                    </Button>
+                  </DialogClose>
+                  <button
+                    onClick={async () => {
+                      try {
+                        const res = await deleteCourse(courseId).unwrap();
+                        toast.success(res.message || "Course deleted");
+                        setOpenDeleteDialog(false);
+                        navigate("/admin/courses");
+                      } catch (err) {
+                        toast.error(
+                          err?.data?.message || "Failed to delete course"
+                        );
+                      }
+                    }}
+                    disabled={isDeleting}
+                    className="px-4 py-2 ml-2 text-white bg-red-600 rounded disabled:opacity-50"
+                  >
+                    {isDeleting ? "Deleting..." : "Delete"}
+                  </button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </>
         </div>
       </CardHeader>
       <CardContent>
