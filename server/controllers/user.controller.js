@@ -9,12 +9,12 @@ export const register = async (req, res) => {
     if (!name || !email || !password || !role) {
       return res
         .status(400)
-        .json({ sucess: false, message: "All fields are required" });
+        .json({ success: false, message: "All fields are required" });
     }
     const user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({
-        sucess: false,
+        success: false,
         message: "User already exists with this email, please login",
       });
     }
@@ -37,7 +37,7 @@ export const register = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Failed to reggister",
+      message: "Failed to register",
     });
   }
 };
@@ -47,21 +47,21 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
       return res.status(400).json({
-        sucess: false,
+        success: false,
         message: "All fields are required.",
       });
     }
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({
-        sucess: false,
+        success: false,
         message: "Incorrect email or password",
       });
     }
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
       return res.status(400).json({
-        sucess: false,
+        success: false,
         message: "Incorrect email or password",
       });
     }
@@ -84,7 +84,7 @@ export const logout = async (_, res) => {
     console.log(error);
     return res.status(500).json({
       success: false,
-      message: "Failed to login",
+      message: "Failed to logout",
     });
   }
 };
@@ -100,12 +100,12 @@ export const getUserProfile = async (req, res) => {
       });
     if (!user) {
       return res.status(400).json({
-        message: "Profiile not found",
-        success: "false",
+        message: "Profile not found",
+        success: false,
       });
     }
     return res.status(200).json({
-      success: "true",
+      success: true,
       user,
     });
   } catch (error) {
@@ -130,18 +130,29 @@ export const updateProfile = async (req, res) => {
         success: false,
       });
     }
+    // Only handle photo upload if a new file was provided
+    const updatedData = { name };
+    if (profilePhoto) {
+      // delete old image if present
+      if (user.photoUrl) {
+        try {
+          const puhblicId = user.photoUrl.split("/").pop().split(".")[0]; // extract public id
+          await deleteMediafromCloudinary(puhblicId);
+        } catch (err) {
+          console.log("Failed to delete previous profile photo:", err);
+        }
+      }
 
-    // extract the public id oof the oild image from the url if it is exists
-
-    if (user.photoUrl) {
-      const puhblicId = user.photoUrl.split("/").pop().split(".")[0]; // extract public id
-      deleteMediafromCloudinary(puhblicId);
+      // upload new photo
+      try {
+        const cloudResponse = await uploadMedia(profilePhoto.path);
+        const photoUrl = cloudResponse.secure_url;
+        updatedData.photoUrl = photoUrl;
+      } catch (err) {
+        console.log("Failed to upload new profile photo:", err);
+        // proceed without photo update
+      }
     }
-    // uploard new photo
-    const cloudResponse = await uploadMedia(profilePhoto.path);
-    const photoUrl = cloudResponse.secure_url;
-
-    const updatedData = { name, photoUrl };
     const updatedUser = await User.findByIdAndUpdate(userId, updatedData, {
       new: true,
     }).select("-password");
