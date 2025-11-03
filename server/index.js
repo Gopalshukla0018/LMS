@@ -27,7 +27,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
-///apis
+
+
+app.get("/api/v1/health", (req, res) => {
+  res.status(200).json({ status: "UP", message: "Server is healthy" });
+});
+
+// ... aapka baki ka code (jaise app.listen)
+
 app.use("/api/v1/media", mediaRoute);
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/course", courseRoutes);
