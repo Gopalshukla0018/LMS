@@ -8,13 +8,18 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
+      unique: true,
     },
-    password: { 
+    password: {
       type: String,
-       required: true },
+      required: false,
+    },
+    googleId: { // for Oauth
+      type: String,
+    },
     role: {
       type: String,
-      enum: ["student", "instructor","superadmin"],
+      enum: ["student", "instructor", "superadmin"],
       default: "student",
     },
     enrolledCourses: [
