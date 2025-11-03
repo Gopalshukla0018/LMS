@@ -33,7 +33,13 @@ app.get("/api/v1/health", (req, res) => {
   res.status(200).json({ status: "UP", message: "Server is healthy" });
 });
 
-// ... aapka baki ka code (jaise app.listen)
+/// root route
+ app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Welcome to SkillsMittra API! Server is running.",
+  });
+});
 
 app.use("/api/v1/media", mediaRoute);
 app.use("/api/v1/user", userRoute);
