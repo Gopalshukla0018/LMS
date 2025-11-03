@@ -36,7 +36,7 @@ export const connectPassport = () => {
             name: profile.displayName,
             email: profile.emails[0].value,
             photoUrl: profile.photos[0].value,
-            role: "student", // Naye user ko default 'student' role dein
+            role: "student", //
           });
 
           return done(null, newUser);
