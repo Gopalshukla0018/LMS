@@ -74,30 +74,27 @@ export const login = async (req, res) => {
   }
 };
 
-
-
-export const logout = async (_, res) => {
+export const logout = (req, res) => {
   try {
-    return res
-      .status(200)
-      .clearCookie("token", {
-        httpOnly: true,
-        secure: true,        // production me zaruri
-        sameSite: "none",    // agar frontend aur backend alag domain pe hain
-      })
-      .json({
-        message: "Logged out successfully",
-        success: true,
-      });
+    res.cookie("token", "", {
+      httpOnly: true,
+      expires: new Date(0),
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      path: "/",
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Logged out successfully",
+    });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({
+    res.status(500).json({
       success: false,
-      message: "Failed to logout",
+      message: error.message,
     });
   }
 };
-
 
 export const getUserProfile = async (req, res) => {
   try {
@@ -130,7 +127,7 @@ export const getUserProfile = async (req, res) => {
 export const updateProfile = async (req, res) => {
   try {
     const userId = req.id;
-    const { name ,role} = req.body;
+    const { name, role } = req.body;
     const profilePhoto = req.file;
 
     const user = await User.findById(userId);
@@ -141,7 +138,7 @@ export const updateProfile = async (req, res) => {
       });
     }
     // Only handle photo upload if a new file was provided
-    const updatedData = { name ,role};
+    const updatedData = { name, role };
     if (profilePhoto) {
       // delete old image if present
       if (user.photoUrl) {
