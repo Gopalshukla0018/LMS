@@ -74,17 +74,24 @@ export const login = async (req, res) => {
   }
 };
 
-export const logout = async (_, res) => {
+export const logout = (req, res) => {
   try {
-    return res.status(200).cookie("token", "", { maxAge: 0 }).json({
-      message: "Logged out successfully",
+    res.cookie("token", "", {
+      httpOnly: true,
+      expires: new Date(0),
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      path: "/",
+    });
+
+    res.status(200).json({
       success: true,
+      message: "Logged out successfully",
     });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({
+    res.status(500).json({
       success: false,
-      message: "Failed to logout",
+      message: error.message,
     });
   }
 };
@@ -120,7 +127,7 @@ export const getUserProfile = async (req, res) => {
 export const updateProfile = async (req, res) => {
   try {
     const userId = req.id;
-    const { name } = req.body;
+    const { name, role } = req.body;
     const profilePhoto = req.file;
 
     const user = await User.findById(userId);
@@ -131,7 +138,7 @@ export const updateProfile = async (req, res) => {
       });
     }
     // Only handle photo upload if a new file was provided
-    const updatedData = { name };
+    const updatedData = { name, role };
     if (profilePhoto) {
       // delete old image if present
       if (user.photoUrl) {

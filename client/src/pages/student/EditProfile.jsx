@@ -10,6 +10,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
@@ -21,34 +28,56 @@ import {
   useUpdateUserMutation,
 } from "@/features/api/authApi";
 import { toast } from "sonner";
+import { useSelector } from "react-redux";
 
 const EditProfile = () => {
   const [name, setName] = useState("");
-  const [profilePhoto, setProfilePhoto] = useState("");
-
-  const { data, isLoading ,refetch} = useLoardUserQuery();
+  const [profilePhoto, setProfilePhoto] = useState(null);
+  const [previewPhoto, setPreviewPhoto] = useState(null);
+  // for role
+  const [role, setRole] = useState("");
+  const { user: currentUser } = useSelector((state) => state.auth); // for checking only
+  const { data, isLoading, refetch } = useLoardUserQuery();
   const user = data?.user;
 
   const [
     updateUser,
-    { data: updateUserData, isLoading: updateUserIsLoading, isSuccess, isError , error },
+    {
+      data: updateUserData,
+      isLoading: updateUserIsLoading,
+      isSuccess,
+      isError,
+      error,
+    },
   ] = useUpdateUserMutation();
 
   const onChangeHandler = (e) => {
     const file = e.target.files?.[0];
     if (file) {
       setProfilePhoto(file);
+      setPreviewPhoto(URL.createObjectURL(file));
     }
   };
 
   const updateUserHandler = async () => {
-
-
     const formData = new FormData();
-    formData.append("name", name);
-    formData.append("profilePhoto", profilePhoto);
+
+    formData.append("role", role);
+
+    if (profilePhoto) {
+
+      formData.append("profilePhoto", profilePhoto);
+    }
     await updateUser(formData);
   };
+
+  useEffect(() => {
+    if (user) {
+      setName(user.name);
+      setRole(user.role); // <-- NAYI LINE
+      setPreviewPhoto(user.photoUrl); // Preview ke liye URL set karein
+    }
+  }, [user]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -145,6 +174,33 @@ const EditProfile = () => {
                   />
                 </div>
               </div>
+
+              <div className="grid items-center grid-cols-4 gap-4">
+                <Label>Role</Label>
+                <div className="col-span-3">
+                  <Select
+                    value={role}
+                    onValueChange={setRole}
+                    // // Sirf superadmin hi role badal sakta hai
+                    // disabled={
+                    //   currentUser?.role !== "instructor" || "superadmin"
+                    // }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="student">Student</SelectItem>
+                      <SelectItem value="instructor">Instructor</SelectItem>
+                      {/* Sirf Superadmin ko hi yeh option dikhega */}
+                      {currentUser?.role === "superadmin" && (
+                        <SelectItem value="superadmin">Superadmin</SelectItem>
+                      )}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
               <DialogFooter>
                 <Button
                   disable={isLoading || updateUserIsLoading}
