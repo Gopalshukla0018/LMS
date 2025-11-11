@@ -10,14 +10,13 @@ import session from "express-session";
 import passport from "passport";
 import { connectPassport } from "./config/passport.js";
 
-// routes import 
+// routes import
 import courseRoutes from "./routes/course.route.js";
 import mediaRoute from "./routes/media.routes.js";
 import paymentRouter from "./routes/payment/payment.route.js";
 import courseProgressRoute from "./routes/courseProgress.route.js";
 import adminRoutes from "./routes/admin/admin.routes.js";
 import superAdminRoutes from "./routes/superAdmin.route.js";
-
 
 dotenv.config({ path: "./.env" });
 // call deatebase connection here
@@ -35,8 +34,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-
-// for OAuth 
+// for OAuth
 app.use(
   session({
     secret: process.env.SESSION_SECRET,

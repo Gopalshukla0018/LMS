@@ -46,13 +46,19 @@ router.get(
     });
 
   
-    const cookieOptions = {
-      httpOnly: true,
-      maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    };
+    // const cookieOptions = {
+    //   httpOnly: true,
+    //   maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days
+    //   secure: process.env.NODE_ENV === "production",
+    //   sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    // };
 
+    const cookieOptions = {
+  httpOnly: true,
+  maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days
+  secure: true, // Hamesha true rakhein
+  sameSite: "none", // Hamesha "none" rakhein
+};
 
     res
       .cookie("token", token, cookieOptions)
