@@ -53,11 +53,11 @@ router.get(
     //   sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     // };
 
-    const cookieOptions = {
+  const cookieOptions = {
   httpOnly: true,
   maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days
-  secure: true, // Hamesha true rakhein
-  sameSite: "none", // Hamesha "none" rakhein
+  secure: process.env.NODE_ENV === "production", // Dev mein 'false', Prod mein 'true'
+  sameSite: "none", // Hamesha "none"
 };
 
     res

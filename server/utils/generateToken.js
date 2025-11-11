@@ -5,13 +5,21 @@ export const generateToken = (res, user, message) => {
     expiresIn: "15d",
   });
 
-  // Cookie options ko define karein
+  // // Cookie options ko define karein
+  // const cookieOptions = {
+  //   httpOnly: true,
+  //   maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days
+  
+  //   secure: process.env.NODE_ENV === "production",
+  //   sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  // };
+
+
   const cookieOptions = {
     httpOnly: true,
     maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days
-  
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: process.env.NODE_ENV === "production", 
+    sameSite: "none", 
   };
 
   res.cookie("token", token, cookieOptions).status(200).json({
