@@ -85,9 +85,9 @@ const Login = () => {
       email: "test@gmail.com",
       password: "test123",
     };
-
+   
     setLoginInput(demoData);
-    // Direct API Call for fast experience
+
     await loginUser(demoData);
   };
 
@@ -258,14 +258,15 @@ const Login = () => {
                     "Login"
                   )}
                 </Button>
-                {/* 
+
                 {/* --- NEW GUEST LOGIN BUTTON --- */}
                 <Button
+                  variant="outline"
                   disabled={loginIsLoading}
                   onClick={handleDemoLogin}
-                  className="flex items-center justify-center w-full gap-2 px-4 py-2 mt-4 font-bold text-white transition-all duration-300 ease-in-out shadow-lg roundedlg hover:shadow-indigo-500/50 animate-pulse hover:animate-none hover:scale-105"
+                  className="flex items-center justify-center w-full gap-2 px-4 py-2 mt-4 font-bold text-white transition-all duration-300 ease-in-out rounded-lg shadow-lg bg-gradient-to-r from-indigo-500 to-purple-500 hover:shadow-indigo-500/50 animate-pulse hover:animate-none hover:scale-105"
                 >
-                  Login as Guest (Recruiter Demo)
+                  🚀 Login as Guest (Recruiter Demo)
                 </Button>
               </CardFooter>
               <CardFooter>
