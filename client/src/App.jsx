@@ -17,7 +17,7 @@ import CourseDetail from "./pages/student/Courses/CourseDetail";
 import CourseProgress from "./pages/student/Courses/CourseProgress";
 import SearchPage from "./pages/student/SearchPage";
 
-import { ThemeProvider } from "./components/ThemeProvider";
+// import { ThemeProvider } from "./components/ThemeProvider"; removed from here
 // protected  components
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import AdminRoutes from "./components/AdminRoutes";
@@ -89,11 +89,11 @@ const appRouter = createBrowserRouter([
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    // <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <main>
         <RouterProvider router={appRouter} />
       </main>
-    </ThemeProvider>
+    // </ThemeProvider>
   );
 }
 
