@@ -258,45 +258,15 @@ const Login = () => {
                     "Login"
                   )}
                 </Button>
-
+                {/* 
                 {/* --- NEW GUEST LOGIN BUTTON --- */}
-                {/* <Button
+                <Button
                   disabled={loginIsLoading}
                   onClick={handleDemoLogin}
-                  className="flex items-center justify-center w-full gap-2 px-4 py-2 mt-4 font-bold text-white transition-all duration-300 ease-in-out bg-indigo-600 rounded-lg shadow-lg hover:bg-indigo-700 hover:shadow-indigo-500/50 animate-pulse hover:animate-none hover:scale-105"
+                  className="flex items-center justify-center w-full gap-2 px-4 py-2 mt-4 font-bold text-white transition-all duration-300 ease-in-out shadow-lg roundedlg hover:shadow-indigo-500/50 animate-pulse hover:animate-none hover:scale-105"
                 >
                   Login as Guest (Recruiter Demo)
-                </Button> */}
-                
-                
-                
-                <Button
-  disabled={loginIsLoading}
-  onClick={handleDemoLogin}
-  className="relative w-full px-4 py-2 mt-4 overflow-hidden font-semibold text-white transition rounded-md shadow-md bg-gradient-to-r from-orange-400 to-yellow-400 hover:scale-105 active:scale-95"
->
-  <span className="relative z-10">Login as Guest (Recruiter Demo)</span>
-
-  {/* Shimmer Effect */}
-  <span
-    className="
-      absolute inset-0 bg-white/30 translate-x-[-100%] 
-      animate-[shimmer_2s_infinite]
-    "
-    style={{
-      animation: "shimmer 2s infinite",
-    }}
-  />
-</Button>
-
-<style>{`
-  @keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-  }
-`}</style>
-
-
+                </Button>
               </CardFooter>
               <CardFooter>
                 <div className="relative w-full">
