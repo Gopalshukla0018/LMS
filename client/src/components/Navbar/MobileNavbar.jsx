@@ -218,7 +218,7 @@ const MobileNavbar = () => {
           </div>
 
           {/* Instructor Dashboard */}
-          {user?.role === "instructor" && (
+          {user?.role === "instructor" || "superAdmin" && (
             <SheetFooter className="mt-6">
               <SheetClose asChild>
                 <>
