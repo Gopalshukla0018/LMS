@@ -205,7 +205,16 @@ const Login = () => {
                   ) : (
                     "Signup"
                   )}
-                </Button>
+               <Button
+        variant="outline"
+        disabled={loginIsLoading} // Using loginIsLoading here because handleDemoLogin uses login API
+        onClick={handleDemoLogin}
+        className="flex items-center justify-center w-full gap-2 px-4 py-2 mt-2 font-bold text-white transition-all duration-300 ease-in-out rounded-lg shadow-lg bg-gradient-to-r from-indigo-500 to-purple-500 hover:shadow-indigo-500/50 animate-pulse hover:animate-none hover:scale-105"
+      >
+        Login as Guest (Recruiter Demo)
+      </Button>
+                  
+                  </Button>
               </CardFooter>
             </Card>
           </TabsContent>
