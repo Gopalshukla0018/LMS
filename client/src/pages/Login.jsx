@@ -192,7 +192,7 @@ const Login = () => {
                   </Select>
                 </div>
               </CardContent>
-              <CardFooter>
+              {/* <CardFooter>
                 <Button
                   disabled={registerIsLoading}
                   onClick={() => handleRegistration("signup")}
@@ -215,7 +215,36 @@ const Login = () => {
       </Button>
                   
                   </Button>
-              </CardFooter>
+              </CardFooter> */}
+              
+
+              <CardFooter className="flex flex-col gap-2">
+      <Button
+        disabled={registerIsLoading}
+        onClick={() => handleRegistration("signup")}
+        className="w-full"
+      >
+        {registerIsLoading ? (
+          <>
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            Please wait
+          </>
+        ) : (
+          "Signup"
+        )}
+      </Button>
+
+      {/* Guest Login Button Added Here */}
+      <Button
+        variant="outline"
+        disabled={loginIsLoading} // Using loginIsLoading here because handleDemoLogin uses login API
+        onClick={handleDemoLogin}
+        className="flex items-center justify-center w-full gap-2 px-4 py-2 mt-2 font-bold text-white transition-all duration-300 ease-in-out rounded-lg shadow-lg bg-gradient-to-r from-indigo-500 to-purple-500 hover:shadow-indigo-500/50 animate-pulse hover:animate-none hover:scale-105"
+      >
+        Login as Guest (Recruiter Demo)
+      </Button>
+    </CardFooter>
+    
             </Card>
           </TabsContent>
 
