@@ -75,7 +75,9 @@ const CreateLecture = () => {
             Course Title
           </Label>
         </div>
-
+        
+        
+    
         {/* Actions */}
         <div className="flex justify-end gap-4">
           <Button
