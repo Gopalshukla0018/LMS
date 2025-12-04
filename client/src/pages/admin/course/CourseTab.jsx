@@ -337,20 +337,19 @@
 
 // export default CourseTab;
 
-
-import RichTextEditor from "@/components/RichTextEditor/RichTextEditor";
-import { Button } from "@/components/ui/button";
-import { Selector } from "@/components/Selectors/Selector";
-import { CourseLevel } from "@/components/Selectors/CourseLevel";
+import RichTextEditor from "../../../components/RichTextEditor/RichTextEditor.jsx";
+import { Button } from "../../../components/ui/button.jsx";
+import { Selector } from "../../../components/Selectors/Selector.jsx";
+import { CourseLevel } from "../../../components/Selectors/CourseLevel.jsx";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "../../../components/ui/card.jsx";
+import { Input } from "../../../components/ui/input.jsx";
+import { Label } from "../../../components/ui/label.jsx";
 import React, { useState, useEffect } from "react";
 import { Loader2, Trash2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -359,9 +358,9 @@ import {
   useGetCourseByIdQuery,
   useToggelPublishUnpublishMutation,
   useDeleteCourseMutation,
-} from "@/features/api/courseApi";
+} from "../../../features/api/courseApi.js";
 import { toast } from "sonner";
-import { Switch } from "@/components/ui/switch";
+import { Switch } from "../../../components/ui/switch.jsx";
 import {
   Dialog,
   DialogContent,
@@ -371,7 +370,7 @@ import {
   DialogDescription,
   DialogTrigger,
   DialogClose,
-} from "@/components/ui/dialog";
+} from "../../../components/ui/dialog.jsx";
 
 const CourseTab = () => {
   const [input, setInput] = useState({
@@ -501,9 +500,12 @@ const CourseTab = () => {
 
   return (
     <Card className="border-none shadow-none md:border md:shadow-sm">
+      {/* Header Responsive Fix: Stack vertically on mobile, row on desktop */}
       <CardHeader className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
         <div className="space-y-1">
-          <CardTitle className="text-xl sm:text-2xl">Basic Course Information</CardTitle>
+          <CardTitle className="text-xl sm:text-2xl">
+            Basic Course Information
+          </CardTitle>
           <CardDescription>
             Make changes to your courses here. click save when you're done.
           </CardDescription>
@@ -546,9 +548,7 @@ const CourseTab = () => {
                 </DialogHeader>
                 <DialogFooter className="gap-2 sm:gap-0">
                   <DialogClose asChild>
-                    <Button variant="outline">
-                      Cancel
-                    </Button>
+                    <Button variant="outline">Cancel</Button>
                   </DialogClose>
                   <Button
                     onClick={async () => {
@@ -577,6 +577,7 @@ const CourseTab = () => {
 
       <CardContent>
         <div className="space-y-6">
+          {/* Grid Layout for Title/Subtitle */}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div className="space-y-2">
               <Label>Course Title</Label>
@@ -611,21 +612,23 @@ const CourseTab = () => {
             />
           </div>
 
+          {/* Grid Layout for Dropdowns & Price - 1 col mobile, 3 col desktop */}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <div className="space-y-2">
+            <div className="space-y-2 [&>button]:w-full">
+              {/* [&>button]:w-full forces the SelectTrigger inside Selector to be full width */}
               <Label>Category</Label>
-              {/* Ensure Selector takes full width of grid cell */}
-              <div className="w-full [&>button]:w-full">
-                 <Selector getSelectedCategory={getSelectedCategory} />
+              <div className="w-full">
+                <Selector getSelectedCategory={getSelectedCategory} />
               </div>
             </div>
-            <div className="space-y-2">
+
+            <div className="space-y-2 [&>button]:w-full">
               <Label>Course Level</Label>
-              {/* Ensure CourseLevel takes full width of grid cell */}
-              <div className="w-full [&>button]:w-full">
-                 <CourseLevel getcourseLevel={getcourseLevel} />
+              <div className="w-full">
+                <CourseLevel getcourseLevel={getcourseLevel} />
               </div>
             </div>
+
             <div className="space-y-2">
               <Label>Price in INR</Label>
               <Input
@@ -650,11 +653,11 @@ const CourseTab = () => {
               />
               {previewThumbnail && (
                 <div className="relative w-full overflow-hidden rounded-md md:w-96 aspect-video bg-muted">
-                    <img
-                        src={previewThumbnail}
-                        alt="Course Thumbnail"
-                        className="object-cover w-full h-full"
-                    />
+                  <img
+                    src={previewThumbnail}
+                    alt="Course Thumbnail"
+                    className="object-cover w-full h-full"
+                  />
                 </div>
               )}
             </div>
@@ -667,10 +670,7 @@ const CourseTab = () => {
             >
               Cancel
             </Button>
-            <Button
-              disabled={isLoading}
-              onClick={updateCourseHandler}
-            >
+            <Button disabled={isLoading} onClick={updateCourseHandler}>
               {isLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
